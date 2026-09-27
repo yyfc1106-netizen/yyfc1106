@@ -4,3 +4,7 @@ work/
 .venv/
 __pycache__/
 .env
+# Paper2MCP 工作目录中的大体积环境与源码克隆
+output/*/*-env/
+output/*/repo/
+output/*/tmp/

@@ -1,0 +1,12 @@
+{
+  "language": "python",
+  "requires_gpu": false,
+  "gpu_requirement": "none",
+  "language_reason": "The requested capability (VICReg loss on embeddings) is the Python/PyTorch class VICReg and helper off_diagonal in main_vicreg.py; users import and call PyTorch code rather than run a CLI.",
+  "gpu_reason": "The loss is pure tensor arithmetic (mse_loss, var, matmul). main_vicreg.py defaults --device cuda only for full training; VICReg.forward has no device-specific operation, and FullGatherLayer uses torch.distributed, which supports a single-process gloo backend on CPU.",
+  "cli_backend": null,
+  "repository": {"url": "https://github.com/facebookresearch/vicreg", "commit": "4e12602fd495af83efd1631fbe82523e6db092e0"},
+  "requested_filter": "VICReg loss computation on user-supplied embeddings (main_vicreg.py: VICReg.forward, off_diagonal, FullGatherLayer). Pretrained-backbone feature extraction and linear evaluation are deferred (weights host blocked); full pretraining out of scope (requires ImageNet + GPUs).",
+  "route_override": null,
+  "evidence_paths": ["repo/vicreg/main_vicreg.py", "repo/vicreg/README.md", "repo/vicreg/hubconf.py"]
+}
