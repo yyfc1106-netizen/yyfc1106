@@ -1,0 +1,8 @@
+# Runtime requirements for the VICReg MCP server (tested with Python 3.11.15, Linux x86_64, CPU).
+# Research implementation: facebookresearch/vicreg @ 4e12602fd495af83efd1631fbe82523e6db092e0 (MIT),
+# vendored unmodified in repo/vicreg/ (main_vicreg.py imports augmentations, distributed, resnet, torchvision).
+fastmcp==4.0.3
+torch==2.14.0
+torchvision==0.29.0
+numpy==2.4.6
+pillow==12.3.0

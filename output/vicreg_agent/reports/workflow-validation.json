@@ -2,7 +2,7 @@
   "validator": "paper2agent-workflow",
   "schema_version": 1,
   "success": true,
-  "through": "extraction",
+  "through": "verification",
   "errors": [],
   "passed_assignments": [
     {
@@ -24,6 +24,11 @@
       "role": "scanner",
       "task": "project",
       "run_id": "scan-attempt-1"
+    },
+    {
+      "role": "verifier",
+      "task": "main_vicreg",
+      "run_id": "verify-main-vicreg-attempt-1"
     }
   ],
   "exclusions": [],
@@ -44,6 +49,10 @@
     {
       "role": "scanner",
       "task": "project"
+    },
+    {
+      "role": "verifier",
+      "task": "main_vicreg"
     }
   ],
   "active_tutorials": [

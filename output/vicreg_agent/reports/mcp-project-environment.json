@@ -1,0 +1,130 @@
+{
+  "success": true,
+  "mode": "calls",
+  "require_all_tools": true,
+  "server": "/home/user/yyfc1106/output/vicreg_agent/src/vicreg_mcp.py",
+  "cwd": "/home/user/yyfc1106/output/vicreg_agent",
+  "python": "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/bin/python",
+  "python_version": "3.11.15",
+  "fastmcp": "4.0.3",
+  "expected": [
+    "vicreg_compute_loss"
+  ],
+  "actual": [
+    "vicreg_compute_loss"
+  ],
+  "missing": [],
+  "unexpected": [],
+  "schemas": {
+    "vicreg_compute_loss": {
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "embeddings_path": {
+            "description": "Embeddings Z of the first view/branch as a 2-D numeric array [n, d]: .npy, or header-less numeric .csv (comma), .tsv (tab) or .txt (whitespace)",
+            "type": "string"
+          },
+          "embeddings_prime_path": {
+            "description": "Embeddings Z' of the second view/branch, same shape [n, d] and row order as embeddings_path, same file formats",
+            "type": "string"
+          },
+          "sim_coeff": {
+            "default": 25.0,
+            "description": "Invariance (MSE) loss coefficient lambda; upstream default 25.0",
+            "type": "number"
+          },
+          "std_coeff": {
+            "default": 25.0,
+            "description": "Variance (std hinge, gamma=1, eps=1e-4) loss coefficient mu; upstream default 25.0",
+            "type": "number"
+          },
+          "cov_coeff": {
+            "default": 1.0,
+            "description": "Covariance (off-diagonal) loss coefficient nu; upstream default 1.0",
+            "type": "number"
+          },
+          "dtype": {
+            "default": "float32",
+            "description": "Floating-point precision for the computation; upstream trains in float32",
+            "enum": [
+              "float32",
+              "float64"
+            ],
+            "type": "string"
+          },
+          "output_dir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Base output directory; a fresh subdirectory is created per call (default: <project>/tmp/outputs)"
+          }
+        },
+        "required": [
+          "embeddings_path",
+          "embeddings_prime_path"
+        ]
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "main_vicreg-reference-a_default",
+      "tool": "vicreg_compute_loss",
+      "success": true,
+      "artifacts_checked": 1
+    },
+    {
+      "name": "main_vicreg-reference-a_default-repeat",
+      "tool": "vicreg_compute_loss",
+      "success": true,
+      "artifacts_checked": 1
+    },
+    {
+      "name": "main_vicreg-custom-coeffs-float64",
+      "tool": "vicreg_compute_loss",
+      "success": true,
+      "artifacts_checked": 1
+    },
+    {
+      "name": "main_vicreg-error-missing-file",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    },
+    {
+      "name": "main_vicreg-error-shape-mismatch",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    },
+    {
+      "name": "main_vicreg-error-one-d-input",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    },
+    {
+      "name": "main_vicreg-error-single-sample",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    },
+    {
+      "name": "main_vicreg-error-nan-input",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    },
+    {
+      "name": "main_vicreg-error-bad-extension",
+      "tool": "vicreg_compute_loss",
+      "success": true
+    }
+  ]
+}

@@ -101,6 +101,49 @@
       "produced_files": {
         "src/tools/main_vicreg.py": "9ef3d282f521ea95eeb14b1954a11f3871bd261b20311c5c5342f5dc1f490520"
       }
+    },
+    {
+      "id": "verify-main-vicreg-attempt-1",
+      "role": "verifier",
+      "task": "main_vicreg",
+      "agent_id": "a25956edf1dcb7146",
+      "status": "succeeded",
+      "started_at": "2026-09-27T07:04:26.000Z",
+      "finished_at": "2026-09-27T07:10:38.854Z",
+      "owned_paths": [
+        "src/tools/main_vicreg.py",
+        "tests/code/main_vicreg",
+        "tests/data/main_vicreg",
+        "tests/results/main_vicreg",
+        "tests/logs/main_vicreg",
+        "tmp/outputs/verify_main_vicreg",
+        "reports/verification-main_vicreg.json",
+        "reports/mcp-acceptance-main_vicreg.json"
+      ],
+      "report": "reports/verification-main_vicreg.json",
+      "implementation_run_id": "impl-main-vicreg-attempt-1",
+      "report_sha256": "65de412ed498315dbb3d14ee7995ad38311f072cacf75d8f1f9eff771b1fedb1",
+      "produced_files": {
+        "reports/mcp-acceptance-main_vicreg.json": "3e50bfb7189384223878470d4a1ca0142582611ebfd76d22d156933e1b386971",
+        "tests/code/main_vicreg/test_vicreg_compute_loss.py": "9c3f2bcd3313f88bac9a4e6becb667a41e79a732fa5c6e14be0276247ef37895",
+        "tests/data/main_vicreg/a_default_z.json": "ae4c9c8e37d1840e211733ec9b0db7e0491a375b32ce50eb51926826d7071219",
+        "tests/data/main_vicreg/a_default_z.npy": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5",
+        "tests/data/main_vicreg/a_default_zp.npy": "9042d9282ec4061fc98ad7f67b459d442e2cdd7eab26a0cf2f294a75f72af47e",
+        "tests/data/main_vicreg/mismatch_128x32.npy": "4f9ee3a274552774776ef25b665c2f2f83f955e08827a201099a3b60e7d71359",
+        "tests/data/main_vicreg/nan_64x32.npy": "f4e20145f1afe23927b192069022194e79d814a751651f9ef875fdff15accfb7",
+        "tests/data/main_vicreg/one_d_64.npy": "aab50b04ef4eb34dc9c9fbe39bc5e05dc092035aca3a903e138405ca2b9dec2e",
+        "tests/data/main_vicreg/single_row_1x32.npy": "86b473a06ed97e75b317f6136a46660407263fa1b575fa4308229e5a3370b92b",
+        "tests/logs/main_vicreg/pytest_final.log": "9fe80ab8ff413a3974a7fbc920cd10bbaf141d8b3c01961315a047ae0e505f0a",
+        "tests/logs/main_vicreg/pytest_verbose.log": "b8dde0394bb9880787349f591e654fc7f0a501eda37bfdaee26fa46c2b320e03",
+        "tests/logs/main_vicreg/stdio_acceptance.err": "b5cf92891825d79d261ae7f5d7fb3e34776c91a6efe3172ab7f4a8741ed8f8a0",
+        "tests/logs/main_vicreg/stdio_acceptance.out": "572f2d6cca3c62042ea2c7f0c94720c19345a4130a7e7b626030b1bd5671dde0",
+        "tests/results/main_vicreg/junit.xml": "dc21107fb97d9f7a01aca01472650028e07bd4b29b526ebed3ffc0c3e498bdb9",
+        "tests/results/main_vicreg/reference_comparisons.json": "fb3a0834bcf6ce92584ef4938662ec0575c1c5447a27386c1ad0f40621edcc39",
+        "tests/results/main_vicreg/stdio_acceptance_report.json": "24e035e1ba5f4143077e5835631d36b83ae40e8db91deac3399da14a04e3e862"
+      },
+      "tested_files": {
+        "src/tools/main_vicreg.py": "73e91d56b72d6919274ce02b078b2ce1813b8a0c9c7375f1b73b2aa2a2d27084"
+      }
     }
   ],
   "exclusions": []

@@ -1,0 +1,851 @@
+....................................                                     [100%]
+==================================== PASSES ====================================
+________________________ test_reference_case[a_default] ________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+_______________________ test_reference_case[c_identical] _______________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=1.9044898748397827
+_______________________ test_reference_case[d_collapsed] _______________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=24.749998092651367
+____________________ test_reference_case[e_128x256_custom] _____________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=128 d=256 dtype=float32 total=28.365421295166016
+_______________________ test_reference_case_b_linearity ________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+________________________ test_reference_case_f_float64 _________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float64 total=2.124891543933415
+_______ test_changed_inputs_vs_direct_upstream[11-50-20-coeffs0-float32] _______
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=50 d=20 dtype=float32 total=25.82543182373047
+______ test_changed_inputs_vs_direct_upstream[12-17-300-coeffs1-float32] _______
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=17 d=300 dtype=float32 total=51422.94921875
+________ test_changed_inputs_vs_direct_upstream[13-2-5-coeffs2-float32] ________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=2 d=5 dtype=float32 total=1.718508243560791
+_______ test_changed_inputs_vs_direct_upstream[14-40-1-coeffs3-float32] ________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=40 d=1 dtype=float32 total=10.306427001953125
+_______ test_changed_inputs_vs_direct_upstream[15-96-64-coeffs4-float64] _______
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=96 d=64 dtype=float64 total=77.44184713233415
+________________________ test_coefficients_not_ignored _________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=1.9005579948425293
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=1.3197720050811768
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=8.440159797668457
+_____________________ test_identical_views_invariance_zero _____________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=48 d=24 dtype=float32 total=2.1086909770965576
+_____________________________ test_collapsed_views _____________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=32 d=16 dtype=float32 total=124.75
+________________________ test_linearity_in_coefficients ________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=48 d=24 dtype=float64 total=9.391649219923053
+______________________ test_covariance_scale_sensitivity _______________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=48 d=24 dtype=float64 total=50.10830661447222
+[vicreg_compute_loss] n=48 d=24 dtype=float64 total=506.66117596134626
+__________________________ test_swap_views_symmetric ___________________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=48 d=24 dtype=float32 total=52.27466583251953
+[vicreg_compute_loss] n=48 d=24 dtype=float32 total=52.27466583251953
+___________________ test_numpy_paper_rederivation[a_default] ___________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float64 total=2.124891543933415
+_______________ test_numpy_paper_rederivation[e_128x256_custom] ________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=128 d=256 dtype=float64 total=55.05259739281445
+_____________________ test_text_formats_equal_npy[.csv-,] ______________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+_____________________ test_text_formats_equal_npy[.tsv-\t] _____________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+_____________________ test_text_formats_equal_npy[.txt- ] ______________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+__________________ test_input_errors_are_tool_errors[missing] __________________
+----------------------------- Captured stderr call -----------------------------
+[09/27/26 07:09:17] Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:70 in _load_embeddings                          │
+                    │                                                          │
+                    │    67 def _load_embeddings(path_str: str, name: str, dty │
+                    │    68 │   path = Path(path_str).expanduser()             │
+                    │    69 │   if not path.is_file():                         │
+                    │ ❱  70 │   │   raise FileNotFoundError(f"{name}: file not │
+                    │    71 │   suffix = path.suffix.lower()                   │
+                    │    72 │   if suffix != ".npy" and suffix not in _TEXT_DE │
+                    │    73 │   │   raise ValueError(f"{name}: unsupported ext │
+                    │       .tsv or .txt)")                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    FileNotFoundError: embeddings_path: file not found:         
+                    /home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicr
+                    eg/does_not_exist.npy                                       
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 70, in _load_embeddings
+    raise FileNotFoundError(f"{name}: file not found: {path}")
+FileNotFoundError: embeddings_path: file not found: /home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/does_not_exist.npy
+_________________ test_input_errors_are_tool_errors[mismatch] __________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 8 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/function_tool.py:8 │
+                    │ 9 in wrapper                                             │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:120 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │ ❱ 120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │   121 │   n, d = z_np.shape                              │
+                    │   122 │   if n < 2:                                      │
+                    │   123 │   │   raise ValueError(f"need at least 2 samples │
+                    │       variance/covariance, got n={n}")                   │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: shape mismatch: embeddings_path [64, 32] vs     
+                    embeddings_prime_path [128, 32]                             
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 120, in vicreg_compute_loss
+    raise ValueError(f"shape mismatch: embeddings_path {list(z_np.shape)} vs embeddings_prime_path {list(zp_np.shape)}")
+ValueError: shape mismatch: embeddings_path [64, 32] vs embeddings_prime_path [128, 32]
+___________________ test_input_errors_are_tool_errors[one_d] ___________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:83 in _load_embeddings                          │
+                    │                                                          │
+                    │    80 │   except ValueError as exc:                      │
+                    │    81 │   │   raise ValueError(f"{name}: could not read  │
+                    │       from exc                                           │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │ ❱  83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    │    85 │   │   raise ValueError(f"{name}: contains NaN or │
+                    │    86 │   return arr                                     │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: expected a 2-D array [n, d],   
+                    got shape [64]                                              
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 83, in _load_embeddings
+    raise ValueError(f"{name}: expected a 2-D array [n, d], got shape {list(arr.shape)}")
+ValueError: embeddings_path: expected a 2-D array [n, d], got shape [64]
+________________ test_input_errors_are_tool_errors[single_row] _________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 8 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/function_tool.py:8 │
+                    │ 9 in wrapper                                             │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:123 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │   121 │   n, d = z_np.shape                              │
+                    │   122 │   if n < 2:                                      │
+                    │ ❱ 123 │   │   raise ValueError(f"need at least 2 samples │
+                    │       variance/covariance, got n={n}")                   │
+                    │   124 │                                                  │
+                    │   125 │   z = torch.from_numpy(np.ascontiguousarray(z_np │
+                    │   126 │   zp = torch.from_numpy(np.ascontiguousarray(zp_ │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: need at least 2 samples (rows) to compute       
+                    variance/covariance, got n=1                                
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 123, in vicreg_compute_loss
+    raise ValueError(f"need at least 2 samples (rows) to compute variance/covariance, got n={n}")
+ValueError: need at least 2 samples (rows) to compute variance/covariance, got n=1
+____________________ test_input_errors_are_tool_errors[nan] ____________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:85 in _load_embeddings                          │
+                    │                                                          │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │    83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    │ ❱  85 │   │   raise ValueError(f"{name}: contains NaN or │
+                    │    86 │   return arr                                     │
+                    │    87                                                    │
+                    │    88                                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: contains NaN or infinite values
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 85, in _load_embeddings
+    raise ValueError(f"{name}: contains NaN or infinite values")
+ValueError: embeddings_path: contains NaN or infinite values
+__________________ test_input_errors_are_tool_errors[bad_ext] __________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:73 in _load_embeddings                          │
+                    │                                                          │
+                    │    70 │   │   raise FileNotFoundError(f"{name}: file not │
+                    │    71 │   suffix = path.suffix.lower()                   │
+                    │    72 │   if suffix != ".npy" and suffix not in _TEXT_DE │
+                    │ ❱  73 │   │   raise ValueError(f"{name}: unsupported ext │
+                    │       .tsv or .txt)")                                    │
+                    │    74 │   try:                                           │
+                    │    75 │   │   if suffix == ".npy":                       │
+                    │    76 │   │   │   arr = np.load(path, allow_pickle=False │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: unsupported extension '.json'  
+                    (use .npy, .csv, .tsv or .txt)                              
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 73, in _load_embeddings
+    raise ValueError(f"{name}: unsupported extension '{suffix}' (use .npy, .csv, .tsv or .txt)")
+ValueError: embeddings_path: unsupported extension '.json' (use .npy, .csv, .tsv or .txt)
+_____________________ test_inf_and_nonnumeric_text_errors ______________________
+----------------------------- Captured stderr call -----------------------------
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:85 in _load_embeddings                          │
+                    │                                                          │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │    83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    │ ❱  85 │   │   raise ValueError(f"{name}: contains NaN or │
+                    │    86 │   return arr                                     │
+                    │    87                                                    │
+                    │    88                                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: contains NaN or infinite values
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ValueError: could not convert string to float: 'a'          
+                                                                                
+                    The above exception was the direct cause of the following   
+                    exception:                                                  
+                                                                                
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:78 in _load_embeddings                          │
+                    │                                                          │
+                    │    75 │   │   if suffix == ".npy":                       │
+                    │    76 │   │   │   arr = np.load(path, allow_pickle=False │
+                    │    77 │   │   else:                                      │
+                    │ ❱  78 │   │   │   arr = np.loadtxt(path, delimiter=_TEXT │
+                    │       ndmin=2)                                           │
+                    │    79 │   │   arr = np.asarray(arr, dtype=dtype)         │
+                    │    80 │   except ValueError as exc:                      │
+                    │    81 │   │   raise ValueError(f"{name}: could not read  │
+                    │       from exc                                           │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/numpy/lib/_npyio_impl.py:1384 in │
+                    │ loadtxt                                                  │
+                    │                                                          │
+                    │   1381 │   if isinstance(delimiter, bytes):              │
+                    │   1382 │   │   delimiter = delimiter.decode('latin1')    │
+                    │   1383 │                                                 │
+                    │ ❱ 1384 │   arr = _read(fname, dtype=dtype, comment=comme │
+                    │   1385 │   │   │   │   converters=converters, skiplines= │
+                    │   1386 │   │   │   │   unpack=unpack, ndmin=ndmin, encod │
+                    │   1387 │   │   │   │   max_rows=max_rows, quote=quotecha │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/numpy/lib/_npyio_impl.py:1035 in │
+                    │ _read                                                    │
+                    │                                                          │
+                    │   1032 │   │   │   data = _preprocess_comments(data, com │
+                    │   1033 │   │                                             │
+                    │   1034 │   │   if read_dtype_via_object_chunks is None:  │
+                    │ ❱ 1035 │   │   │   arr = _load_from_filelike(            │
+                    │   1036 │   │   │   │   data, delimiter=delimiter, commen │
+                    │   1037 │   │   │   │   imaginary_unit=imaginary_unit,    │
+                    │   1038 │   │   │   │   usecols=usecols, skiplines=skipli │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: could not convert string 'a' to float64 at row  
+                    0, column 1.                                                
+                                                                                
+                    The above exception was the direct cause of the following   
+                    exception:                                                  
+                                                                                
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/server/server.py:1492 in │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/p │
+                    │ ython3.11/site-packages/fastmcp/tools/base.py:440 in     │
+                    │ _run                                                     │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:81 in _load_embeddings                          │
+                    │                                                          │
+                    │    78 │   │   │   arr = np.loadtxt(path, delimiter=_TEXT │
+                    │       ndmin=2)                                           │
+                    │    79 │   │   arr = np.asarray(arr, dtype=dtype)         │
+                    │    80 │   except ValueError as exc:                      │
+                    │ ❱  81 │   │   raise ValueError(f"{name}: could not read  │
+                    │       from exc                                           │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │    83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: could not read a numeric array 
+                    from                                                        
+                    /tmp/pytest-of-root/pytest-5/test_inf_and_nonnumeric_text_e0
+                    /hdr.csv: could not convert string 'a' to float64 at row 0, 
+                    column 1.                                                   
+------------------------------ Captured log call -------------------------------
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 85, in _load_embeddings
+    raise ValueError(f"{name}: contains NaN or infinite values")
+ValueError: embeddings_path: contains NaN or infinite values
+ERROR    fastmcp.server.server:server.py:1541 Error calling tool 'vicreg_compute_loss'
+ValueError: could not convert string to float: 'a'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 78, in _load_embeddings
+    arr = np.loadtxt(path, delimiter=_TEXT_DELIMITERS[suffix], dtype=np.float64, ndmin=2)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py", line 1384, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py", line 1035, in _read
+    arr = _load_from_filelike(
+          ^^^^^^^^^^^^^^^^^^^^
+ValueError: could not convert string 'a' to float64 at row 0, column 1.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/server/server.py", line 1492, in call_tool
+    return await tool._run(arguments or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/base.py", line 440, in _run
+    return await self.run(arguments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 389, in run
+    result = await self._run_body(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 430, in _run_body
+    result = await self._execute(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 477, in _execute
+    result = await call_sync_fn_in_threadpool(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/utilities/async_utils.py", line 34, in call_sync_fn_in_threadpool
+    return await run_sync_in_threadpool(functools.partial(fn, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/pydantic/type_adapter.py", line 441, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/lib/python3.11/site-packages/fastmcp/tools/function_tool.py", line 89, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 117, in vicreg_compute_loss
+    z_np = _load_embeddings(embeddings_path, "embeddings_path", np_dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/yyfc1106/output/vicreg_agent/src/tools/main_vicreg.py", line 81, in _load_embeddings
+    raise ValueError(f"{name}: could not read a numeric array from {path}: {exc}") from exc
+ValueError: embeddings_path: could not read a numeric array from /tmp/pytest-of-root/pytest-5/test_inf_and_nonnumeric_text_e0/hdr.csv: could not convert string 'a' to float64 at row 0, column 1.
+___________________ test_missing_required_argument_is_error ____________________
+----------------------------- Captured stderr call -----------------------------
+[09/27/26 07:09:17] WARNING  Invalid arguments for tool           server.py:1505
+                             'vicreg_compute_loss': [{'type':                   
+                             'missing_argument', 'loc':                         
+                             ('embeddings_prime_path',), 'msg':                 
+                             'Missing required argument',                       
+                             'input': {'embeddings_path':                       
+                             '/home/user/yyfc1106/output/vicreg_a               
+                             gent/tests/data/main_vicreg/a_defaul               
+                             t_z.npy'}}]                                        
+                    WARNING  Invalid arguments for tool           server.py:1505
+                             'vicreg_compute_loss': [{'type':                   
+                             'literal_error', 'loc': ('dtype',),                
+                             'msg': "Input should be 'float32' or               
+                             'float64'", 'input': 'float16',                    
+                             'ctx': {'expected': "'float32' or                  
+                             'float64'"}}]                                      
+------------------------------ Captured log call -------------------------------
+WARNING  fastmcp.server.server:server.py:1505 Invalid arguments for tool 'vicreg_compute_loss': [{'type': 'missing_argument', 'loc': ('embeddings_prime_path',), 'msg': 'Missing required argument', 'input': {'embeddings_path': '/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.npy'}}]
+WARNING  fastmcp.server.server:server.py:1505 Invalid arguments for tool 'vicreg_compute_loss': [{'type': 'literal_error', 'loc': ('dtype',), 'msg': "Input should be 'float32' or 'float64'", 'input': 'float16', 'ctx': {'expected': "'float32' or 'float64'"}}]
+____________________ test_repeated_calls_distinct_artifacts ____________________
+----------------------------- Captured stderr call -----------------------------
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+=========================== short test summary info ============================
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case[a_default]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case[c_identical]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case[d_collapsed]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case[e_128x256_custom]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case_b_linearity
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_reference_case_f_float64
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_changed_inputs_vs_direct_upstream[11-50-20-coeffs0-float32]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_changed_inputs_vs_direct_upstream[12-17-300-coeffs1-float32]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_changed_inputs_vs_direct_upstream[13-2-5-coeffs2-float32]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_changed_inputs_vs_direct_upstream[14-40-1-coeffs3-float32]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_changed_inputs_vs_direct_upstream[15-96-64-coeffs4-float64]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_coefficients_not_ignored
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_identical_views_invariance_zero
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_collapsed_views
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_linearity_in_coefficients
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_covariance_scale_sensitivity
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_swap_views_symmetric
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_numpy_paper_rederivation[a_default]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_numpy_paper_rederivation[e_128x256_custom]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_text_formats_equal_npy[.csv-,]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_text_formats_equal_npy[.tsv-\t]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_text_formats_equal_npy[.txt- ]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[missing]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[mismatch]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[one_d]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[single_row]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[nan]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_input_errors_are_tool_errors[bad_ext]
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_inf_and_nonnumeric_text_errors
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_missing_required_argument_is_error
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_repeated_calls_distinct_artifacts
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_schema
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_source_reuse_no_duplicated_formula
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_tool_format
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_no_stdout_noise
+PASSED tests/code/main_vicreg/test_vicreg_compute_loss.py::test_upstream_checkout_untouched
+36 passed in 10.41s

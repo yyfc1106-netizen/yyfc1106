@@ -1,0 +1,319 @@
+{
+  "module": "main_vicreg",
+  "exposed_tools": [
+    "vicreg_compute_loss"
+  ],
+  "verifier": "independent test-verifier (fresh agent, not the implementer)",
+  "implementation_run_id": "impl-main-vicreg-attempt-1",
+  "status": "pass",
+  "production_files": {
+    "src/tools/main_vicreg.py": {
+      "sha256_as_finally_tested": "73e91d56b72d6919274ce02b078b2ce1813b8a0c9c7375f1b73b2aa2a2d27084",
+      "sha256_at_handoff": "9ef3d282f521ea95eeb14b1954a11f3871bd261b20311c5c5342f5dc1f490520"
+    }
+  },
+  "read_only_shared_dependencies": {
+    "repo/vicreg/main_vicreg.py": {
+      "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+      "commit": "4e12602fd495af83efd1631fbe82523e6db092e0",
+      "note": "unmodified; git status --porcelain empty; no __pycache__"
+    },
+    "repo/vicreg/{augmentations,distributed,resnet}.py": "import-time siblings of upstream main_vicreg, unmodified",
+    "notebooks/vicreg_loss/reference_outputs.json": {
+      "sha256": "a3b2f3c128131fb9bb61b279c2bbdfebe8d8a6672873029158d45dcaffd67ee5"
+    }
+  },
+  "source_call_review": {
+    "trace": "vicreg_compute_loss -> _upstream_loss -> main_vicreg.VICReg.__new__ + nn.Module.__init__ (args=Namespace(batch_size=n, sim/std/cov_coeff, mlp=str(d)), num_features=d, backbone=projector=nn.Identity) -> module.forward(z, z_prime) under torch.no_grad(); main_vicreg is the pinned repo/vicreg/main_vicreg.py loaded via importlib.spec_from_file_location (distinct module name, since wrapper module is also named main_vicreg). forward itself calls upstream F.mse_loss, FullGatherLayer.apply (world_size=1 gloo, identity gather), off_diagonal.",
+    "binding_matches_scanner": true,
+    "binding_matches_executor_driver": "identical construction to notebooks/vicreg_loss/run_reference.py build_module/upstream_loss",
+    "__init___bypass_justification": "upstream __init__ only sets args, num_features, backbone, projector; executor case g showed real VICReg(args) with backbone/projector replaced gives bit-identical loss",
+    "duplicated_formula": "none; AST test confirms no var/std/mse_loss/relu/sqrt/pow/mean/matmul/off_diagonal calls or @ in production. weighted_contributions = coeff*term is display arithmetic only.",
+    "per_term_method": "three extra upstream forward calls with unit coefficients (scanner binding); recomputation is necessary because forward returns only the weighted sum",
+    "necessary_adaptations": [
+      "file loading (.npy, header-less .csv/.tsv/.txt) and dtype cast",
+      "args.batch_size=n (not CLI default 2048) so covariance uses 1/(n-1) of the supplied batch",
+      "num_features=d",
+      "single-process gloo group for FullGatherLayer",
+      "threading.Lock serializing upstream calls"
+    ],
+    "input_checks": [
+      "file exists",
+      "supported extension",
+      "numeric",
+      "2-D",
+      "same shape",
+      "n>=2",
+      "finite"
+    ],
+    "input_restrictions_justified": "n>=2 required (var and n-1 denominator undefined for n=1); finite required (NaN would propagate silently); no other restrictions",
+    "defaults": "sim 25.0, std 25.0, cov 1.0 match upstream get_arguments (checked by test via upstream parser); dtype float32 matches upstream training precision",
+    "format": "Annotated description on every parameter, Literal dtype, two-line docstring, dict return with message/reference/artifacts + compact summary; fresh uuid subdir per call; diagnostics to stderr only (stdout empty, verified in subprocess and by stdio JSON-RPC run)"
+  },
+  "scientific_comparisons": {
+    "reference_cases": {
+      "source": "notebooks/vicreg_loss/reference_outputs.json (upstream driver)",
+      "tolerance": "float32: |diff| <= 1e-6*max(1,|ref|) (guard for BLAS reduction order; ~8 ulps); float64: 1e-10 relative",
+      "observed": "all 20 values (a,c,d,e,f x total+3 terms) bit-exact",
+      "details": {
+        "a_default": {
+          "total_loss": {
+            "tool": 2.1248912811279297,
+            "reference": 2.1248912811279297,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "invariance_loss": {
+            "tool": 0.009347228333353996,
+            "reference": 0.009347228333353996,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "variance_loss": {
+            "tool": 0.03354664146900177,
+            "reference": 0.03354664146900177,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "covariance_loss": {
+            "tool": 1.0525447130203247,
+            "reference": 1.0525447130203247,
+            "abs_diff": 0.0,
+            "exact": true
+          }
+        },
+        "c_identical": {
+          "total_loss": {
+            "tool": 1.9044898748397827,
+            "reference": 1.9044898748397827,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "invariance_loss": {
+            "tool": 0.0,
+            "reference": 0.0,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "variance_loss": {
+            "tool": 0.0347004272043705,
+            "reference": 0.0347004272043705,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "covariance_loss": {
+            "tool": 1.0369791984558105,
+            "reference": 1.0369791984558105,
+            "abs_diff": 0.0,
+            "exact": true
+          }
+        },
+        "d_collapsed": {
+          "total_loss": {
+            "tool": 24.749998092651367,
+            "reference": 24.749998092651367,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "invariance_loss": {
+            "tool": 0.0,
+            "reference": 0.0,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "variance_loss": {
+            "tool": 0.9899998903274536,
+            "reference": 0.9899998903274536,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "covariance_loss": {
+            "tool": 0.0,
+            "reference": 0.0,
+            "abs_diff": 0.0,
+            "exact": true
+          }
+        },
+        "e_128x256_custom": {
+          "total_loss": {
+            "tool": 28.365421295166016,
+            "reference": 28.365421295166016,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "invariance_loss": {
+            "tool": 2.0152101516723633,
+            "reference": 2.0152101516723633,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "variance_loss": {
+            "tool": 0.02514137700200081,
+            "reference": 0.02514137700200081,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "covariance_loss": {
+            "tool": 4.043806552886963,
+            "reference": 4.043806552886963,
+            "abs_diff": 0.0,
+            "exact": true
+          }
+        },
+        "b_per_term_check_on_a": {
+          "weighted_sum": 2.124891458079219,
+          "total": 2.1248912811279297,
+          "abs_diff": 1.7695128917694092e-07
+        },
+        "f_dtype_float64_of_a": {
+          "total_loss": {
+            "tool": 2.124891543933415,
+            "reference": 2.124891543933415,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "invariance_loss": {
+            "tool": 0.009347228526564468,
+            "reference": 0.009347228526564468,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "variance_loss": {
+            "tool": 0.033546642630800705,
+            "reference": 0.033546642630800705,
+            "abs_diff": 0.0,
+            "exact": true
+          },
+          "covariance_loss": {
+            "tool": 1.0525447649992858,
+            "reference": 1.0525447649992858,
+            "abs_diff": 0.0,
+            "exact": true
+          }
+        }
+      }
+    },
+    "b_linearity": "25*inv+25*var+1*cov (float64 on float32 terms) = 2.124891458079219 vs total 2.1248912811279297, diff 1.77e-7 (float32 rounding), matches executor",
+    "changed_inputs_vs_new_direct_upstream_calls": [
+      "seed 11, 50x20, coeffs (3.5,0.7,12.0), float32",
+      "seed 12, 17x300 (d>n), defaults, float32",
+      "seed 13, 2x5 (minimum n), coeffs (1,2,3)",
+      "seed 14, 40x1 (d=1 -> covariance exactly 0)",
+      "seed 15, 96x64, coeffs (0,10,0.5), float64",
+      "case a with coeffs (1,25,1),(25,1,1),(25,25,7): totals change and equal direct upstream; unweighted terms unchanged"
+    ],
+    "properties": [
+      "identical views -> invariance exactly 0",
+      "collapsed constants (0.5 vs -1.5): variance 1-sqrt(1e-4)=0.99, covariance 0, invariance 4.0, total 25*4+25*0.99",
+      "linearity total = sum coeff*term (float64, 1e-12)",
+      "scale by 3: covariance x81 and invariance x9 (1e-10), variance decreases",
+      "swap Z/Z' leaves all values unchanged"
+    ],
+    "paper_rederivation": {
+      "method": "numpy float64 re-derivation of Algorithm 1 / Eq. 1-6 in the test only, N=n",
+      "results": "cases a and e: invariance == mse (1e-10), covariance == c(Z)+c(Z') with C=Zc^T Zc/(n-1) and 1/d (1e-10); batch_size=2048 would scale covariance by ((n-1)/2047)^2 and does not match -> batch_size=n binding confirmed",
+      "documented_code_vs_paper_differences": [
+        "variance: upstream code averages the branch hinges (/2); Algorithm 1 and Eq. 6 sum v(Z)+v(Z'). Tool is faithful to code: variance_loss == (v(Z)+v(Z'))/2",
+        "invariance: code/Algorithm 1 use mse over n*d elements; paper Eq. 5 sums over dimensions (= d * mse)"
+      ]
+    }
+  },
+  "changed_input_and_error_checks": {
+    "errors_as_mcp_tool_errors": [
+      "missing file",
+      "shape mismatch",
+      "1-D input",
+      "n=1",
+      "NaN",
+      "inf",
+      "bad extension (.json)",
+      "non-numeric/header CSV",
+      "missing required argument",
+      "dtype outside Literal"
+    ],
+    "no_partial_output_on_error": true,
+    "inputs_unchanged": "sha256 of inputs identical before/after calls",
+    "artifact_isolation": "3 repeated calls -> 3 distinct subdirectories, all files exist",
+    "text_formats": ".csv/.tsv/.txt (9 significant digits) give values identical to .npy and to the reference"
+  },
+  "commands": [
+    {
+      "command": "cd /home/user/yyfc1106/output/vicreg_agent && PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python -m pytest tests/code/ -q",
+      "exit": 0,
+      "output": "36 passed in 10.61s",
+      "log": "tests/logs/main_vicreg/pytest_final.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python -m pytest tests/code/main_vicreg -q -rA --junitxml=tests/results/main_vicreg/junit.xml -p no:cacheprovider",
+      "exit": 0,
+      "output": "36 passed in 10.41s",
+      "log": "tests/logs/main_vicreg/pytest_verbose.log"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python $SKILL_ROOT/scripts/verify_mcp_server.py --server tmp/outputs/verify_main_vicreg/stdio/server.py --expected tmp/outputs/verify_main_vicreg/stdio/expected.json --cases reports/mcp-acceptance-main_vicreg.json --require-all-tools --report tests/results/main_vicreg/stdio_acceptance_report.json",
+      "exit": 0,
+      "output": "success true, 9 cases (3 positive incl. repeat, 6 error)",
+      "note": "module-level stdio server wrapper in verifier scratch area; final mounted-server acceptance remains with coordinator"
+    }
+  ],
+  "test_totals": {
+    "collected": 36,
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "test_file": "tests/code/main_vicreg/test_vicreg_compute_loss.py",
+    "test_file_sha256": "9c3f2bcd3313f88bac9a4e6becb667a41e79a732fa5c6e14be0276247ef37895"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "35 passed, 1 failed",
+      "cause": "test bug: scaled inputs computed in float32 before float64 cast (rel err 1.6e-9 > 1e-10); fixed in test by casting before scaling. Also switched deprecated inputSchema -> input_schema. No production change."
+    },
+    {
+      "attempt": 2,
+      "result": "36 passed; stdio acceptance 9/9",
+      "note": "production unchanged at this point (sha 9ef3d282...)"
+    },
+    {
+      "attempt": 3,
+      "result": "36 passed; stdio acceptance 9/9",
+      "repair": "src/tools/main_vicreg.py: unsupported-extension check moved before the read try-block so the error is not re-wrapped as 'could not read a numeric array ... unsupported extension' (message quality only; no scientific change). Test asserts the single message."
+    }
+  ],
+  "repairs": [
+    {
+      "file": "src/tools/main_vicreg.py",
+      "change": "unsupported extension raised before read try-block (error-message duplication fix)",
+      "scientific_impact": "none",
+      "sha256_before": "9ef3d282f521ea95eeb14b1954a11f3871bd261b20311c5c5342f5dc1f490520",
+      "sha256_after": "73e91d56b72d6919274ce02b078b2ce1813b8a0c9c7375f1b73b2aa2a2d27084"
+    }
+  ],
+  "exclusions": [],
+  "fixtures": {
+    "a_default_z.json": "ae4c9c8e37d1840e211733ec9b0db7e0491a375b32ce50eb51926826d7071219",
+    "a_default_z.npy": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5",
+    "a_default_zp.npy": "9042d9282ec4061fc98ad7f67b459d442e2cdd7eab26a0cf2f294a75f72af47e",
+    "mismatch_128x32.npy": "4f9ee3a274552774776ef25b665c2f2f83f955e08827a201099a3b60e7d71359",
+    "nan_64x32.npy": "f4e20145f1afe23927b192069022194e79d814a751651f9ef875fdff15accfb7",
+    "one_d_64.npy": "aab50b04ef4eb34dc9c9fbe39bc5e05dc092035aca3a903e138405ca2b9dec2e",
+    "single_row_1x32.npy": "86b473a06ed97e75b317f6136a46660407263fa1b575fa4308229e5a3370b92b"
+  },
+  "fixture_notes": "a_default_z/zp.npy copied byte-identical from notebooks/vicreg_loss/data; mismatch_128x32 (numpy seed 7), one_d_64 (column 0 of a), single_row_1x32 (row 0 of a), nan_64x32 (a with [3,5]=NaN), a_default_z.json (bad-extension fixture)",
+  "artifacts": {
+    "reference_comparisons": "tests/results/main_vicreg/reference_comparisons.json",
+    "junit": "tests/results/main_vicreg/junit.xml",
+    "stdio_report": "tests/results/main_vicreg/stdio_acceptance_report.json",
+    "outputs": "tmp/outputs/verify_main_vicreg/"
+  },
+  "limitations": [
+    "world_size=1 only; multi-process FullGatherLayer all-gather not exercised",
+    "forward only under no_grad; gradients not exercised",
+    "float32 values may differ in last bits on other machines/thread counts (tolerance 1e-6 relative in tests; acceptance cases assert only stable integer/coefficient fields)",
+    "upstream variance term averages branches (/2) unlike Algorithm 1/Eq. 6 sum; tool reports the code's value (documented, not altered)",
+    "text inputs must be header-less numeric",
+    "pytest run from project root creates .pytest_cache (outside ownership); removed after runs",
+    "stdio check used a module-level server stub, not the coordinator's mounted server; tool name may need a mount prefix in the merged cases"
+  ]
+}

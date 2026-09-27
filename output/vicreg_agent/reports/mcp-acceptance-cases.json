@@ -1,0 +1,165 @@
+[
+  {
+    "name": "main_vicreg-reference-a_default",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "expected_subset": {
+      "n_samples": 64,
+      "n_features": 32,
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      }
+    },
+    "min_artifacts": 1,
+    "artifact_root": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance",
+    "unique_artifacts": true
+  },
+  {
+    "name": "main_vicreg-reference-a_default-repeat",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "expected_subset": {
+      "n_samples": 64,
+      "n_features": 32,
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      }
+    },
+    "min_artifacts": 1,
+    "artifact_root": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance",
+    "unique_artifacts": true
+  },
+  {
+    "name": "main_vicreg-custom-coeffs-float64",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance",
+      "sim_coeff": 10.0,
+      "std_coeff": 5.0,
+      "cov_coeff": 2.0,
+      "dtype": "float64"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "expected_subset": {
+      "n_samples": 64,
+      "n_features": 32,
+      "coefficients": {
+        "sim_coeff": 10.0,
+        "std_coeff": 5.0,
+        "cov_coeff": 2.0
+      }
+    },
+    "min_artifacts": 1,
+    "artifact_root": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance",
+    "unique_artifacts": true
+  },
+  {
+    "name": "main_vicreg-error-missing-file",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/does_not_exist.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "file not found"
+  },
+  {
+    "name": "main_vicreg-error-shape-mismatch",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/mismatch_128x32.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "shape mismatch"
+  },
+  {
+    "name": "main_vicreg-error-one-d-input",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/one_d_64.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/one_d_64.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "expected a 2-D array"
+  },
+  {
+    "name": "main_vicreg-error-single-sample",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/single_row_1x32.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/single_row_1x32.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "at least 2 samples"
+  },
+  {
+    "name": "main_vicreg-error-nan-input",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/nan_64x32.npy",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "NaN or infinite"
+  },
+  {
+    "name": "main_vicreg-error-bad-extension",
+    "tool": "vicreg_compute_loss",
+    "arguments": {
+      "embeddings_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_z.json",
+      "embeddings_prime_path": "/home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicreg/a_default_zp.npy",
+      "output_dir": "/home/user/yyfc1106/output/vicreg_agent/tmp/outputs/verify_main_vicreg/acceptance_errors"
+    },
+    "required_inputs": [
+      "embeddings_path",
+      "embeddings_prime_path"
+    ],
+    "error_contains": "unsupported extension"
+  }
+]

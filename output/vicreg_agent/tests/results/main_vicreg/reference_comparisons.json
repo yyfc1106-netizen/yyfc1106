@@ -1,0 +1,137 @@
+{
+  "a_default": {
+    "total_loss": {
+      "tool": 2.1248912811279297,
+      "reference": 2.1248912811279297,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "invariance_loss": {
+      "tool": 0.009347228333353996,
+      "reference": 0.009347228333353996,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "variance_loss": {
+      "tool": 0.03354664146900177,
+      "reference": 0.03354664146900177,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "covariance_loss": {
+      "tool": 1.0525447130203247,
+      "reference": 1.0525447130203247,
+      "abs_diff": 0.0,
+      "exact": true
+    }
+  },
+  "c_identical": {
+    "total_loss": {
+      "tool": 1.9044898748397827,
+      "reference": 1.9044898748397827,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "invariance_loss": {
+      "tool": 0.0,
+      "reference": 0.0,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "variance_loss": {
+      "tool": 0.0347004272043705,
+      "reference": 0.0347004272043705,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "covariance_loss": {
+      "tool": 1.0369791984558105,
+      "reference": 1.0369791984558105,
+      "abs_diff": 0.0,
+      "exact": true
+    }
+  },
+  "d_collapsed": {
+    "total_loss": {
+      "tool": 24.749998092651367,
+      "reference": 24.749998092651367,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "invariance_loss": {
+      "tool": 0.0,
+      "reference": 0.0,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "variance_loss": {
+      "tool": 0.9899998903274536,
+      "reference": 0.9899998903274536,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "covariance_loss": {
+      "tool": 0.0,
+      "reference": 0.0,
+      "abs_diff": 0.0,
+      "exact": true
+    }
+  },
+  "e_128x256_custom": {
+    "total_loss": {
+      "tool": 28.365421295166016,
+      "reference": 28.365421295166016,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "invariance_loss": {
+      "tool": 2.0152101516723633,
+      "reference": 2.0152101516723633,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "variance_loss": {
+      "tool": 0.02514137700200081,
+      "reference": 0.02514137700200081,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "covariance_loss": {
+      "tool": 4.043806552886963,
+      "reference": 4.043806552886963,
+      "abs_diff": 0.0,
+      "exact": true
+    }
+  },
+  "b_per_term_check_on_a": {
+    "weighted_sum": 2.124891458079219,
+    "total": 2.1248912811279297,
+    "abs_diff": 1.7695128917694092e-07
+  },
+  "f_dtype_float64_of_a": {
+    "total_loss": {
+      "tool": 2.124891543933415,
+      "reference": 2.124891543933415,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "invariance_loss": {
+      "tool": 0.009347228526564468,
+      "reference": 0.009347228526564468,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "variance_loss": {
+      "tool": 0.033546642630800705,
+      "reference": 0.033546642630800705,
+      "abs_diff": 0.0,
+      "exact": true
+    },
+    "covariance_loss": {
+      "tool": 1.0525447649992858,
+      "reference": 1.0525447649992858,
+      "abs_diff": 0.0,
+      "exact": true
+    }
+  }
+}

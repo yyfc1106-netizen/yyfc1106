@@ -1,0 +1,262 @@
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 4.0.3                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      vicreg, 4.0.3                               │
+│                  🚀 Deploy free: https://horizon.prefect.io                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                         🎉 Update available: 4.0.10                          │
+│                      Run: pip install --upgrade fastmcp                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[09/27/26 07:11:21] INFO     Starting MCP server 'vicreg' with  transport.py:242
+                             transport 'stdio'                                  
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float64 total=2.36629502841822
+[09/27/26 07:11:21] Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:70 in _load_embeddings                          │
+                    │                                                          │
+                    │    67 def _load_embeddings(path_str: str, name: str, dty │
+                    │    68 │   path = Path(path_str).expanduser()             │
+                    │    69 │   if not path.is_file():                         │
+                    │ ❱  70 │   │   raise FileNotFoundError(f"{name}: file not │
+                    │    71 │   suffix = path.suffix.lower()                   │
+                    │    72 │   if suffix != ".npy" and suffix not in _TEXT_DE │
+                    │    73 │   │   raise ValueError(f"{name}: unsupported ext │
+                    │       .tsv or .txt)")                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    FileNotFoundError: embeddings_path: file not found:         
+                    /home/user/yyfc1106/output/vicreg_agent/tests/data/main_vicr
+                    eg/does_not_exist.npy                                       
+                    Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 8 frames hidden ...                  │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/function_tool.py:89 in     │
+                    │ wrapper                                                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:120 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │ ❱ 120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │   121 │   n, d = z_np.shape                              │
+                    │   122 │   if n < 2:                                      │
+                    │   123 │   │   raise ValueError(f"need at least 2 samples │
+                    │       variance/covariance, got n={n}")                   │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: shape mismatch: embeddings_path [64, 32] vs     
+                    embeddings_prime_path [128, 32]                             
+                    Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:83 in _load_embeddings                          │
+                    │                                                          │
+                    │    80 │   except ValueError as exc:                      │
+                    │    81 │   │   raise ValueError(f"{name}: could not read  │
+                    │       from exc                                           │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │ ❱  83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    │    85 │   │   raise ValueError(f"{name}: contains NaN or │
+                    │    86 │   return arr                                     │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: expected a 2-D array [n, d],   
+                    got shape [64]                                              
+                    Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 8 frames hidden ...                  │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/function_tool.py:89 in     │
+                    │ wrapper                                                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:123 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │   121 │   n, d = z_np.shape                              │
+                    │   122 │   if n < 2:                                      │
+                    │ ❱ 123 │   │   raise ValueError(f"need at least 2 samples │
+                    │       variance/covariance, got n={n}")                   │
+                    │   124 │                                                  │
+                    │   125 │   z = torch.from_numpy(np.ascontiguousarray(z_np │
+                    │   126 │   zp = torch.from_numpy(np.ascontiguousarray(zp_ │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: need at least 2 samples (rows) to compute       
+                    variance/covariance, got n=1                                
+                    Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:85 in _load_embeddings                          │
+                    │                                                          │
+                    │    82 │   if arr.ndim != 2:                              │
+                    │    83 │   │   raise ValueError(f"{name}: expected a 2-D  │
+                    │       {list(arr.shape)}")                                │
+                    │    84 │   if not np.all(np.isfinite(arr)):               │
+                    │ ❱  85 │   │   raise ValueError(f"{name}: contains NaN or │
+                    │    86 │   return arr                                     │
+                    │    87                                                    │
+                    │    88                                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: contains NaN or infinite values
+                    Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/server/server.py:1492 in         │
+                    │ call_tool                                                │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/vicreg-clean-env/lib/python3.1 │
+                    │ 1/site-packages/fastmcp/tools/base.py:440 in _run        │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:117 in vicreg_compute_loss                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /home/user/yyfc1106/output/vicreg_agent/src/tools/main_v │
+                    │ icreg.py:73 in _load_embeddings                          │
+                    │                                                          │
+                    │    70 │   │   raise FileNotFoundError(f"{name}: file not │
+                    │    71 │   suffix = path.suffix.lower()                   │
+                    │    72 │   if suffix != ".npy" and suffix not in _TEXT_DE │
+                    │ ❱  73 │   │   raise ValueError(f"{name}: unsupported ext │
+                    │       .tsv or .txt)")                                    │
+                    │    74 │   try:                                           │
+                    │    75 │   │   if suffix == ".npy":                       │
+                    │    76 │   │   │   arr = np.load(path, allow_pickle=False │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: embeddings_path: unsupported extension '.json'  
+                    (use .npy, .csv, .tsv or .txt)                              
+                    Error calling tool 'vicreg_compute_loss'                    
+{"success": true, "mode": "calls", "cases_checked": 9, "report": "reports/mcp-clean-environment.json"}

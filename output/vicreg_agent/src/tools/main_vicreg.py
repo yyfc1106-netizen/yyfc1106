@@ -69,13 +69,13 @@ def _load_embeddings(path_str: str, name: str, dtype: np.dtype) -> np.ndarray:
     if not path.is_file():
         raise FileNotFoundError(f"{name}: file not found: {path}")
     suffix = path.suffix.lower()
+    if suffix != ".npy" and suffix not in _TEXT_DELIMITERS:
+        raise ValueError(f"{name}: unsupported extension '{suffix}' (use .npy, .csv, .tsv or .txt)")
     try:
         if suffix == ".npy":
             arr = np.load(path, allow_pickle=False)
-        elif suffix in _TEXT_DELIMITERS:
-            arr = np.loadtxt(path, delimiter=_TEXT_DELIMITERS[suffix], dtype=np.float64, ndmin=2)
         else:
-            raise ValueError(f"{name}: unsupported extension '{suffix}' (use .npy, .csv, .tsv or .txt)")
+            arr = np.loadtxt(path, delimiter=_TEXT_DELIMITERS[suffix], dtype=np.float64, ndmin=2)
         arr = np.asarray(arr, dtype=dtype)
     except ValueError as exc:
         raise ValueError(f"{name}: could not read a numeric array from {path}: {exc}") from exc
