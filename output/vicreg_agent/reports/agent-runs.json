@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "route": "python",
+  "repository": {
+    "url": "https://github.com/facebookresearch/vicreg",
+    "commit": "4e12602fd495af83efd1631fbe82523e6db092e0"
+  },
+  "tutorials": [
+    {
+      "id": "vicreg_loss",
+      "module": "main_vicreg",
+      "source": "repo/vicreg/main_vicreg.py",
+      "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20"
+    }
+  ],
+  "runs": [
+    {
+      "id": "env-attempt-1",
+      "role": "environment",
+      "task": "project",
+      "agent_id": "a4f3bc39e9ef37980",
+      "status": "succeeded",
+      "started_at": "2026-09-27T06:57:08.000Z",
+      "finished_at": "2026-09-27T06:59:09.467Z",
+      "owned_paths": [
+        "vicreg-env",
+        "pytest.ini",
+        "reports/environment-manager_results.md",
+        "reports/environment-requirements.txt",
+        "reports/python-version.txt"
+      ],
+      "report": "reports/environment-manager_results.md",
+      "report_sha256": "a2ac47d1352ec20a80c0507c0154827e1fd1da02b0371244bf747169811c1783"
+    },
+    {
+      "id": "scan-attempt-1",
+      "role": "scanner",
+      "task": "project",
+      "agent_id": "a2de0b0ad2d83bf54",
+      "status": "succeeded",
+      "started_at": "2026-09-27T06:57:08.000Z",
+      "finished_at": "2026-09-27T06:58:52.289Z",
+      "owned_paths": [
+        "reports/tutorial-scanner.json",
+        "reports/tutorial-scanner-include-in-tools.json"
+      ],
+      "report": "reports/tutorial-scanner.json",
+      "report_sha256": "415afb62447083c7f7a40896b4579de7ffa8d0bbbfe0b180b19ff8b11170450b",
+      "produced_files": {
+        "reports/tutorial-scanner-include-in-tools.json": "12689b227627961d2f58f7b344867ab72acf6e19b6653fa0832429da89b42bfa"
+      }
+    }
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,39 @@
+{
+  "validator": "paper2agent-workflow",
+  "schema_version": 1,
+  "success": true,
+  "through": "setup",
+  "errors": [],
+  "passed_assignments": [
+    {
+      "role": "environment",
+      "task": "project",
+      "run_id": "env-attempt-1"
+    },
+    {
+      "role": "scanner",
+      "task": "project",
+      "run_id": "scan-attempt-1"
+    }
+  ],
+  "exclusions": [],
+  "scope": "Validates recorded state and artifact consistency; does not authenticate host identities or establish numerical/scientific correctness.",
+  "expected_assignments": [
+    {
+      "role": "environment",
+      "task": "project"
+    },
+    {
+      "role": "scanner",
+      "task": "project"
+    }
+  ],
+  "active_tutorials": [
+    "vicreg_loss"
+  ],
+  "active_modules": [
+    "main_vicreg"
+  ],
+  "project_root": "/home/user/yyfc1106/output/vicreg_agent",
+  "state": "/home/user/yyfc1106/output/vicreg_agent/reports/agent-runs.json"
+}
