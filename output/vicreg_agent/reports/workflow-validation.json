@@ -2,7 +2,7 @@
   "validator": "paper2agent-workflow",
   "schema_version": 1,
   "success": true,
-  "through": "verification",
+  "through": "complete",
   "errors": [],
   "passed_assignments": [
     {
@@ -61,6 +61,10 @@
   "active_modules": [
     "main_vicreg"
   ],
+  "exposed_tools": [
+    "vicreg_compute_loss"
+  ],
+  "completion_files_checked": 9,
   "project_root": "/home/user/yyfc1106/output/vicreg_agent",
   "state": "/home/user/yyfc1106/output/vicreg_agent/reports/agent-runs.json"
 }

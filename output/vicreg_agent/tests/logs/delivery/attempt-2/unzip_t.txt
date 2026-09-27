@@ -1,0 +1,16 @@
+Archive:  vicreg-mcp.zip
+    testing: vicreg-mcp/              OK
+    testing: vicreg-mcp/src/          OK
+    testing: vicreg-mcp/src/requirements.txt   OK
+    testing: vicreg-mcp/src/tools/    OK
+    testing: vicreg-mcp/src/tools/main_vicreg.py   OK
+    testing: vicreg-mcp/src/vicreg_mcp.py   OK
+    testing: vicreg-mcp/repo/         OK
+    testing: vicreg-mcp/repo/vicreg/   OK
+    testing: vicreg-mcp/repo/vicreg/LICENSE   OK
+    testing: vicreg-mcp/repo/vicreg/augmentations.py   OK
+    testing: vicreg-mcp/repo/vicreg/distributed.py   OK
+    testing: vicreg-mcp/repo/vicreg/main_vicreg.py   OK
+    testing: vicreg-mcp/repo/vicreg/resnet.py   OK
+    testing: vicreg-mcp/USAGE.md      OK
+No errors detected in compressed data of vicreg-mcp.zip.

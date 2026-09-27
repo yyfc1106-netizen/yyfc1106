@@ -146,5 +146,19 @@
       }
     }
   ],
-  "exclusions": []
+  "exclusions": [],
+  "completion": {
+    "finished_at": "2026-09-27T07:21:48.716Z",
+    "files": {
+      "reports/expected-mcp-tools.json": "714a28ccdb826c0dbef97c2eb3a05a8cec028b4fc9275bf22f98ff8443d46b04",
+      "reports/mcp-acceptance-cases.json": "3e50bfb7189384223878470d4a1ca0142582611ebfd76d22d156933e1b386971",
+      "reports/mcp-project-environment.json": "08de7e6b41b69d58743a49246825cf6717fb4307f96f5f94d01fdfc71380f614",
+      "reports/mcp-clean-environment.json": "3eacccccad1a67d292d524b3d18eeb51dd6ff6e321da166a947adb81993e4232",
+      "src/vicreg_mcp.py": "9bb02b4fe739aa12a6e64a2b816df1f5ee828d944c9c1bf00e777c682b9c4784",
+      "src/requirements.txt": "4833a1047b0190e3a61288cfdd8b1ad929be2ebb8855bbfb48c50911974bfdd2",
+      "USAGE.md": "5571ea903dd6561a4d62b01641c0b7f03c5b25da0e095209d55f7b541082f0dc",
+      "dist/vicreg-mcp.zip": "e5e26a393ccd7b02b4da52537c33223f656926dbcd4556a75e7f45b82f4e6451",
+      "reports/delivery-validation.json": "33fd330c0fa47a385f580df138fb5c2202ba556feb39a0cab492bea59c05d175"
+    }
+  }
 }

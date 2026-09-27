@@ -1,0 +1,11 @@
+python /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/bin/python 3.11.15
+torch 2.14.0+cu130 /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/lib/python3.11/site-packages/torch/__init__.py
+torchvision 0.29.0+cu130
+numpy 2.4.6 /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/lib/python3.11/site-packages/numpy/__init__.py
+fastmcp 4.0.3 /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/__init__.py
+wrapper /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/src/tools/main_vicreg.py
+upstream /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/main_vicreg.py
+augmentations /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/augmentations.py
+distributed /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/distributed.py
+resnet /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/resnet.py
+cuda_available False

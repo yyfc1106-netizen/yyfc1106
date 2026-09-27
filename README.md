@@ -90,6 +90,7 @@ bash scripts/connect_remote_mcp.sh --working_dir ./analysis --mcp_name alphageno
 | 论文 | 技能包 | 状态 |
 | --- | --- | --- |
 | VICReg (Bardes, Ponce, LeCun, ICLR 2022) — `papers/vicreg.pdf` | `.claude/skills/vicreg-paper/`（副本在 `output/vicreg-paper/`） | 严格验证通过：`reviewed_with_limitations`；审阅与验证报告见 `output/vicreg-paper-review/` |
+| VICReg 代码 — [facebookresearch/vicreg](https://github.com/facebookresearch/vicreg) @ 4e12602 | MCP 工具 `vicreg_compute_loss`：`output/vicreg_agent/dist/vicreg-mcp.zip`（说明见 `output/vicreg_agent/USAGE.md`） | Paper2MCP 全流程完成：独立验证 36/36，项目/全新环境/解压包验收均通过 |
 
 在本仓库打开 Claude Code 后可直接提问，例如：“根据 vicreg-paper，VICReg 的方差项为什么用标准差而不是方差？Table 7 中去掉协方差项的效果如何？”
 

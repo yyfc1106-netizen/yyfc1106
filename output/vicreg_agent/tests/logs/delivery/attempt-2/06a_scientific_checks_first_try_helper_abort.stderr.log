@@ -1,0 +1,55 @@
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 4.0.3                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      vicreg, 4.0.3                               │
+│                  🚀 Deploy free: https://horizon.prefect.io                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                         🎉 Update available: 4.0.10                          │
+│                      Run: pip install --upgrade fastmcp                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[09/27/26 07:19:05] INFO     Starting MCP server 'vicreg' with  transport.py:242
+                             transport 'stdio'                                  
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=128 d=256 dtype=float32 total=28.365421295166016
+[vicreg_compute_loss] n=64 d=32 dtype=float64 total=2.124891543933415
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=1.9044898748397827
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=24.749998092651367
+[vicreg_compute_loss] n=96 d=48 dtype=float32 total=4.7151079177856445
+[vicreg_compute_loss] n=96 d=48 dtype=float64 total=10.605450739057678
+[vicreg_compute_loss] n=96 d=48 dtype=float32 total=4.7151079177856445
+[vicreg_compute_loss] n=96 d=48 dtype=float64 total=10.605450740188283
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/scripts/delivery_checks.py", line 90, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/scripts/delivery_checks.py", line 54, in main
+    dref = direct(z, zp, co, dt)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/scripts/delivery_checks.py", line 10, in direct
+    r = subprocess.run([PY, str(B / "scripts/direct_upstream.py"), str(PKG / "repo/vicreg"), str(z), str(zp), *map(str, c), dt],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/bin/python', '/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/scripts/direct_upstream.py', '/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg', '/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_z.csv', '/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_zp.csv', '25.0', '25.0', '1.0', 'float64']' died with <Signals.SIGABRT: 6>.

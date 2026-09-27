@@ -1,19 +1,31 @@
 {
  "verifier": "fresh delivery verifier agent (independent; did not implement the tool or build the package)",
+ "attempt": 2,
  "date": "2026-09-27",
+ "previous_attempt": {
+  "report": "/home/user/yyfc1106/output/vicreg_agent/reports/archive/delivery-validation-attempt-1.json",
+  "archive": "/home/user/yyfc1106/output/vicreg_agent/reports/archive/vicreg-mcp-attempt-1.zip",
+  "archive_sha256": "c75f0972764cdee2d253d9a87ab27f8f952f0f052aee7533c916867c79f27711",
+  "logs": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/",
+  "outcome": "runtime/scientific acceptance passed; documentation defect in USAGE.md mcp-json command (config lacked requirements, output line-wrapped)"
+ },
  "archive": {
   "path": "/home/user/yyfc1106/output/vicreg_agent/dist/vicreg-mcp.zip",
-  "sha256": "c75f0972764cdee2d253d9a87ab27f8f952f0f052aee7533c916867c79f27711",
+  "sha256": "e5e26a393ccd7b02b4da52537c33223f656926dbcd4556a75e7f45b82f4e6451",
   "sha256_verified": true,
   "unzip_t": "No errors detected (exit 0)",
-  "entries": 14,
   "files": 9,
+  "diff_vs_attempt1": {
+   "same_file_set": true,
+   "changed_files": [
+    "vicreg-mcp/USAGE.md"
+   ],
+   "usage_md_changes": "mcp-json command now 'COLUMNS=1000 .venv/bin/fastmcp install mcp-json src/vicreg_mcp.py --name vicreg --with-requirements src/requirements.txt'; note that requirements pin only direct deps; claude-code install noted as not executed in delivery validation; validation text updated"
+  },
   "content_review": {
-   "unintended_files": "none (no tests, reports, env, caches, .git, secrets, outputs)",
+   "unintended_files": "none",
    "symlinks": "none",
-   "developer_paths_/home/user": "none found (grep over all packaged bytes)",
-   "vendored_upstream_identical_to_pinned_checkout": true,
-   "upstream_main_vicreg_sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20"
+   "developer_paths_/home/user": "none found"
   }
  },
  "packaged_file_hashes": {
@@ -21,118 +33,118 @@
    "sha256": "4833a1047b0190e3a61288cfdd8b1ad929be2ebb8855bbfb48c50911974bfdd2",
    "size": 388,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/src/tools/main_vicreg.py": {
    "sha256": "73e91d56b72d6919274ce02b078b2ce1813b8a0c9c7375f1b73b2aa2a2d27084",
    "size": 8656,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/src/vicreg_mcp.py": {
    "sha256": "9bb02b4fe739aa12a6e64a2b816df1f5ee828d944c9c1bf00e777c682b9c4784",
    "size": 472,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/repo/vicreg/LICENSE": {
    "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
    "size": 1086,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/repo/vicreg/augmentations.py": {
    "sha256": "1a2874c727a58a567e1de662afa9203b2ae550a5572dfff053ca601228e7eb2f",
    "size": 2766,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/repo/vicreg/distributed.py": {
    "sha256": "e533377e1f77e322c7a105955195e709b5b2cf14cd023770ee2859baa17ca9c5",
    "size": 2220,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/repo/vicreg/main_vicreg.py": {
    "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
    "size": 11318,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/repo/vicreg/resnet.py": {
    "sha256": "79e76b12b2df1ce338c018468197a0b2b0c461581f400231a7b2d60772a1657c",
    "size": 9700,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": true
   },
   "vicreg-mcp/USAGE.md": {
-   "sha256": "859a2ef507a6e994887a1db667e037daa4235d573f868c0f58c7511c57f78c4c",
-   "size": 6199,
+   "sha256": "5571ea903dd6561a4d62b01641c0b7f03c5b25da0e095209d55f7b541082f0dc",
+   "size": 6716,
    "mode": "0o100644",
-   "extracted_matches_archive": true
+   "extracted_matches_archive": true,
+   "same_as_attempt1": false
   }
  },
  "extraction": {
-  "location": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp",
+  "location": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp",
   "path_contains_space": true,
   "all_extracted_files_match_archive": true,
-  "executable_bits": "none required (server launched via documented interpreter .venv/bin/python src/vicreg_mcp.py)"
+  "executable_bits": "none required"
  },
  "runtime": {
-  "interpreter": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/.venv/bin/python",
-  "python_version": "3.11.15 (uv-managed venv from /usr/local/bin/python3)",
-  "torch": "2.14.0+cu130 (CPU only; cuda_available False)",
+  "interpreter": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/.venv/bin/python",
+  "python_version": "3.11.15",
+  "torch": "2.14.0+cu130 (CPU; cuda_available False)",
   "torchvision": "0.29.0+cu130",
   "numpy": "2.4.6",
   "fastmcp": "4.0.3",
   "installed_packages": 102,
-  "freeze_log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/10_fresh_venv_freeze.txt",
-  "import_origins": {
-   "wrapper": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/src/tools/main_vicreg.py",
-   "upstream_main_vicreg": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py",
-   "upstream_siblings": "augmentations/distributed/resnet from extracted repo/vicreg",
-   "torch/numpy/fastmcp": "extracted .venv site-packages"
-  },
+  "freeze_identical_to_attempt1": true,
+  "freeze_log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/10_fresh_venv_freeze.txt",
+  "import_origins": "wrapper, upstream main_vicreg and augmentations/distributed/resnet from extracted package; torch/numpy/fastmcp from extracted .venv (log 04_import_origins.log)",
   "env_overrides_removed": [
    "VICREG_REPO_DIR",
    "PYTHONPATH",
    "VIRTUAL_ENV"
   ],
-  "workspace_env_used": false,
-  "working_directory_for_calls": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test (verifier) / /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp (server cwd), outside the workspace"
+  "workspace_env_used": false
  },
  "installation": [
   {
    "command": "uv venv .venv --python 3.11",
-   "cwd": "vicreg-mcp/",
    "exit_code": 0,
-   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/01_uv_venv.log"
+   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/01_uv_venv.log"
   },
   {
    "command": "uv pip install --python .venv/bin/python -r src/requirements.txt",
-   "cwd": "vicreg-mcp/",
    "exit_code": 0,
-   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/02_uv_pip_install.log"
+   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/02_uv_pip_install.log"
   },
   {
    "command": "uv pip check --python .venv/bin/python",
-   "cwd": "vicreg-mcp/",
    "exit_code": 0,
    "result": "All installed packages are compatible",
-   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/03_uv_pip_check.log",
-   "note": "not in USAGE.md; added by verifier"
+   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/03_uv_pip_check.log"
   },
   {
-   "command": ".venv/bin/python src/vicreg_mcp.py (stdin closed, timeout 8s)",
+   "command": ".venv/bin/python src/vicreg_mcp.py",
    "exit_code": 0,
-   "result": "Starting MCP server 'vicreg' with transport 'stdio'",
-   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/08_direct_start.log"
+   "result": "server started on stdio",
+   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/08_direct_start.log"
   }
  ],
  "acceptance": {
   "helper": "scripts/verify_mcp_server.py --require-all-tools",
-  "report": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/delivery-acceptance.json",
-  "cases_file": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/delivery-acceptance-cases.json",
+  "report": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/delivery-acceptance.json",
+  "cases_file": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/delivery-acceptance-cases.json",
   "success": true,
   "expected_tools": [
    "vicreg_compute_loss"
@@ -144,19 +156,13 @@
   "unexpected": [],
   "cases_checked": 15,
   "cases_passed": 15,
-  "cases": "9 source-backed cases from reports/mcp-acceptance-cases.json rewritten to relocated fixtures/outputs (3 positive incl. repeat, 6 error) + 6 added positive (e 128x256 coeffs 10/5/2, float64, c identical, d collapsed, new seeded .npy and .csv)",
-  "input_schema_required": [
-   "embeddings_path",
-   "embeddings_prime_path"
-  ],
   "verifier_exit_code": 0,
-  "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/05_verify_mcp_server.log"
+  "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/05_verify_mcp_server.log",
+  "cases": "same 15 cases as attempt 1 (9 source-backed + 6 added), re-pointed to the new extraction"
  },
  "scientific_comparisons": {
-  "method": "real stdio MCP calls (fastmcp Client) against extracted server; returned JSON and vicreg_loss.json artifact contents compared by exact float equality",
-  "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/06_scientific_checks.json",
-  "scripts": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/scripts/",
-  "reference_outputs": "/home/user/yyfc1106/output/vicreg_agent/notebooks/vicreg_loss/reference_outputs.json",
+  "method": "real stdio MCP calls; returned JSON and vicreg_loss.json artifacts compared by exact float equality",
+  "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/06_scientific_checks.json",
   "reference_cases": [
    {
     "case": "a_default",
@@ -164,9 +170,7 @@
     "total_loss": 2.1248912811279297,
     "invariance_loss": 0.009347228333353996,
     "variance_loss": 0.03354664146900177,
-    "covariance_loss": 1.0525447130203247,
-    "exact_match_returned_and_artifact": true,
-    "artifact_metadata_ok": true
+    "covariance_loss": 1.0525447130203247
    },
    {
     "case": "e_128x256_custom",
@@ -174,9 +178,7 @@
     "total_loss": 28.365421295166016,
     "invariance_loss": 2.0152101516723633,
     "variance_loss": 0.02514137700200081,
-    "covariance_loss": 4.043806552886963,
-    "exact_match_returned_and_artifact": true,
-    "artifact_metadata_ok": true
+    "covariance_loss": 4.043806552886963
    },
    {
     "case": "f_dtype_float64_of_a",
@@ -184,9 +186,7 @@
     "total_loss": 2.124891543933415,
     "invariance_loss": 0.009347228526564468,
     "variance_loss": 0.033546642630800705,
-    "covariance_loss": 1.0525447649992858,
-    "exact_match_returned_and_artifact": true,
-    "artifact_metadata_ok": true
+    "covariance_loss": 1.0525447649992858
    },
    {
     "case": "c_identical",
@@ -194,9 +194,7 @@
     "total_loss": 1.9044898748397827,
     "invariance_loss": 0.0,
     "variance_loss": 0.0347004272043705,
-    "covariance_loss": 1.0369791984558105,
-    "exact_match_returned_and_artifact": true,
-    "artifact_metadata_ok": true
+    "covariance_loss": 1.0369791984558105
    },
    {
     "case": "d_collapsed",
@@ -204,9 +202,7 @@
     "total_loss": 24.749998092651367,
     "invariance_loss": 0.0,
     "variance_loss": 0.9899998903274536,
-    "covariance_loss": 0.0,
-    "exact_match_returned_and_artifact": true,
-    "artifact_metadata_ok": true
+    "covariance_loss": 0.0
    }
   ],
   "changed_input_vs_direct_extracted_upstream": [
@@ -220,7 +216,7 @@
     "dtype": "float32",
     "pass": true,
     "total_loss": 4.7151079177856445,
-    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py"
+    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/main_vicreg.py"
    },
    {
     "input": "new_seeded (96x48, numpy default_rng(20260927)) .npy",
@@ -232,7 +228,7 @@
     "dtype": "float64",
     "pass": true,
     "total_loss": 10.605450739057678,
-    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py"
+    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/main_vicreg.py"
    },
    {
     "input": "new_seeded (96x48, numpy default_rng(20260927)) .csv",
@@ -244,7 +240,7 @@
     "dtype": "float32",
     "pass": true,
     "total_loss": 4.7151079177856445,
-    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py"
+    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/main_vicreg.py"
    },
    {
     "input": "new_seeded (96x48, numpy default_rng(20260927)) .csv",
@@ -256,33 +252,29 @@
     "dtype": "float64",
     "pass": true,
     "total_loss": 10.605450740188283,
-    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py"
+    "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/repo/vicreg/main_vicreg.py"
    }
   ],
-  "direct_upstream_binding": "extracted repo/vicreg main_vicreg.VICReg.forward, identity backbone/projector, batch_size=n, mlp=str(d), num_features=d, single-process gloo, fresh process",
   "error_cases": [
    {
     "case": "missing",
-    "pass": true,
-    "message": "Error calling tool 'vicreg_compute_loss': embeddings_path: file not found: /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/test-inputs/nope.npy"
+    "pass": true
    },
    {
     "case": "mismatch",
-    "pass": true,
-    "message": "Error calling tool 'vicreg_compute_loss': shape mismatch: embeddings_path [64, 32] vs embeddings_prime_path [128, 32]"
+    "pass": true
    },
    {
     "case": "bad dtype enum",
-    "pass": true,
-    "message": "1 validation error for call[vicreg_compute_loss]\ndtype\n  Input should be 'float32' or 'float64' [type=literal_error, input_value='float16', input_type=str]\n    For further information visit https://er"
+    "pass": true
    }
   ],
   "error_calls_created_output_dir": false,
   "repeated_calls": {
    "paths": [
-    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_1e00d3d7/vicreg_loss.json",
-    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_4a748bfe/vicreg_loss.json",
-    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_2c91e853/vicreg_loss.json"
+    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/repeat/vicreg_loss_20260927T072033_6c39d8db/vicreg_loss.json",
+    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/repeat/vicreg_loss_20260927T072033_775bee79/vicreg_loss.json",
+    "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/repeat/vicreg_loss_20260927T072033_c95d387f/vicreg_loss.json"
    ],
    "distinct_dirs": true,
    "all_exist": true,
@@ -290,17 +282,19 @@
    "pass": true
   },
   "default_output_dir": {
-   "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/tmp/outputs/vicreg_loss_20260927T071516_cc3fd404/vicreg_loss.json",
+   "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/tmp/outputs/vicreg_loss_20260927T072033_68a32d68/vicreg_loss.json",
    "under_package_tmp_outputs": true,
    "exists": true,
    "total_equals_reference": true,
    "pass": true
   },
-  "all_pass": true
+  "all_pass": true,
+  "verifier_helper_note": "First run aborted in the verifier's own direct-upstream subprocess (intermittent 'terminate called without an active exception' at interpreter exit, gloo process group not destroyed; reproduced 1/5 standalone). Helper fixed to destroy_process_group (10/10 clean) and full comparison rerun; not a package fault. Log: 06a_scientific_checks_first_try_helper_abort.stderr.log"
  },
  "fastmcp_install_mcp_json": {
-  "command": ".venv/bin/fastmcp install mcp-json src/vicreg_mcp.py",
+  "command": "COLUMNS=1000 .venv/bin/fastmcp install mcp-json src/vicreg_mcp.py --name vicreg --with-requirements src/requirements.txt",
   "exit_code": 0,
+  "stdout_valid_json": true,
   "generated": {
    "vicreg": {
     "command": "uv",
@@ -308,37 +302,33 @@
      "run",
      "--with",
      "fastmcp",
+     "--with-requirements",
+     "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/src/requirements.txt",
      "fastmcp",
      "run",
-     "<extracted>/src/vicreg_mcp.py"
+     "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/vicreg-mcp/src/vicreg_mcp.py"
     ]
    }
   },
-  "stdout_valid_json_when_piped": false,
-  "note_json": "Rich wraps output at 80 columns when stdout is not a terminal, inserting a newline inside the long path string (invalid JSON); with COLUMNS=1000 the output is valid JSON",
-  "generated_config_starts_server": false,
-  "generated_config_error": "ModuleNotFoundError: No module named 'numpy' (uv ephemeral env contains only fastmcp)",
-  "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/09_generated_config_default_start.log",
-  "with_requirements_variant": {
-   "command": ".venv/bin/fastmcp install mcp-json src/vicreg_mcp.py --name vicreg --with-requirements src/requirements.txt",
-   "exit_code": 0,
-   "generated_config_starts_server": true,
-   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/09b_generated_config_withreq_start.log"
+  "config_run": {
+   "method": "launched the generated command/args verbatim via fastmcp stdio client from a neutral cwd",
+   "tools": [
+    "vicreg_compute_loss"
+   ],
+   "call_total_loss": 2.1248912811279297,
+   "equals_reference": true,
+   "log": "/home/user/yyfc1106/output/vicreg_agent/tests/logs/delivery/attempt-2/09_generated_config_mcp_call.json"
   },
-  "not_run": "fastmcp install claude-code / claude-desktop and claude mcp add (would modify client config)"
+  "not_run": "fastmcp install claude-code/claude-desktop, claude mcp add"
  },
- "documentation_defects": [
-  "USAGE.md: the suggested '.venv/bin/fastmcp install mcp-json src/vicreg_mcp.py' produces a config ('uv run --with fastmcp fastmcp run ...') that does not use .venv or requirements; the server then fails with ModuleNotFoundError: numpy. It should add '--name vicreg --with-requirements src/requirements.txt' (verified to start) or recommend a hand-written config using the absolute .venv/bin/python + src/vicreg_mcp.py.",
-  "Minor: fastmcp mcp-json output piped/redirected is line-wrapped by Rich at 80 columns, so long (e.g. deep or spaced) paths produce invalid JSON; suggest COLUMNS=1000 or --copy, or documenting a manual JSON config."
- ],
+ "documentation_defects": [],
  "success": true,
- "success_scope": "Packaged server installs from USAGE.md, starts, exposes exactly the expected tool, and reproduces reference and direct-upstream results exactly from a relocated path with spaces. The only failures are in the optional fastmcp mcp-json config path described in documentation_defects; the primary documented launch methods work.",
  "limitations": [
-  "requirements.txt pins only the 5 direct dependencies; the other 97 transitive packages are resolved at install time (no lockfile). This install produced a compatible set (freeze logged), but future installs may resolve differently.",
-  "Linux x86_64 CPU only tested; PyPI torch pulls CUDA wheels (~5.4 GB venv). The CPU-only torch alternative in USAGE.md was not tested (download.pytorch.org blocked).",
-  "Multi-process/multi-GPU distributed gather, gradients and non-Linux platforms are not validated.",
-  "fastmcp install claude-code/claude-desktop and 'claude mcp add' were not executed (they would modify client configuration); the documented claude-code command uses --with-requirements, which the mcp-json variant test shows works.",
-  "Running fastmcp CLI against the extracted package writes src/__pycache__ (fastmcp imports the file before sys.dont_write_bytecode takes effect); harmless, and not part of the archive.",
-  "Extracted .venv and uv cache deleted after verification; extracted sources, fixtures and outputs retained in scratch."
+  "requirements.txt pins only the 5 direct dependencies (now stated in USAGE.md); transitive packages resolve at install time. Fresh freeze identical to attempt 1.",
+  "Linux x86_64 CPU only; PyPI torch pulls CUDA wheels (~5.4 GB venv); CPU-only torch alternative untested.",
+  "Distributed multi-process gather, gradients and non-Linux platforms not validated.",
+  "The mcp-json config builds its own uv environment on first launch; in this test the uv cache was already warm from the documented install, so first-launch time with a cold cache (~5 GB download) was not measured.",
+  "The server does not destroy its gloo process group at shutdown; a similar intermittent abort at interpreter exit was observed only in the verifier's standalone helper, not in any server run (no aborts in server logs).",
+  "Extracted .venv and uv cache deleted after verification."
  ]
 }

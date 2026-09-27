@@ -1,0 +1,303 @@
+[
+ {
+  "name": "main_vicreg-reference-a_default",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32,
+   "coefficients": {
+    "sim_coeff": 25.0,
+    "std_coeff": 25.0,
+    "cov_coeff": 1.0
+   }
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "main_vicreg-reference-a_default-repeat",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32,
+   "coefficients": {
+    "sim_coeff": 25.0,
+    "std_coeff": 25.0,
+    "cov_coeff": 1.0
+   }
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "main_vicreg-custom-coeffs-float64",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+   "sim_coeff": 10.0,
+   "std_coeff": 5.0,
+   "cov_coeff": 2.0,
+   "dtype": "float64"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32,
+   "coefficients": {
+    "sim_coeff": 10.0,
+    "std_coeff": 5.0,
+    "cov_coeff": 2.0
+   }
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "main_vicreg-error-missing-file",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/does_not_exist.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "file not found"
+ },
+ {
+  "name": "main_vicreg-error-shape-mismatch",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/mismatch_128x32.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "shape mismatch"
+ },
+ {
+  "name": "main_vicreg-error-one-d-input",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/one_d_64.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/one_d_64.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "expected a 2-D array"
+ },
+ {
+  "name": "main_vicreg-error-single-sample",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/single_row_1x32.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/single_row_1x32.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "at least 2 samples"
+ },
+ {
+  "name": "main_vicreg-error-nan-input",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/nan_64x32.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "NaN or infinite"
+ },
+ {
+  "name": "main_vicreg-error-bad-extension",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.json",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance_errors"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "error_contains": "unsupported extension"
+ },
+ {
+  "name": "delivery-e_128x256_custom",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/e_128x256_custom_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/e_128x256_custom_zp.npy",
+   "sim_coeff": 10.0,
+   "std_coeff": 5.0,
+   "cov_coeff": 2.0,
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 128,
+   "n_features": 256,
+   "coefficients": {
+    "sim_coeff": 10.0,
+    "std_coeff": 5.0,
+    "cov_coeff": 2.0
+   }
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "delivery-a-float64",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/a_default_zp.npy",
+   "dtype": "float64",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "delivery-c_identical",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/c_identical_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/c_identical_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32,
+   "invariance_loss": 0.0
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "delivery-d_collapsed",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/d_collapsed_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/d_collapsed_zp.npy",
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 64,
+   "n_features": 32,
+   "invariance_loss": 0.0,
+   "covariance_loss": 0.0
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "delivery-new-seeded-npy",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_z.npy",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_zp.npy",
+   "sim_coeff": 3.0,
+   "std_coeff": 7.0,
+   "cov_coeff": 0.5,
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 96,
+   "n_features": 48
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ },
+ {
+  "name": "delivery-new-seeded-csv",
+  "tool": "vicreg_compute_loss",
+  "arguments": {
+   "embeddings_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_z.csv",
+   "embeddings_prime_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/test-inputs/new_seeded_zp.csv",
+   "sim_coeff": 3.0,
+   "std_coeff": 7.0,
+   "cov_coeff": 0.5,
+   "output_dir": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance"
+  },
+  "required_inputs": [
+   "embeddings_path",
+   "embeddings_prime_path"
+  ],
+  "expected_subset": {
+   "n_samples": 96,
+   "n_features": 48
+  },
+  "min_artifacts": 1,
+  "artifact_root": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test 2/outputs/acceptance",
+  "unique_artifacts": true
+ }
+]

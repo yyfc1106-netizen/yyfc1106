@@ -1,0 +1,136 @@
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 4.0.3                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      vicreg, 4.0.3                               │
+│                  🚀 Deploy free: https://horizon.prefect.io                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                         🎉 Update available: 4.0.10                          │
+│                      Run: pip install --upgrade fastmcp                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[09/27/26 07:20:21] INFO     Starting MCP server 'vicreg' with  transport.py:242
+                             transport 'stdio'                                  
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=128 d=256 dtype=float32 total=28.365421295166016
+[vicreg_compute_loss] n=64 d=32 dtype=float64 total=2.124891543933415
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=1.9044898748397827
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=24.749998092651367
+[vicreg_compute_loss] n=96 d=48 dtype=float32 total=4.7151079177856445
+[vicreg_compute_loss] n=96 d=48 dtype=float64 total=10.605450739057678
+[vicreg_compute_loss] n=96 d=48 dtype=float32 total=4.7151079177856445
+[vicreg_compute_loss] n=96 d=48 dtype=float64 total=10.605450740188283
+[09/27/26 07:20:32] Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/ │
+                    │ server/server.py:1492 in call_tool                       │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/ │
+                    │ tools/base.py:440 in _run                                │
+                    │                                                          │
+                    │                 ... 9 frames hidden ...                  │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/src/tools/main_vicreg.py:117 in             │
+                    │ vicreg_compute_loss                                      │
+                    │                                                          │
+                    │   114 │   Two [n, d] embedding files -> JSON with total  │
+                    │       contributions.                                     │
+                    │   115 │   """                                            │
+                    │   116 │   np_dtype = np.float32 if dtype == "float32" el │
+                    │ ❱ 117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │   120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/src/tools/main_vicreg.py:70 in              │
+                    │ _load_embeddings                                         │
+                    │                                                          │
+                    │    67 def _load_embeddings(path_str: str, name: str, dty │
+                    │    68 │   path = Path(path_str).expanduser()             │
+                    │    69 │   if not path.is_file():                         │
+                    │ ❱  70 │   │   raise FileNotFoundError(f"{name}: file not │
+                    │    71 │   suffix = path.suffix.lower()                   │
+                    │    72 │   if suffix != ".npy" and suffix not in _TEXT_DE │
+                    │    73 │   │   raise ValueError(f"{name}: unsupported ext │
+                    │       .tsv or .txt)")                                    │
+                    ╰──────────────────────────────────────────────────────────╯
+                    FileNotFoundError: embeddings_path: file not found:         
+                    /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8
+                    ff3276f540/scratchpad/delivery test 2/test-inputs/nope.npy  
+[09/27/26 07:20:33] Error calling tool 'vicreg_compute_loss'                    
+                    Error calling tool 'vicreg_compute_loss'                    
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/ │
+                    │ server/server.py:1492 in call_tool                       │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/ │
+                    │ tools/base.py:440 in _run                                │
+                    │                                                          │
+                    │                 ... 8 frames hidden ...                  │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/.venv/lib/python3.11/site-packages/fastmcp/ │
+                    │ tools/function_tool.py:89 in wrapper                     │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery test                  │
+                    │ 2/vicreg-mcp/src/tools/main_vicreg.py:120 in             │
+                    │ vicreg_compute_loss                                      │
+                    │                                                          │
+                    │   117 │   z_np = _load_embeddings(embeddings_path, "embe │
+                    │   118 │   zp_np = _load_embeddings(embeddings_prime_path │
+                    │   119 │   if z_np.shape != zp_np.shape:                  │
+                    │ ❱ 120 │   │   raise ValueError(f"shape mismatch: embeddi │
+                    │       embeddings_prime_path {list(zp_np.shape)}")        │
+                    │   121 │   n, d = z_np.shape                              │
+                    │   122 │   if n < 2:                                      │
+                    │   123 │   │   raise ValueError(f"need at least 2 samples │
+                    │       variance/covariance, got n={n}")                   │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ValueError: shape mismatch: embeddings_path [64, 32] vs     
+                    embeddings_prime_path [128, 32]                             
+                    Error calling tool 'vicreg_compute_loss'                    
+[09/27/26 07:20:33] WARNING  Invalid arguments for tool           server.py:1505
+                             'vicreg_compute_loss': [{'type':                   
+                             'literal_error', 'loc': ('dtype',),                
+                             'msg': "Input should be 'float32' or               
+                             'float64'", 'input': 'float16',                    
+                             'ctx': {'expected': "'float32' or                  
+                             'float64'"}}]                                      
+                    WARNING  Invalid arguments for tool           server.py:1505
+                             'vicreg_compute_loss': [{'type':                   
+                             'literal_error', 'loc': ('dtype',),                
+                             'msg': "Input should be 'float32' or               
+                             'float64'", 'input': 'float16',                    
+                             'ctx': {'expected': "'float32' or                  
+                             'float64'"}}]                                      
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
+[vicreg_compute_loss] n=64 d=32 dtype=float32 total=2.1248912811279297
