@@ -1,0 +1,12 @@
+Method,Linear Classification Places205,Linear Classification VOC07,Linear Classification iNat18,Object Detection VOC07+12,Object Detection COCO det,Object Detection COCO seg
+Supervised,53.2,87.5,46.7,81.3,39.0,35.4
+MoCo He et al. (2020),46.9,79.8,31.5,-,-,-
+PIRL Misra & Maaten (2020),49.8,81.1,34.1,-,-,-
+SimCLR Chen et al. (2020a),52.5,85.5,37.2,-,-,-
+MoCo v2 Chen et al. (2020c),51.8,86.4,38.6,82.5,39.8,36.1
+SimSiam Chen & He (2020),-,-,-,82.4,-,-
+BYOL Grill et al. (2020),54.0,86.6,47.6,-,40.4†,37.0†
+SwAV (m-c) Caron et al. (2020),56.7,88.9,48.6,82.6,41.6,37.8
+OBoW Gidaris et al. (2021),56.8,89.3,-,82.9,-,-
+Barlow Twins Grill et al. (2020),54.1,86.2,46.5,82.6,40.0†,36.7†
+VICReg (ours),54.3,86.6,47.0,82.4,39.4,36.4

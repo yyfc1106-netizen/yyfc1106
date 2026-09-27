@@ -1,0 +1,8 @@
+Method,20-NN,200-NN
+NPID Wu et al. (2018),-,46.5
+LA Zhuang et al. (2019),-,49.4
+PCL Li et al. (2021),54.5,-
+BYOL Grill et al. (2020),66.7,64.9
+SwAV Caron et al. (2020),65.7,62.7
+Barlow Twins Zbontar et al. (2021),64.8,62.9
+VICReg,64.5,62.8

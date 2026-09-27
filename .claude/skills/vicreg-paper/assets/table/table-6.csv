@@ -1,0 +1,4 @@
+Method,Top-1
+Supervised baseline,72.7
+Barlow Twins,75.4
+VICReg,78.4

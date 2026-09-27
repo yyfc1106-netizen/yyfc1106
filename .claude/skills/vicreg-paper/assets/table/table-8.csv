@@ -1,0 +1,6 @@
+Representation,Embedding,Top-1
+Std,None,68.6
+Std,Std,68.4
+None,Std,67.4
+Std,None,67.2
+None,l2,65.1

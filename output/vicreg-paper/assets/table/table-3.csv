@@ -1,0 +1,4 @@
+Method,Image-to-text R@1,Image-to-text R@5,Image-to-text R@10,Text-to-Image R@1,Text-to-Image R@5,Text-to-Image R@10
+Contrastive (VSE++),30.3,59.4,72.4,41.3,71.1,81.2
+Barlow Twins,31.4,"60,4",75.1,42.9,74.0,83.5
+VICReg,33.6,62.7,77.9,45.2,76.1,84.2

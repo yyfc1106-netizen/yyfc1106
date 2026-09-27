@@ -1,0 +1,9 @@
+Method,ME,SG,PR,BN,No Reg,Var Reg,Var/Cov Reg
+BYOL,✓,✓,✓,✓,69.3†,70.2,69.5
+SimSiam,,✓,✓,✓,67.9†,68.1,67.6
+SimSiam,,✓,✓,,35.1,67.3,67.1
+SimSiam,,✓,,,collapse,56.8,66.1
+VICReg,,,✓,,collapse,56.2,67.3
+VICReg,,,✓,✓,collapse,57.1,68.7
+VICReg,,,,✓,collapse,57.5,68.6†
+VICReg,,,,,collapse,56.5,67.4

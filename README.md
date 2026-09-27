@@ -85,6 +85,14 @@ bash scripts/connect_remote_mcp.sh --working_dir ./analysis --mcp_name alphageno
 
 用 `claude mcp list` 或 `/mcp` 检查连接状态。
 
+## 已转换的论文
+
+| 论文 | 技能包 | 状态 |
+| --- | --- | --- |
+| VICReg (Bardes, Ponce, LeCun, ICLR 2022) — `papers/vicreg.pdf` | `.claude/skills/vicreg-paper/`（副本在 `output/vicreg-paper/`） | 严格验证通过：`reviewed_with_limitations`；审阅与验证报告见 `output/vicreg-paper-review/` |
+
+在本仓库打开 Claude Code 后可直接提问，例如：“根据 vicreg-paper，VICReg 的方差项为什么用标准差而不是方差？Table 7 中去掉协方差项的效果如何？”
+
 ## 运行要求
 
 - Claude Code（需支持技能、Shell 与子 Agent 并行，Paper2MCP 依赖子 Agent）。

@@ -1,0 +1,12 @@
+Method,λ,µ,ν,Top-1
+Inv,1,0,0,collapse
+Inv + Cov,25,0,1,collapse
+Inv + Cov,0,25,1,collapse
+Inv + Var,1,1,0,57.5
+Inv + Var + Cov (VICReg),1,1,1,collapse
+Inv + Var + Cov (VICReg),1,10,1,collapse
+Inv + Var + Cov (VICReg),10,1,1,collapse
+Inv + Var + Cov (VICReg),5,5,1,68.1
+Inv + Var + Cov (VICReg),10,10,1,68.2
+Inv + Var + Cov (VICReg),25,25,1,68.6
+Inv + Var + Cov (VICReg),50,50,1,68.3

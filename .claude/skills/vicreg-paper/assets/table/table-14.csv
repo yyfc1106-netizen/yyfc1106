@@ -1,0 +1,6 @@
+Method,time / 100 epochs,peak memory / GPU,Top-1 accuracy (%)
+SwAV,9h,9.5G,71.8
+SwAV (w/ multi-crop),13h,12.9G,75.3
+BYOL,10h,14.6G,74.3
+Barlow Twins,12h,11.3G,73.2
+VICReg,11h,11.3G,73.2
