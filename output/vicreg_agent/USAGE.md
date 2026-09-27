@@ -46,7 +46,7 @@ uv pip install --python .venv/bin/python -r src/requirements.txt
 # 不用 uv 时：.venv/bin/pip install -r src/requirements.txt
 ```
 
-说明：PyPI 上的 Linux 版 torch 自带 CUDA 依赖，安装体积约 5 GB；如能访问 PyTorch 官方 CPU 源，可先装 CPU 版 `torch==2.14.0`、`torchvision==0.29.0` 以减小体积（该组合未在本包中测试）。
+`src/requirements.txt` 只固定直接依赖（fastmcp、torch、torchvision、numpy、pillow），其余依赖由安装器解析。PyPI 上的 Linux 版 torch 自带 CUDA 依赖，安装体积约 5 GB；如能访问 PyTorch 官方 CPU 源，可先装 CPU 版 `torch==2.14.0`、`torchvision==0.29.0` 以减小体积（该组合未在本包中测试）。
 
 ## 启动与连接客户端
 
@@ -63,13 +63,17 @@ claude mcp add vicreg -- "$(pwd)/.venv/bin/python" "$(pwd)/src/vicreg_mcp.py"
 claude mcp list     # 或在 Claude Code 中输入 /mcp 查看连接状态
 ```
 
-也可以用 FastMCP 自带的安装命令（语法取自 `fastmcp install claude-code --help`，FastMCP 4.0.3）：
+也可以用 FastMCP 自带的安装命令（语法取自 `fastmcp install claude-code --help`，FastMCP 4.0.3；该命令本身未在交付验证中实际执行）：
 
 ```bash
 .venv/bin/fastmcp install claude-code src/vicreg_mcp.py --name vicreg --with-requirements src/requirements.txt
 ```
 
-其它客户端可用 `.venv/bin/fastmcp install mcp-json src/vicreg_mcp.py` 生成配置 JSON。
+其它客户端可生成配置 JSON（必须带 `--with-requirements`，否则生成的 `uv run` 配置不会安装 numpy/torch 而启动失败；设置 `COLUMNS` 以免输出被折行）：
+
+```bash
+COLUMNS=1000 .venv/bin/fastmcp install mcp-json src/vicreg_mcp.py --name vicreg --with-requirements src/requirements.txt
+```
 
 环境变量 `VICREG_REPO_DIR` 可指定另一份官方代码目录（默认使用包内 `repo/vicreg/`）。
 
@@ -86,6 +90,6 @@ claude mcp list     # 或在 Claude Code 中输入 /mcp 查看连接状态
 
 - 参考结果：在 64×32、128×256 等种子数据上直接运行官方 `VICReg.forward`，保存输入与输出并在新进程中重放，结果逐位一致。
 - 独立验证：由未参与实现的代理编写 36 项测试（通过 MCP 客户端调用），全部通过。测试覆盖：参考值逐位一致；新形状与新系数下与重新直接调用官方代码的结果一致；各项性质（Z=Z′ 时不变性项为 0；常数嵌入时方差项为 0.99、协方差项为 0；总损失等于 Σ 系数×分项；交换 Z 与 Z′ 结果不变）；论文公式的 numpy 复算（确认 `batch_size = n` 的取法正确）；各类错误输入；重复调用输出目录互不覆盖。
-- 运行时验收：项目环境与全新环境中均通过真实 stdio 的 9 个用例（含错误用例），打包解压后另行验收。
+- 运行时验收：项目环境与全新环境中均通过真实 stdio 的 9 个用例（含错误用例）；本 ZIP 解压到新目录（路径含空格）并按本文档安装后，15 个真实调用用例全部通过，结果与参考值逐位一致。
 - 未覆盖：多进程/多 GPU 分布式聚合；梯度（仅测试前向计算）；非 Linux 平台。float32 结果在其它硬件上最后几位可能不同。
 - 暂不提供（已记录原因）：预训练 ResNet 特征提取（`hubconf.py`，需要从 `dl.fbaipublicfiles.com` 下载权重，构建环境无法访问）；线性评估（`evaluate.py`，需要权重与 ImageNet）；完整预训练（需要 ImageNet 与多块 GPU）。

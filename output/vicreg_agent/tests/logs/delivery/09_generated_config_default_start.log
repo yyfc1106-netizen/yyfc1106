@@ -1,0 +1,40 @@
+Installed 71 packages in 21ms
+[09/27/26 07:16:03] Failed to run: No module named 'numpy'                      
+                    ╭─────────── Traceback (most recent call last) ────────────╮
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery                       │
+                    │ test/uvcache/archive-v0/y2AY6RmP2K1CpXvhLtQNi/lib/python │
+                    │ 3.11/site-packages/fastmcp/cli/cli.py:767 in run         │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery                       │
+                    │ test/uvcache/archive-v0/y2AY6RmP2K1CpXvhLtQNi/lib/python │
+                    │ 3.11/site-packages/fastmcp/cli/run.py:235 in run_command │
+                    │                                                          │
+                    │                 ... 4 frames hidden ...                  │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery                       │
+                    │ test/vicreg-mcp/src/vicreg_mcp.py:13 in <module>         │
+                    │                                                          │
+                    │   10                                                     │
+                    │   11 from fastmcp import FastMCP  # noqa: E402           │
+                    │   12                                                     │
+                    │ ❱ 13 from tools.main_vicreg import main_vicreg_mcp  # no │
+                    │   14                                                     │
+                    │   15 mcp = FastMCP(name="vicreg")                        │
+                    │   16 mcp.mount(main_vicreg_mcp)                          │
+                    │                                                          │
+                    │ /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a08 │
+                    │ 2-e8ff3276f540/scratchpad/delivery                       │
+                    │ test/vicreg-mcp/src/tools/main_vicreg.py:20 in <module>  │
+                    │                                                          │
+                    │    17 from pathlib import Path                           │
+                    │    18 from typing import Annotated, Literal              │
+                    │    19                                                    │
+                    │ ❱  20 import numpy as np                                 │
+                    │    21 import torch                                       │
+                    │    22 import torch.distributed as dist                   │
+                    │    23 from fastmcp import FastMCP                        │
+                    ╰──────────────────────────────────────────────────────────╯
+                    ModuleNotFoundError: No module named 'numpy'                

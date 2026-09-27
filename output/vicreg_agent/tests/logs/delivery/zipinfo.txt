@@ -1,0 +1,17 @@
+Archive:  vicreg-mcp.zip
+Zip file size: 17045 bytes, number of entries: 14
+drwxr-xr-x  3.0 unx        0 b- stor 26-Sep-27 07:12 vicreg-mcp/
+drwxr-xr-x  3.0 unx        0 b- stor 26-Sep-27 07:12 vicreg-mcp/src/
+-rw-r--r--  3.0 unx      388 t- defN 26-Sep-27 07:12 vicreg-mcp/src/requirements.txt
+drwxr-xr-x  3.0 unx        0 b- stor 26-Sep-27 07:12 vicreg-mcp/src/tools/
+-rw-r--r--  3.0 unx     8656 t- defN 26-Sep-27 07:12 vicreg-mcp/src/tools/main_vicreg.py
+-rw-r--r--  3.0 unx      472 t- defN 26-Sep-27 07:12 vicreg-mcp/src/vicreg_mcp.py
+drwxr-xr-x  3.0 unx        0 b- stor 26-Sep-27 07:12 vicreg-mcp/repo/
+drwxr-xr-x  3.0 unx        0 b- stor 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/
+-rw-r--r--  3.0 unx     1086 t- defN 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/LICENSE
+-rw-r--r--  3.0 unx     2766 t- defN 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/augmentations.py
+-rw-r--r--  3.0 unx     2220 t- defN 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/distributed.py
+-rw-r--r--  3.0 unx    11318 t- defN 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/main_vicreg.py
+-rw-r--r--  3.0 unx     9700 t- defN 26-Sep-27 07:12 vicreg-mcp/repo/vicreg/resnet.py
+-rw-r--r--  3.0 unx     6199 t- defN 26-Sep-27 07:12 vicreg-mcp/USAGE.md
+14 files, 42805 bytes uncompressed, 15211 bytes compressed:  64.5%

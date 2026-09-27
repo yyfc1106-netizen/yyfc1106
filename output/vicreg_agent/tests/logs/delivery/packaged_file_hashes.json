@@ -1,0 +1,65 @@
+{
+ "vicreg-mcp/src/requirements.txt": {
+  "sha256": "4833a1047b0190e3a61288cfdd8b1ad929be2ebb8855bbfb48c50911974bfdd2",
+  "size": 388,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/src/tools/main_vicreg.py": {
+  "sha256": "73e91d56b72d6919274ce02b078b2ce1813b8a0c9c7375f1b73b2aa2a2d27084",
+  "size": 8656,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/src/vicreg_mcp.py": {
+  "sha256": "9bb02b4fe739aa12a6e64a2b816df1f5ee828d944c9c1bf00e777c682b9c4784",
+  "size": 472,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/repo/vicreg/LICENSE": {
+  "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
+  "size": 1086,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/repo/vicreg/augmentations.py": {
+  "sha256": "1a2874c727a58a567e1de662afa9203b2ae550a5572dfff053ca601228e7eb2f",
+  "size": 2766,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/repo/vicreg/distributed.py": {
+  "sha256": "e533377e1f77e322c7a105955195e709b5b2cf14cd023770ee2859baa17ca9c5",
+  "size": 2220,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/repo/vicreg/main_vicreg.py": {
+  "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+  "size": 11318,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/repo/vicreg/resnet.py": {
+  "sha256": "79e76b12b2df1ce338c018468197a0b2b0c461581f400231a7b2d60772a1657c",
+  "size": 9700,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ },
+ "vicreg-mcp/USAGE.md": {
+  "sha256": "859a2ef507a6e994887a1db667e037daa4235d573f868c0f58c7511c57f78c4c",
+  "size": 6199,
+  "extracted_match": true,
+  "external_attr_mode": "0o100644",
+  "symlink": false
+ }
+}

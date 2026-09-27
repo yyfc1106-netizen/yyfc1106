@@ -1,0 +1,15 @@
+{
+  "vicreg": {
+    "command": "uv",
+    "args": [
+      "run",
+      "--with",
+      "fastmcp",
+      "--with-requirements",
+      "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/src/requirements.txt",
+      "fastmcp",
+      "run",
+      "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/src/vicreg_mcp.py"
+    ]
+  }
+}

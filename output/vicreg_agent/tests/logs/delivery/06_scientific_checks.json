@@ -1,0 +1,404 @@
+{
+ "reference_comparisons": [
+  {
+   "case": "a_default",
+   "comparison": "exact equality (float from JSON)",
+   "values": {
+    "total_loss": {
+     "returned": 2.1248912811279297,
+     "artifact": 2.1248912811279297,
+     "reference": 2.1248912811279297,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "invariance_loss": {
+     "returned": 0.009347228333353996,
+     "artifact": 0.009347228333353996,
+     "reference": 0.009347228333353996,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "variance_loss": {
+     "returned": 0.03354664146900177,
+     "artifact": 0.03354664146900177,
+     "reference": 0.03354664146900177,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "covariance_loss": {
+     "returned": 1.0525447130203247,
+     "artifact": 1.0525447130203247,
+     "reference": 1.0525447130203247,
+     "returned_equal": true,
+     "artifact_equal": true
+    }
+   },
+   "pass": true,
+   "artifact_checks": {
+    "n_samples": true,
+    "n_features": true,
+    "coefficients": true,
+    "dtype": true,
+    "weighted_sum_abs_diff_vs_total": 1.7695128917694092e-07,
+    "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/scientific/vicreg_loss_20260927T071502_34e83700/vicreg_loss.json"
+   }
+  },
+  {
+   "case": "e_128x256_custom",
+   "comparison": "exact equality (float from JSON)",
+   "values": {
+    "total_loss": {
+     "returned": 28.365421295166016,
+     "artifact": 28.365421295166016,
+     "reference": 28.365421295166016,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "invariance_loss": {
+     "returned": 2.0152101516723633,
+     "artifact": 2.0152101516723633,
+     "reference": 2.0152101516723633,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "variance_loss": {
+     "returned": 0.02514137700200081,
+     "artifact": 0.02514137700200081,
+     "reference": 0.02514137700200081,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "covariance_loss": {
+     "returned": 4.043806552886963,
+     "artifact": 4.043806552886963,
+     "reference": 4.043806552886963,
+     "returned_equal": true,
+     "artifact_equal": true
+    }
+   },
+   "pass": true,
+   "artifact_checks": {
+    "n_samples": true,
+    "n_features": true,
+    "coefficients": true,
+    "dtype": true,
+    "weighted_sum_abs_diff_vs_total": 2.123415470123291e-07,
+    "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/scientific/vicreg_loss_20260927T071502_f29e08cf/vicreg_loss.json"
+   }
+  },
+  {
+   "case": "f_dtype_float64_of_a",
+   "comparison": "exact equality (float from JSON)",
+   "values": {
+    "total_loss": {
+     "returned": 2.124891543933415,
+     "artifact": 2.124891543933415,
+     "reference": 2.124891543933415,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "invariance_loss": {
+     "returned": 0.009347228526564468,
+     "artifact": 0.009347228526564468,
+     "reference": 0.009347228526564468,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "variance_loss": {
+     "returned": 0.033546642630800705,
+     "artifact": 0.033546642630800705,
+     "reference": 0.033546642630800705,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "covariance_loss": {
+     "returned": 1.0525447649992858,
+     "artifact": 1.0525447649992858,
+     "reference": 1.0525447649992858,
+     "returned_equal": true,
+     "artifact_equal": true
+    }
+   },
+   "pass": true,
+   "artifact_checks": {
+    "n_samples": true,
+    "n_features": true,
+    "coefficients": true,
+    "dtype": true,
+    "weighted_sum_abs_diff_vs_total": 0.0,
+    "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/scientific/vicreg_loss_20260927T071502_336e2427/vicreg_loss.json"
+   }
+  },
+  {
+   "case": "c_identical",
+   "comparison": "exact equality (float from JSON)",
+   "values": {
+    "total_loss": {
+     "returned": 1.9044898748397827,
+     "artifact": 1.9044898748397827,
+     "reference": 1.9044898748397827,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "invariance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "reference": 0.0,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "variance_loss": {
+     "returned": 0.0347004272043705,
+     "artifact": 0.0347004272043705,
+     "reference": 0.0347004272043705,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "covariance_loss": {
+     "returned": 1.0369791984558105,
+     "artifact": 1.0369791984558105,
+     "reference": 1.0369791984558105,
+     "returned_equal": true,
+     "artifact_equal": true
+    }
+   },
+   "pass": true,
+   "artifact_checks": {
+    "n_samples": true,
+    "n_features": true,
+    "coefficients": true,
+    "dtype": true,
+    "weighted_sum_abs_diff_vs_total": 3.725290298461914e-09,
+    "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/scientific/vicreg_loss_20260927T071502_1770cf30/vicreg_loss.json"
+   }
+  },
+  {
+   "case": "d_collapsed",
+   "comparison": "exact equality (float from JSON)",
+   "values": {
+    "total_loss": {
+     "returned": 24.749998092651367,
+     "artifact": 24.749998092651367,
+     "reference": 24.749998092651367,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "invariance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "reference": 0.0,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "variance_loss": {
+     "returned": 0.9899998903274536,
+     "artifact": 0.9899998903274536,
+     "reference": 0.9899998903274536,
+     "returned_equal": true,
+     "artifact_equal": true
+    },
+    "covariance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "reference": 0.0,
+     "returned_equal": true,
+     "artifact_equal": true
+    }
+   },
+   "pass": true,
+   "artifact_checks": {
+    "n_samples": true,
+    "n_features": true,
+    "coefficients": true,
+    "dtype": true,
+    "weighted_sum_abs_diff_vs_total": 8.344650268554688e-07,
+    "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/scientific/vicreg_loss_20260927T071502_79fd9483/vicreg_loss.json"
+   }
+  }
+ ],
+ "changed_input_vs_direct_upstream": [
+  {
+   "input": "new_seeded (96x48, numpy default_rng(20260927)) .npy",
+   "coeffs": [
+    3.0,
+    7.0,
+    0.5
+   ],
+   "dtype": "float32",
+   "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py",
+   "values": {
+    "total_loss": {
+     "returned": 4.7151079177856445,
+     "artifact": 4.7151079177856445,
+     "direct_upstream": 4.7151079177856445
+    },
+    "invariance_loss": {
+     "returned": 0.061854422092437744,
+     "artifact": 0.061854422092437744,
+     "direct_upstream": 0.061854422092437744
+    },
+    "variance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "direct_upstream": 0.0
+    },
+    "covariance_loss": {
+     "returned": 9.059089660644531,
+     "artifact": 9.059089660644531,
+     "direct_upstream": 9.059089660644531
+    }
+   },
+   "comparison": "exact equality",
+   "pass": true,
+   "shape_ok": true
+  },
+  {
+   "input": "new_seeded (96x48, numpy default_rng(20260927)) .npy",
+   "coeffs": [
+    25.0,
+    25.0,
+    1.0
+   ],
+   "dtype": "float64",
+   "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py",
+   "values": {
+    "total_loss": {
+     "returned": 10.605450739057678,
+     "artifact": 10.605450739057678,
+     "direct_upstream": 10.605450739057678
+    },
+    "invariance_loss": {
+     "returned": 0.06185441907751204,
+     "artifact": 0.06185441907751204,
+     "direct_upstream": 0.06185441907751204
+    },
+    "variance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "direct_upstream": 0.0
+    },
+    "covariance_loss": {
+     "returned": 9.059090262119877,
+     "artifact": 9.059090262119877,
+     "direct_upstream": 9.059090262119877
+    }
+   },
+   "comparison": "exact equality",
+   "pass": true,
+   "shape_ok": true
+  },
+  {
+   "input": "new_seeded (96x48, numpy default_rng(20260927)) .csv",
+   "coeffs": [
+    3.0,
+    7.0,
+    0.5
+   ],
+   "dtype": "float32",
+   "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py",
+   "values": {
+    "total_loss": {
+     "returned": 4.7151079177856445,
+     "artifact": 4.7151079177856445,
+     "direct_upstream": 4.7151079177856445
+    },
+    "invariance_loss": {
+     "returned": 0.061854422092437744,
+     "artifact": 0.061854422092437744,
+     "direct_upstream": 0.061854422092437744
+    },
+    "variance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "direct_upstream": 0.0
+    },
+    "covariance_loss": {
+     "returned": 9.059089660644531,
+     "artifact": 9.059089660644531,
+     "direct_upstream": 9.059089660644531
+    }
+   },
+   "comparison": "exact equality",
+   "pass": true,
+   "shape_ok": true
+  },
+  {
+   "input": "new_seeded (96x48, numpy default_rng(20260927)) .csv",
+   "coeffs": [
+    25.0,
+    25.0,
+    1.0
+   ],
+   "dtype": "float64",
+   "direct_upstream_file": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/repo/vicreg/main_vicreg.py",
+   "values": {
+    "total_loss": {
+     "returned": 10.605450740188283,
+     "artifact": 10.605450740188283,
+     "direct_upstream": 10.605450740188283
+    },
+    "invariance_loss": {
+     "returned": 0.06185441908767009,
+     "artifact": 0.06185441908767009,
+     "direct_upstream": 0.06185441908767009
+    },
+    "variance_loss": {
+     "returned": 0.0,
+     "artifact": 0.0,
+     "direct_upstream": 0.0
+    },
+    "covariance_loss": {
+     "returned": 9.05909026299653,
+     "artifact": 9.05909026299653,
+     "direct_upstream": 9.05909026299653
+    }
+   },
+   "comparison": "exact equality",
+   "pass": true,
+   "shape_ok": true
+  }
+ ],
+ "error_cases": [
+  {
+   "case": "missing",
+   "is_error": true,
+   "contains": true,
+   "text": "Error calling tool 'vicreg_compute_loss': embeddings_path: file not found: /tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/test-inputs/nope.npy",
+   "pass": true
+  },
+  {
+   "case": "mismatch",
+   "is_error": true,
+   "contains": true,
+   "text": "Error calling tool 'vicreg_compute_loss': shape mismatch: embeddings_path [64, 32] vs embeddings_prime_path [128, 32]",
+   "pass": true
+  },
+  {
+   "case": "bad dtype enum",
+   "is_error": true,
+   "contains": true,
+   "text": "1 validation error for call[vicreg_compute_loss]\ndtype\n  Input should be 'float32' or 'float64' [type=literal_error, input_value='float16', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+   "pass": true
+  }
+ ],
+ "error_output_dir_created": false,
+ "repeated_calls": {
+  "paths": [
+   "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_1e00d3d7/vicreg_loss.json",
+   "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_4a748bfe/vicreg_loss.json",
+   "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/outputs/repeat/vicreg_loss_20260927T071516_2c91e853/vicreg_loss.json"
+  ],
+  "distinct_dirs": true,
+  "all_exist": true,
+  "identical_totals": true,
+  "pass": true
+ },
+ "default_output_dir": {
+  "artifact_path": "/tmp/claude-0/-home-user-yyfc1106/5963f845-5f93-5583-a082-e8ff3276f540/scratchpad/delivery test/vicreg-mcp/tmp/outputs/vicreg_loss_20260927T071516_cc3fd404/vicreg_loss.json",
+  "under_package_tmp_outputs": true,
+  "exists": true,
+  "total_equals_reference": true,
+  "pass": true
+ },
+ "all_pass": true
+}
