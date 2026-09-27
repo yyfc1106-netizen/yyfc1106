@@ -49,6 +49,39 @@
       "produced_files": {
         "reports/tutorial-scanner-include-in-tools.json": "12689b227627961d2f58f7b344867ab72acf6e19b6653fa0832429da89b42bfa"
       }
+    },
+    {
+      "id": "exec-vicreg-loss-attempt-1",
+      "role": "executor",
+      "task": "vicreg_loss",
+      "agent_id": "a50271afdde1e6c64",
+      "status": "succeeded",
+      "started_at": "2026-09-27T06:59:29.000Z",
+      "finished_at": "2026-09-27T07:01:28.023Z",
+      "owned_paths": [
+        "notebooks/vicreg_loss",
+        "reports/executed_notebook_vicreg_loss.json"
+      ],
+      "report": "reports/executed_notebook_vicreg_loss.json",
+      "report_sha256": "ae97e727bdd8580098254c9f8cd49a18ed8eddc57d93b436e29a990f7cb019fc",
+      "produced_files": {
+        "notebooks/vicreg_loss/data/a_default_z.npy": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5",
+        "notebooks/vicreg_loss/data/a_default_zp.npy": "9042d9282ec4061fc98ad7f67b459d442e2cdd7eab26a0cf2f294a75f72af47e",
+        "notebooks/vicreg_loss/data/c_identical_z.npy": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5",
+        "notebooks/vicreg_loss/data/c_identical_zp.npy": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5",
+        "notebooks/vicreg_loss/data/d_collapsed_z.npy": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638",
+        "notebooks/vicreg_loss/data/d_collapsed_zp.npy": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638",
+        "notebooks/vicreg_loss/data/e_128x256_custom_z.npy": "7adf6ad4e71916ca6b6ad3f4264c91c2b37394639462a39dd7a11117fae79e2e",
+        "notebooks/vicreg_loss/data/e_128x256_custom_zp.npy": "18ca3e696ca664c6503d3ae6c8966d79cb2b57f8e50032e1cab346979b43ad87",
+        "notebooks/vicreg_loss/data/inputs_manifest.json": "1aca65c72f30acb91c8a427234c3a12655130d80c131355208af1c7420775309",
+        "notebooks/vicreg_loss/logs/generate.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "notebooks/vicreg_loss/logs/generate.log": "a0837b8481b6f57b55195bd768c77cd86123debc934ff023965ab208f2635846",
+        "notebooks/vicreg_loss/logs/replay.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "notebooks/vicreg_loss/logs/replay.log": "c3cb5dbbea0c657b0328af2eca3fc967625428342b5dbcac5055cf8402b0d70f",
+        "notebooks/vicreg_loss/reference_outputs.json": "a3b2f3c128131fb9bb61b279c2bbdfebe8d8a6672873029158d45dcaffd67ee5",
+        "notebooks/vicreg_loss/replay_comparison.json": "be81a67b0135825e2c9aaae08ea7120d6dff1f183616ab3d3ee07fa5dbde9080",
+        "notebooks/vicreg_loss/run_reference.py": "b40042565eae418f58d72b46b292f029ce47d314b9dfc3fdb511ed3c1348bffb"
+      }
     }
   ],
   "exclusions": []

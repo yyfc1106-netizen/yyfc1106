@@ -1,0 +1,17 @@
+{
+  "n": 64,
+  "d": 32,
+  "input_dtype": "float32",
+  "output_dtype": "float32",
+  "output_shape": [],
+  "coefficients": {
+    "sim_coeff": 25.0,
+    "std_coeff": 25.0,
+    "cov_coeff": 1.0
+  },
+  "total_loss": 2.1248912811279297,
+  "invariance_loss": 0.009347228333353996,
+  "variance_loss": 0.03354664146900177,
+  "covariance_loss": 1.0525447130203247,
+  "input_provenance": "torch.Generator().manual_seed(0); Z=randn(64,32); noise=randn(64,32); Z'=Z+0.1*noise (float32)"
+}

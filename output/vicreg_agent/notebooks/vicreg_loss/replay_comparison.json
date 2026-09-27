@@ -1,0 +1,196 @@
+{
+  "execution_id": "vicreg_loss",
+  "mode": "replay",
+  "runtime": {
+    "python": "3.11.15",
+    "torch": "2.14.0+cu130",
+    "numpy": "2.4.6",
+    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
+    "torch_threads": 4,
+    "world_size": 1,
+    "backend": "gloo",
+    "upstream_file": "/home/user/yyfc1106/output/vicreg_agent/repo/vicreg/main_vicreg.py",
+    "upstream_sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20"
+  },
+  "tolerance": "abs_diff <= 1e-6 * max(1, |ref|); exact equality also reported",
+  "all_pass": true,
+  "all_exact": true,
+  "comparisons": {
+    "a_default.total_loss": {
+      "reference": 2.1248912811279297,
+      "replay": 2.1248912811279297,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "a_default.invariance_loss": {
+      "reference": 0.009347228333353996,
+      "replay": 0.009347228333353996,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "a_default.variance_loss": {
+      "reference": 0.03354664146900177,
+      "replay": 0.03354664146900177,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "a_default.covariance_loss": {
+      "reference": 1.0525447130203247,
+      "replay": 1.0525447130203247,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "c_identical.total_loss": {
+      "reference": 1.9044898748397827,
+      "replay": 1.9044898748397827,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "c_identical.invariance_loss": {
+      "reference": 0.0,
+      "replay": 0.0,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "c_identical.variance_loss": {
+      "reference": 0.0347004272043705,
+      "replay": 0.0347004272043705,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "c_identical.covariance_loss": {
+      "reference": 1.0369791984558105,
+      "replay": 1.0369791984558105,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "d_collapsed.total_loss": {
+      "reference": 24.749998092651367,
+      "replay": 24.749998092651367,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "d_collapsed.invariance_loss": {
+      "reference": 0.0,
+      "replay": 0.0,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "d_collapsed.variance_loss": {
+      "reference": 0.9899998903274536,
+      "replay": 0.9899998903274536,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "d_collapsed.covariance_loss": {
+      "reference": 0.0,
+      "replay": 0.0,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "e_128x256_custom.total_loss": {
+      "reference": 28.365421295166016,
+      "replay": 28.365421295166016,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "e_128x256_custom.invariance_loss": {
+      "reference": 2.0152101516723633,
+      "replay": 2.0152101516723633,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "e_128x256_custom.variance_loss": {
+      "reference": 0.02514137700200081,
+      "replay": 0.02514137700200081,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "e_128x256_custom.covariance_loss": {
+      "reference": 4.043806552886963,
+      "replay": 4.043806552886963,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "b_per_term_check_on_a.weighted_sum_of_terms": {
+      "reference": 2.124891458079219,
+      "replay": 2.124891458079219,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "b_per_term_check_on_a.total_loss": {
+      "reference": 2.1248912811279297,
+      "replay": 2.1248912811279297,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "b_per_term_check_on_a.abs_diff": {
+      "reference": 1.7695128917694092e-07,
+      "replay": 1.7695128917694092e-07,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "f_dtype_float64_of_a.total_loss": {
+      "reference": 2.124891543933415,
+      "replay": 2.124891543933415,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "f_dtype_float64_of_a.invariance_loss": {
+      "reference": 0.009347228526564468,
+      "replay": 0.009347228526564468,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "f_dtype_float64_of_a.variance_loss": {
+      "reference": 0.033546642630800705,
+      "replay": 0.033546642630800705,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "f_dtype_float64_of_a.covariance_loss": {
+      "reference": 1.0525447649992858,
+      "replay": 1.0525447649992858,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "f_dtype_float64_of_a.abs_diff_total_vs_float32": {
+      "reference": 2.628054853737183e-07,
+      "replay": 2.628054853737183e-07,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    },
+    "g_real_init_equivalence_on_a.total_loss": {
+      "reference": 2.1248912811279297,
+      "replay": 2.1248912811279297,
+      "abs_diff": 0.0,
+      "exact": true,
+      "pass": true
+    }
+  },
+  "elapsed_s": 0.3007504940032959
+}

@@ -1,0 +1,115 @@
+{
+  "execution_id": "vicreg_loss",
+  "mode": "generate",
+  "runtime": {
+    "python": "3.11.15",
+    "torch": "2.14.0+cu130",
+    "numpy": "2.4.6",
+    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
+    "torch_threads": 4,
+    "world_size": 1,
+    "backend": "gloo",
+    "upstream_file": "/home/user/yyfc1106/output/vicreg_agent/repo/vicreg/main_vicreg.py",
+    "upstream_sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20"
+  },
+  "elapsed_s": 0.28351449966430664,
+  "results": {
+    "a_default": {
+      "n": 64,
+      "d": 32,
+      "input_dtype": "float32",
+      "output_dtype": "float32",
+      "output_shape": [],
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      },
+      "total_loss": 2.1248912811279297,
+      "invariance_loss": 0.009347228333353996,
+      "variance_loss": 0.03354664146900177,
+      "covariance_loss": 1.0525447130203247,
+      "input_provenance": "torch.Generator().manual_seed(0); Z=randn(64,32); noise=randn(64,32); Z'=Z+0.1*noise (float32)"
+    },
+    "c_identical": {
+      "n": 64,
+      "d": 32,
+      "input_dtype": "float32",
+      "output_dtype": "float32",
+      "output_shape": [],
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      },
+      "total_loss": 1.9044898748397827,
+      "invariance_loss": 0.0,
+      "variance_loss": 0.0347004272043705,
+      "covariance_loss": 1.0369791984558105,
+      "input_provenance": "Z from case a; Z'=Z.clone()"
+    },
+    "d_collapsed": {
+      "n": 64,
+      "d": 32,
+      "input_dtype": "float32",
+      "output_dtype": "float32",
+      "output_shape": [],
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      },
+      "total_loss": 24.749998092651367,
+      "invariance_loss": 0.0,
+      "variance_loss": 0.9899998903274536,
+      "covariance_loss": 0.0,
+      "input_provenance": "constant 0.5 for Z and Z' (64x32, float32), full collapse"
+    },
+    "e_128x256_custom": {
+      "n": 128,
+      "d": 256,
+      "input_dtype": "float32",
+      "output_dtype": "float32",
+      "output_shape": [],
+      "coefficients": {
+        "sim_coeff": 10.0,
+        "std_coeff": 5.0,
+        "cov_coeff": 2.0
+      },
+      "total_loss": 28.365421295166016,
+      "invariance_loss": 2.0152101516723633,
+      "variance_loss": 0.02514137700200081,
+      "covariance_loss": 4.043806552886963,
+      "input_provenance": "torch.Generator().manual_seed(1); Z=randn(128,256); Z'=randn(128,256) independent (float32); coeffs (10,5,2)"
+    },
+    "b_per_term_check_on_a": {
+      "note": "Per-term values are upstream forward with coefficient triples (1,0,0),(0,1,0),(0,0,1); reconstruction uses Python float64 arithmetic on float32 outputs.",
+      "weighted_sum_of_terms": 2.124891458079219,
+      "total_loss": 2.1248912811279297,
+      "abs_diff": 1.7695128917694092e-07
+    },
+    "f_dtype_float64_of_a": {
+      "n": 64,
+      "d": 32,
+      "input_dtype": "float64",
+      "output_dtype": "float64",
+      "output_shape": [],
+      "coefficients": {
+        "sim_coeff": 25.0,
+        "std_coeff": 25.0,
+        "cov_coeff": 1.0
+      },
+      "total_loss": 2.124891543933415,
+      "invariance_loss": 0.009347228526564468,
+      "variance_loss": 0.033546642630800705,
+      "covariance_loss": 1.0525447649992858,
+      "input_provenance": "case a inputs cast to float64 (.double())",
+      "abs_diff_total_vs_float32": 2.628054853737183e-07
+    },
+    "g_real_init_equivalence_on_a": {
+      "num_features_from_upstream_init": 32,
+      "total_loss": 2.1248912811279297,
+      "equal_to_a_default": true
+    }
+  }
+}

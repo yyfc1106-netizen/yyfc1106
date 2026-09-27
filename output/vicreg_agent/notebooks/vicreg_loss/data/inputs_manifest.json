@@ -1,0 +1,114 @@
+{
+  "a_default": {
+    "coefficients": [
+      25.0,
+      25.0,
+      1.0
+    ],
+    "provenance": "torch.Generator().manual_seed(0); Z=randn(64,32); noise=randn(64,32); Z'=Z+0.1*noise (float32)",
+    "files": {
+      "z": {
+        "path": "notebooks/vicreg_loss/data/a_default_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      },
+      "zp": {
+        "path": "notebooks/vicreg_loss/data/a_default_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "9042d9282ec4061fc98ad7f67b459d442e2cdd7eab26a0cf2f294a75f72af47e"
+      }
+    }
+  },
+  "c_identical": {
+    "coefficients": [
+      25.0,
+      25.0,
+      1.0
+    ],
+    "provenance": "Z from case a; Z'=Z.clone()",
+    "files": {
+      "z": {
+        "path": "notebooks/vicreg_loss/data/c_identical_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      },
+      "zp": {
+        "path": "notebooks/vicreg_loss/data/c_identical_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      }
+    }
+  },
+  "d_collapsed": {
+    "coefficients": [
+      25.0,
+      25.0,
+      1.0
+    ],
+    "provenance": "constant 0.5 for Z and Z' (64x32, float32), full collapse",
+    "files": {
+      "z": {
+        "path": "notebooks/vicreg_loss/data/d_collapsed_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638"
+      },
+      "zp": {
+        "path": "notebooks/vicreg_loss/data/d_collapsed_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638"
+      }
+    }
+  },
+  "e_128x256_custom": {
+    "coefficients": [
+      10.0,
+      5.0,
+      2.0
+    ],
+    "provenance": "torch.Generator().manual_seed(1); Z=randn(128,256); Z'=randn(128,256) independent (float32); coeffs (10,5,2)",
+    "files": {
+      "z": {
+        "path": "notebooks/vicreg_loss/data/e_128x256_custom_z.npy",
+        "shape": [
+          128,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "7adf6ad4e71916ca6b6ad3f4264c91c2b37394639462a39dd7a11117fae79e2e"
+      },
+      "zp": {
+        "path": "notebooks/vicreg_loss/data/e_128x256_custom_zp.npy",
+        "shape": [
+          128,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "18ca3e696ca664c6503d3ae6c8966d79cb2b57f8e50032e1cab346979b43ad87"
+      }
+    }
+  }
+}

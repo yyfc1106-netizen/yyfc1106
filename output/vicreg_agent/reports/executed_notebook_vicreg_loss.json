@@ -1,0 +1,314 @@
+{
+  "vicreg_loss": {
+    "execution_id": "vicreg_loss",
+    "source_path": "repo/vicreg/main_vicreg.py",
+    "source_symbols": [
+      "VICReg.forward",
+      "off_diagonal",
+      "FullGatherLayer"
+    ],
+    "source_revision": "4e12602fd495af83efd1631fbe82523e6db092e0",
+    "source_sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+    "source_url": "https://github.com/facebookresearch/vicreg/blob/4e12602fd495af83efd1631fbe82523e6db092e0/main_vicreg.py",
+    "status": "success",
+    "execution_mode": "native_script_driver",
+    "execution_path": "notebooks/vicreg_loss/run_reference.py",
+    "execution_path_sha256": "b40042565eae418f58d72b46b292f029ce47d314b9dfc3fdb511ed3c1348bffb",
+    "driver_description": "Small driver that imports unmodified upstream main_vicreg from repo/vicreg, initializes a single-process gloo group (file:// init, world_size=1), builds VICReg via __new__ + nn.Module.__init__ with args=Namespace(batch_size=n, sim/std/cov_coeff, mlp=str(d)), num_features=d, backbone=projector=nn.Identity (scanner binding), and calls VICReg.forward under torch.no_grad(). The loss is not re-implemented; per-term values come from upstream forward with unit coefficient triples. No generated wrapper imported.",
+    "interpreter": "/home/user/yyfc1106/output/vicreg_agent/vicreg-env/bin/python",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python notebooks/vicreg_loss/run_reference.py generate",
+        "cwd": "/home/user/yyfc1106/output/vicreg_agent",
+        "exit_status": 0,
+        "stdout": "notebooks/vicreg_loss/logs/generate.log",
+        "stderr": "notebooks/vicreg_loss/logs/generate.err (empty)",
+        "elapsed_s": 0.28351449966430664
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python notebooks/vicreg_loss/run_reference.py replay",
+        "cwd": "/home/user/yyfc1106/output/vicreg_agent",
+        "exit_status": 0,
+        "stdout": "notebooks/vicreg_loss/logs/replay.log",
+        "stderr": "notebooks/vicreg_loss/logs/replay.err (empty)",
+        "elapsed_s": 0.3007504940032959,
+        "note": "fresh process; loads data/*.npy after verifying sha256 from manifest"
+      }
+    ],
+    "runtime": {
+      "python": "3.11.15",
+      "torch": "2.14.0+cu130",
+      "numpy": "2.4.6",
+      "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
+      "torch_threads": 4,
+      "world_size": 1,
+      "backend": "gloo",
+      "upstream_file": "/home/user/yyfc1106/output/vicreg_agent/repo/vicreg/main_vicreg.py",
+      "upstream_sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20"
+    },
+    "data_provenance": {
+      "manifest": "notebooks/vicreg_loss/data/inputs_manifest.json",
+      "source": "Synthetic seeded embeddings (repo ships no data/fixtures). Generated with torch.Generator seeds 0 and 1 in float32; stored as .npy; generate mode recomputes from the saved .npy bytes.",
+      "cases": {
+        "a_default": {
+          "provenance": "torch.Generator().manual_seed(0); Z=randn(64,32); noise=randn(64,32); Z'=Z+0.1*noise (float32)",
+          "coefficients": [
+            25.0,
+            25.0,
+            1.0
+          ]
+        },
+        "c_identical": {
+          "provenance": "Z from case a; Z'=Z.clone()",
+          "coefficients": [
+            25.0,
+            25.0,
+            1.0
+          ]
+        },
+        "d_collapsed": {
+          "provenance": "constant 0.5 for Z and Z' (64x32, float32), full collapse",
+          "coefficients": [
+            25.0,
+            25.0,
+            1.0
+          ]
+        },
+        "e_128x256_custom": {
+          "provenance": "torch.Generator().manual_seed(1); Z=randn(128,256); Z'=randn(128,256) independent (float32); coeffs (10,5,2)",
+          "coefficients": [
+            10.0,
+            5.0,
+            2.0
+          ]
+        }
+      },
+      "note": "These are demonstration reference inputs, not production defaults."
+    },
+    "inputs": [
+      {
+        "path": "notebooks/vicreg_loss/data/a_default_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/a_default_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "9042d9282ec4061fc98ad7f67b459d442e2cdd7eab26a0cf2f294a75f72af47e"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/c_identical_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/c_identical_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "2983a192ef843a2ce9448e1733e3c7056f551ccec784db1317e50fca690245e5"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/d_collapsed_z.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/d_collapsed_zp.npy",
+        "shape": [
+          64,
+          32
+        ],
+        "dtype": "float32",
+        "sha256": "a4174c5012b38977073f727e15c588cc22de9b75524470679050626fd77ca638"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/e_128x256_custom_z.npy",
+        "shape": [
+          128,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "7adf6ad4e71916ca6b6ad3f4264c91c2b37394639462a39dd7a11117fae79e2e"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/e_128x256_custom_zp.npy",
+        "shape": [
+          128,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "18ca3e696ca664c6503d3ae6c8966d79cb2b57f8e50032e1cab346979b43ad87"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "notebooks/vicreg_loss/reference_outputs.json",
+        "sha256": "a3b2f3c128131fb9bb61b279c2bbdfebe8d8a6672873029158d45dcaffd67ee5",
+        "content": "full-precision (Python float repr of torch .item()) total and per-term losses for all cases"
+      },
+      {
+        "path": "notebooks/vicreg_loss/replay_comparison.json",
+        "sha256": "be81a67b0135825e2c9aaae08ea7120d6dff1f183616ab3d3ee07fa5dbde9080"
+      },
+      {
+        "path": "notebooks/vicreg_loss/data/inputs_manifest.json",
+        "sha256": "1aca65c72f30acb91c8a427234c3a12655130d80c131355208af1c7420775309"
+      }
+    ],
+    "reference_values": {
+      "a_default": {
+        "n": 64,
+        "d": 32,
+        "input_dtype": "float32",
+        "output_dtype": "float32",
+        "output_shape": [],
+        "coefficients": {
+          "sim_coeff": 25.0,
+          "std_coeff": 25.0,
+          "cov_coeff": 1.0
+        },
+        "total_loss": 2.1248912811279297,
+        "invariance_loss": 0.009347228333353996,
+        "variance_loss": 0.03354664146900177,
+        "covariance_loss": 1.0525447130203247
+      },
+      "c_identical": {
+        "n": 64,
+        "d": 32,
+        "input_dtype": "float32",
+        "output_dtype": "float32",
+        "output_shape": [],
+        "coefficients": {
+          "sim_coeff": 25.0,
+          "std_coeff": 25.0,
+          "cov_coeff": 1.0
+        },
+        "total_loss": 1.9044898748397827,
+        "invariance_loss": 0.0,
+        "variance_loss": 0.0347004272043705,
+        "covariance_loss": 1.0369791984558105
+      },
+      "d_collapsed": {
+        "n": 64,
+        "d": 32,
+        "input_dtype": "float32",
+        "output_dtype": "float32",
+        "output_shape": [],
+        "coefficients": {
+          "sim_coeff": 25.0,
+          "std_coeff": 25.0,
+          "cov_coeff": 1.0
+        },
+        "total_loss": 24.749998092651367,
+        "invariance_loss": 0.0,
+        "variance_loss": 0.9899998903274536,
+        "covariance_loss": 0.0
+      },
+      "e_128x256_custom": {
+        "n": 128,
+        "d": 256,
+        "input_dtype": "float32",
+        "output_dtype": "float32",
+        "output_shape": [],
+        "coefficients": {
+          "sim_coeff": 10.0,
+          "std_coeff": 5.0,
+          "cov_coeff": 2.0
+        },
+        "total_loss": 28.365421295166016,
+        "invariance_loss": 2.0152101516723633,
+        "variance_loss": 0.02514137700200081,
+        "covariance_loss": 4.043806552886963
+      },
+      "b_per_term_check_on_a": {
+        "note": "Per-term values are upstream forward with coefficient triples (1,0,0),(0,1,0),(0,0,1); reconstruction uses Python float64 arithmetic on float32 outputs.",
+        "weighted_sum_of_terms": 2.124891458079219,
+        "total_loss": 2.1248912811279297,
+        "abs_diff": 1.7695128917694092e-07
+      },
+      "f_dtype_float64_of_a": {
+        "n": 64,
+        "d": 32,
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "output_shape": [],
+        "coefficients": {
+          "sim_coeff": 25.0,
+          "std_coeff": 25.0,
+          "cov_coeff": 1.0
+        },
+        "total_loss": 2.124891543933415,
+        "invariance_loss": 0.009347228526564468,
+        "variance_loss": 0.033546642630800705,
+        "covariance_loss": 1.0525447649992858,
+        "abs_diff_total_vs_float32": 2.628054853737183e-07
+      },
+      "g_real_init_equivalence_on_a": {
+        "num_features_from_upstream_init": 32,
+        "total_loss": 2.1248912811279297,
+        "equal_to_a_default": true
+      }
+    },
+    "scientific_checks": {
+      "a_default": "total=2.1248912811279297 (float32), terms inv=0.009347228333353996, var=0.03354664146900177, cov=1.0525447130203247",
+      "b_linearity": "25*inv+25*var+1*cov = 2.124891458079219 vs total 2.1248912811279297; abs diff 1.770e-07 (float32 rounding)",
+      "c_identical": "invariance exactly 0.0; variance/covariance nonzero as expected",
+      "d_collapsed": "constant embeddings: invariance 0, covariance 0, variance = 1 - sqrt(1e-4) = 0.99 (float32 0.9899998903274536), total 24.749998092651367 ~= 25*0.99",
+      "e_shape_coeffs": "128x256 independent views, coeffs (10,5,2): total 28.365421295166016",
+      "dtype": "float32 in -> float32 0-d tensor out; float64 in -> float64 out (upstream does not cast). float64 total 2.124891543933415 differs from float32 by 2.63e-7.",
+      "g_init_equivalence": "Real VICReg(args) with arch=resnet34 then backbone/projector replaced by Identity gives num_features=32 and bit-identical total to the __init__-bypass binding."
+    },
+    "replay_comparison": {
+      "path": "notebooks/vicreg_loss/replay_comparison.json",
+      "n_compared": 25,
+      "all_pass": true,
+      "all_exact": true,
+      "tolerance": "abs_diff <= 1e-6 * max(1, |ref|); exact equality also reported",
+      "justification": "Same CPU, same thread count, deterministic algorithms enabled, identical input bytes (hash-verified); bit-exact equality expected and observed. Tolerance 1e-6 relative kept only as a guard for float32 reduction-order differences on other machines."
+    },
+    "figures": "not applicable (source script produces no plots for the loss; none invented)",
+    "limitations": [
+      "Only world_size=1 gloo; multi-process FullGatherLayer gathering (global batch across GPUs) not exercised.",
+      "Forward only under no_grad; gradients/backward of FullGatherLayer not exercised.",
+      "Inputs synthetic (repo has no example data); upstream args.batch_size default 2048 intentionally replaced by n per scanner binding.",
+      "Cross-machine float32 results may differ in the last bits due to BLAS reduction order."
+    ],
+    "upstream_integrity": "git -C repo/vicreg status --porcelain empty after runs; no __pycache__ written.",
+    "attempts": [
+      {
+        "attempt": 1,
+        "command": "/usr/bin/time -v ... generate/replay",
+        "exit_status": 127,
+        "reason": "/usr/bin/time not installed; driver never started. Rerun without the time wrapper (elapsed recorded inside the driver)."
+      },
+      {
+        "attempt": 2,
+        "command": "generate then replay (above)",
+        "exit_status": 0,
+        "result": "success"
+      }
+    ]
+  }
+}
