@@ -1,0 +1,6 @@
+# Paper2Agent 的审阅/中间工作目录（体积大，不入库）
+*-review/
+work/
+.venv/
+__pycache__/
+.env
