@@ -1,0 +1,168 @@
+{
+  "scan_metadata": {
+    "repository_name": "vicreg",
+    "repository_url": "https://github.com/facebookresearch/vicreg",
+    "pinned_commit": "4e12602fd495af83efd1631fbe82523e6db092e0",
+    "paper_name": "VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning (Bardes, Ponce, LeCun, ICLR 2022)",
+    "scan_date": "2026-09-27",
+    "user_filter": "VICReg loss computation on user-supplied embeddings (main_vicreg.py: VICReg.forward, off_diagonal, FullGatherLayer)",
+    "filter_match": "path substring 'main_vicreg.py' (only in-scope source); other files read as supporting/deferred",
+    "total_evaluated": 7,
+    "total_included": 1,
+    "success": true,
+    "explanation": "Repo has no notebooks, tests or example data. The only in-scope operation is the VICReg loss implemented in VICReg.forward (main_vicreg.py). One tool is selected: vicreg_compute_loss, which calls the upstream VICReg.forward on user embeddings by instantiating VICReg without its backbone/projector (both set to nn.Identity) inside a single-process gloo process group. Pretrained feature extraction (hubconf), linear/semi-supervised evaluation (evaluate.py) and pretraining are deferred/out of scope."
+  },
+  "tutorials": [
+    {
+      "path": "main_vicreg.py",
+      "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+      "title": "VICReg pretraining script (VICReg module, loss, Projector, LARS, FullGatherLayer)",
+      "description": "Training entry point. VICReg.forward(x, y) projects two views through backbone+projector and returns sim_coeff*invariance(MSE) + std_coeff*variance(hinge on std, eps=1e-4) + cov_coeff*covariance(off-diagonal^2 / num_features) loss, after all-gathering embeddings across processes.",
+      "type": "script",
+      "include_in_tools": true,
+      "reason_for_include_or_exclude": "Matches the user filter. VICReg.forward is the sole upstream implementation of the VICReg loss and can be applied to user-supplied embeddings by replacing backbone/projector with identities; training loop itself (main, LARS, adjust_learning_rate, ImageNet loading) is out of scope."
+    },
+    {
+      "path": "README.md",
+      "sha256": "76d87fc70da361449485b345d051c0581a6374fe968a0798a93097901b3ff51e",
+      "title": "VICReg README",
+      "description": "Pretrained model links (dl.fbaipublicfiles.com), torch.hub usage, pretraining and evaluation commands.",
+      "type": "documentation",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Documentation only; documents no loss-on-embeddings API. Used as supporting context for defaults (commands). Documented operations (hub models, training, evaluation) are deferred/out of scope."
+    },
+    {
+      "path": "hubconf.py",
+      "sha256": "c8b03dc443a6fc88dd788c0d982fc6bbeffb9c5765a6c99869ebc27e16987c6b",
+      "title": "torch.hub entry points resnet50/resnet50x2/resnet200x2",
+      "description": "Builds ResNet backbones and loads pretrained weights from dl.fbaipublicfiles.com.",
+      "type": "script",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Outside user filter (deferred by coordinator scope). Pretrained feature extraction is blocked: weights host dl.fbaipublicfiles.com is blocked by network policy; pretrained=False yields random weights with no scientific value."
+    },
+    {
+      "path": "evaluate.py",
+      "sha256": "3d4ffd807c200f6e55aeef665293c0d8c4136d22145531b169d911a9ae1bbb6b",
+      "title": "Linear / semi-supervised evaluation on ImageNet",
+      "description": "Trains a linear head (or fine-tunes) on a pretrained ResNet over ImageNet.",
+      "type": "script",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Outside user filter; deferred: requires pretrained weights (blocked host), ImageNet, and GPU-scale training."
+    },
+    {
+      "path": "resnet.py",
+      "title": "ResNet backbone definitions",
+      "description": "resnet34/50/101/50x2/50x4/50x5/200x2 constructors returning (model, embedding_dim).",
+      "type": "script",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Supporting module imported by main_vicreg.py (import-time dependency only). The loss tool bypasses backbone construction. Random-init backbones are not a useful user task."
+    },
+    {
+      "path": "augmentations.py",
+      "title": "VICReg TrainTransform augmentations",
+      "description": "Two-view image augmentation pipeline (crop, flip, color jitter, blur, solarization).",
+      "type": "script",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Outside user filter; imported by main_vicreg.py at module import (requires Pillow, numpy, torchvision), so it is an environment prerequisite only."
+    },
+    {
+      "path": "distributed.py",
+      "title": "Distributed helpers",
+      "description": "init_distributed_mode (NCCL/CUDA, env/SLURM based) and rank utilities.",
+      "type": "script",
+      "include_in_tools": false,
+      "reason_for_include_or_exclude": "Internal; init_distributed_mode forces CUDA+NCCL and is unsuitable on CPU. The wrapper must instead init a single-process gloo group so FullGatherLayer (dist.get_world_size / all_gather) works."
+    }
+  ],
+  "tool_review": [
+    {
+      "candidate": "vicreg_compute_loss",
+      "decision": "expose",
+      "task_and_io": "User evaluates the VICReg objective on their own paired embeddings (e.g., to monitor collapse, compare representations, or reproduce the loss). Inputs: Z, Z' float [n, d] with identical shape; sim_coeff/std_coeff/cov_coeff (source defaults 25/25/1 from get_arguments). Outputs: total loss and per-term values.",
+      "implementation": {
+        "path": "main_vicreg.py",
+        "commit": "4e12602fd495af83efd1631fbe82523e6db092e0",
+        "symbols": [
+          "VICReg.forward",
+          "off_diagonal",
+          "FullGatherLayer"
+        ],
+        "binding_plan": [
+          "sys.path.insert(repo/vicreg); import main_vicreg (module import needs torch, torchvision, Pillow, numpy because it imports augmentations/resnet/torchvision.datasets; __main__ guard prevents training).",
+          "If not torch.distributed.is_initialized(): init_process_group(backend='gloo', init_method='tcp://127.0.0.1:<free port>' or file://, world_size=1, rank=0). With world_size=1 FullGatherLayer.forward returns the tensor unchanged (all_gather of one), so the gathered batch equals the local batch.",
+          "Build the module without its ResNet: m = main_vicreg.VICReg.__new__(main_vicreg.VICReg); nn.Module.__init__(m); m.args = argparse.Namespace(batch_size=n, sim_coeff=..., std_coeff=..., cov_coeff=..., mlp=str(d)); m.num_features = d; m.backbone = nn.Identity(); m.projector = nn.Identity(). (Alternative VICReg(args) would construct a full resnet (smallest available is resnet34; no resnet18) and a projector that are then discarded; bypassing __init__ is equivalent for forward since __init__ only sets args, num_features, backbone, projector.)",
+          "Call loss = m.forward(Z, Zp) under torch.no_grad() in float32 (or float64 if requested); total = loss.item().",
+          "Per-term values: forward returns only the weighted sum; obtain repr/std/cov terms by calling the same upstream forward with coefficients (1,0,0), (0,1,0), (0,0,1). No loss formula is re-implemented in the wrapper. (Loss is linear in coefficients, so total == sum coeff_i * term_i up to float rounding; this identity belongs in tests, not the wrapper.)"
+        ],
+        "binding_notes": [
+          "args.batch_size must equal the GLOBAL batch size = n (covariance divides by batch_size - 1); set it from Z.shape[0], never from the source default 2048.",
+          "self.num_features must equal d (source derives it from args.mlp last element).",
+          "Variance term uses unbiased x.var(dim=0) + 1e-4 epsilon and hinge target 1 (gamma=1) hard-coded upstream; not exposed as parameters.",
+          "F.mse_loss averages over n*d elements (paper Eq. uses sum over batch / n; faithful to code).",
+          "forward mutates nothing persistent; pow_ in-place applies only to temporaries."
+        ]
+      },
+      "prerequisites": [
+        "torch (CPU), torchvision, Pillow, numpy importable (module-level imports of main_vicreg/augmentations)",
+        "single-process torch.distributed gloo group (FullGatherLayer calls dist.get_world_size/all_gather)",
+        "no GPU, no weights, no ImageNet needed"
+      ],
+      "data_contract": {
+        "Z": "2-D float array [n, d], finite",
+        "Z_prime": "2-D float array, same shape as Z",
+        "n": ">= 2 (n=1 makes var NaN and batch_size-1 = 0)",
+        "d": ">= 1 (d=1 gives covariance term 0)",
+        "coefficients": "floats; defaults sim 25.0, std 25.0, cov 1.0 (main_vicreg.get_arguments)"
+      },
+      "verification_source": {
+        "kind": "small driver calling the documented upstream callable directly (no official test/example/data exists in the repo)",
+        "inputs": "Seeded synthetic embeddings, e.g. torch.manual_seed(0); Z = torch.randn(64, 32); Z' = Z + 0.1*torch.randn(64, 32); plus collapse case (Z = Z' = constant rows) and identical-inputs case (Z == Z')",
+        "comparisons": [
+          "wrapper total == direct VICReg.forward(Z, Z') with default coefficients (independent upstream call)",
+          "per-term values equal direct upstream calls with one-hot coefficients; total == 25*inv + 25*var + 1*cov",
+          "property checks from code: Z == Z' gives invariance 0; constant (collapsed) embeddings give variance term = 1 - sqrt(1e-4) = 0.99 per branch, i.e. std_loss 0.99; changed coefficients change total linearly",
+          "error cases: shape mismatch, n < 2, non-2D input"
+        ]
+      },
+      "ownership": {
+        "mcp_tool_name": "vicreg_compute_loss",
+        "source_module_id": "main_vicreg"
+      }
+    },
+    {
+      "candidate": "pretrained_feature_extraction (hubconf.resnet50 / resnet50x2 / resnet200x2)",
+      "decision": "defer",
+      "reason": "Outside user filter; blocked: weights hosted at dl.fbaipublicfiles.com which is blocked by network policy; pretrained=False gives a random network (no scientific value). Also needs image inputs + eval transforms."
+    },
+    {
+      "candidate": "linear / semi-supervised evaluation (evaluate.py main_worker)",
+      "decision": "defer",
+      "reason": "Outside user filter; requires pretrained weights (blocked), ImageNet, multi-epoch GPU training."
+    },
+    {
+      "candidate": "VICReg pretraining (main_vicreg.main, adjust_learning_rate, TrainTransform, run_with_submitit.py)",
+      "decision": "omit (out of scope)",
+      "reason": "User scope excludes full pretraining; requires CUDA/NCCL, ImageNet, multi-GPU."
+    },
+    {
+      "candidate": "Projector (MLP expander) construction",
+      "decision": "internal/omit",
+      "reason": "Randomly initialized module-building helper; loss tool takes expander outputs directly. No standalone user task in scope."
+    },
+    {
+      "candidate": "LARS optimizer",
+      "decision": "omit",
+      "reason": "Training internal; out of scope."
+    },
+    {
+      "candidate": "off_diagonal, FullGatherLayer, batch_all_gather",
+      "decision": "internal (merged into vicreg_compute_loss)",
+      "reason": "Helpers invoked by VICReg.forward; not independently useful tools."
+    },
+    {
+      "candidate": "distributed.init_distributed_mode",
+      "decision": "internal/not used",
+      "reason": "Forces CUDA+NCCL; wrapper uses a single-process gloo group instead."
+    }
+  ]
+}

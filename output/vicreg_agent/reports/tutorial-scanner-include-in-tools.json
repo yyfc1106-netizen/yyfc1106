@@ -1,0 +1,36 @@
+{
+  "scan_metadata": {
+    "repository_name": "vicreg",
+    "repository_url": "https://github.com/facebookresearch/vicreg",
+    "pinned_commit": "4e12602fd495af83efd1631fbe82523e6db092e0",
+    "paper_name": "VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning (Bardes, Ponce, LeCun, ICLR 2022)",
+    "scan_date": "2026-09-27",
+    "user_filter": "VICReg loss computation on user-supplied embeddings (main_vicreg.py: VICReg.forward, off_diagonal, FullGatherLayer)",
+    "filter_match": "path substring 'main_vicreg.py' (only in-scope source); other files read as supporting/deferred",
+    "total_evaluated": 7,
+    "total_included": 1,
+    "success": true,
+    "explanation": "Repo has no notebooks, tests or example data. The only in-scope operation is the VICReg loss implemented in VICReg.forward (main_vicreg.py). One tool is selected: vicreg_compute_loss, which calls the upstream VICReg.forward on user embeddings by instantiating VICReg without its backbone/projector (both set to nn.Identity) inside a single-process gloo process group. Pretrained feature extraction (hubconf), linear/semi-supervised evaluation (evaluate.py) and pretraining are deferred/out of scope."
+  },
+  "tutorials": [
+    {
+      "path": "main_vicreg.py",
+      "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+      "title": "VICReg pretraining script (VICReg module, loss, Projector, LARS, FullGatherLayer)",
+      "description": "Training entry point. VICReg.forward(x, y) projects two views through backbone+projector and returns sim_coeff*invariance(MSE) + std_coeff*variance(hinge on std, eps=1e-4) + cov_coeff*covariance(off-diagonal^2 / num_features) loss, after all-gathering embeddings across processes.",
+      "type": "script",
+      "include_in_tools": true,
+      "reason_for_include_or_exclude": "Matches the user filter. VICReg.forward is the sole upstream implementation of the VICReg loss and can be applied to user-supplied embeddings by replacing backbone/projector with identities; training loop itself (main, LARS, adjust_learning_rate, ImageNet loading) is out of scope.",
+      "suggested_tools": [
+        {
+          "tool_name": "vicreg_compute_loss",
+          "source_section": "main_vicreg.py::VICReg.forward (with off_diagonal, FullGatherLayer)",
+          "description": "Compute the VICReg loss (invariance + variance + covariance, weighted by sim/std/cov coefficients) between two user-supplied embedding matrices Z and Z' of shape [n, d] (the two branches' expander outputs), using the upstream VICReg.forward unchanged. Returns the total loss and the three unweighted terms.",
+          "primary_input": "Two embedding matrices Z (views/branch A) and Z' (branch B), same shape [n, d], n >= 2, d >= 2 (file path to .npy/.csv/.pt or inline arrays), float; plus sim_coeff (default 25.0), std_coeff (default 25.0), cov_coeff (default 1.0).",
+          "outputs": "JSON: total loss (float) as returned by VICReg.forward with the given coefficients; invariance_loss (repr_loss), variance_loss (std_loss), covariance_loss (cov_loss) obtained by calling the same upstream forward with unit one-hot coefficients (1,0,0), (0,1,0), (0,0,1); n, d, and coefficients used.",
+          "applicable_to_new_data": true
+        }
+      ]
+    }
+  ]
+}
