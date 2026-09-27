@@ -1,0 +1,111 @@
+{
+  "module": "main_vicreg",
+  "source_file": "src/tools/main_vicreg.py",
+  "source_sha256": "9ef3d282f521ea95eeb14b1954a11f3871bd261b20311c5c5342f5dc1f490520",
+  "mcp_instance": "main_vicreg_mcp",
+  "reference": "https://github.com/facebookresearch/vicreg/blob/4e12602fd495af83efd1631fbe82523e6db092e0/main_vicreg.py",
+  "upstream": {
+    "path": "repo/vicreg/main_vicreg.py",
+    "commit": "4e12602fd495af83efd1631fbe82523e6db092e0",
+    "sha256": "88c4439e2c508156c79416cbd7c628d05f52f517e3eb1f66eac8db483485cf20",
+    "import": "importlib spec_from_file_location under module name 'vicreg_upstream_main_vicreg' (wrapper module is also named main_vicreg, plain 'import main_vicreg' would self-resolve when src/tools is on sys.path); repo dir on sys.path for sibling imports (augmentations, distributed, resnet); sys.dont_write_bytecode=True. Repo dir = $VICREG_REPO_DIR or <project>/repo/vicreg; ImportError if main_vicreg.py missing."
+  },
+  "tools": [
+    {
+      "name": "vicreg_compute_loss",
+      "upstream_calls": [
+        "main_vicreg.VICReg.forward (calls off_diagonal, FullGatherLayer.apply, F.mse_loss unchanged)"
+      ],
+      "binding": "Same as scanner/executor driver notebooks/vicreg_loss/run_reference.py: single-process gloo group (file:// init, world_size=1) created once if not initialized and kept for the server lifetime; VICReg.__new__ + nn.Module.__init__; args=Namespace(batch_size=n, sim_coeff, std_coeff, cov_coeff, mlp=str(d)); num_features=d; backbone=projector=nn.Identity; torch.no_grad(). Total loss = forward with user coefficients; unweighted terms = forward with (1,0,0),(0,1,0),(0,0,1). Upstream calls serialized with a threading.Lock.",
+      "parameters": {
+        "embeddings_path": "required; 2-D [n,d]; .npy (np.load, allow_pickle=False) or header-less numeric .csv (',') / .tsv ('\\t') / .txt (whitespace) via np.loadtxt(ndmin=2); no header detection",
+        "embeddings_prime_path": "required; same formats; must have same shape",
+        "sim_coeff": "25.0 (upstream --sim-coeff default)",
+        "std_coeff": "25.0 (upstream --std-coeff default)",
+        "cov_coeff": "1.0 (upstream --cov-coeff default)",
+        "dtype": "Literal['float32','float64'] = 'float32' (upstream trains in float32; upstream forward does not cast)",
+        "output_dir": "None -> <project>/tmp/outputs; fresh subdir vicreg_loss_<UTC timestamp>_<uuid8> per call"
+      },
+      "checks": [
+        "files exist",
+        "readable numeric array",
+        "2-D",
+        "identical shapes",
+        "n >= 2",
+        "all finite"
+      ],
+      "io_adaptations": [
+        "file loading and dtype cast (numpy -> torch.from_numpy)",
+        "args.batch_size=n instead of upstream 2048 so the covariance denominator is (n-1) for the supplied batch (scanner binding)",
+        "args.mlp=str(d)/num_features=d so covariance is normalized by the supplied embedding dimension"
+      ],
+      "scientific_transformations_added": "none; weighted_contributions in the JSON are coefficient * unweighted term (display arithmetic only, not a recomputation of the loss)",
+      "outputs": {
+        "artifact": "vicreg_loss.json with total_loss, invariance_loss, variance_loss, covariance_loss, weighted_contributions, n_samples, n_features, coefficients, dtype, input paths, method, reference",
+        "return": [
+          "message",
+          "reference",
+          "artifacts",
+          "total_loss",
+          "invariance_loss",
+          "variance_loss",
+          "covariance_loss",
+          "n_samples",
+          "n_features",
+          "coefficients"
+        ]
+      },
+      "diagnostics": "one line to stderr per call; nothing printed to stdout (import verified silent on stdout)"
+    }
+  ],
+  "checks": {
+    "import_as_package": "cd src && python -c 'from tools.main_vicreg import main_vicreg_mcp' -> ok; upstream resolved to repo/vicreg/main_vicreg.py; no stdout",
+    "smoke_command": "PYTHONDONTWRITEBYTECODE=1 vicreg-env/bin/python <scratchpad>/smoke.py (FastMCP Client(main_vicreg_mcp) in-process)",
+    "smoke_result_file": "tmp/outputs/impl_smoke/smoke_result.json",
+    "smoke_summary": {
+      "tools_listed": [
+        "vicreg_compute_loss"
+      ],
+      "case_a_default_all_4_values_bit_exact_vs_reference_outputs.json": true,
+      "repeat_calls_distinct_dirs": true,
+      "case_a_csv_roundtrip_total_exact": true,
+      "case_a_float64_total_exact_vs_f_dtype_float64_of_a": true,
+      "case_e_custom_coeffs_all_exact": true,
+      "error_cases": {
+        "shape_mismatch": "Error calling tool 'vicreg_compute_loss': shape mismatch: embeddings_path [64, 32] vs embeddings_prime_path [128, 256]",
+        "missing": "Error calling tool 'vicreg_compute_loss': embeddings_path: file not found: /home/user/yyfc1106/output/vicreg_agent/notebooks/vicreg_loss/data/nope.npy",
+        "nan": "Error calling tool 'vicreg_compute_loss': embeddings_path: contains NaN or infinite values"
+      }
+    },
+    "upstream_integrity": "git -C repo/vicreg status --porcelain empty; no __pycache__ under repo/vicreg or src"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "fail",
+      "reason": "wrapper did 'import main_vicreg'; with src/tools on sys.path this resolved to the wrapper itself (AttributeError: no VICReg). No output dirs were created (failure before write)."
+    },
+    {
+      "attempt": 2,
+      "result": "pass",
+      "change": "load upstream via importlib by file path under a distinct module name"
+    }
+  ],
+  "produced_files": {
+    "tmp/outputs/impl_smoke/a_z.csv": "41156c28b19d311a3af2e903741adf1cb91fdf05cd24b5225c4dbdce8e828c7a",
+    "tmp/outputs/impl_smoke/a_zp.csv": "63ffd69abcf142d727e20c4aa9b7c02070ab36b73f458a5ed816d5b071943705",
+    "tmp/outputs/impl_smoke/nan.npy": "1ab939fff93afa146c33f05a0bc26354c8a34db296d64fa9489e7e7dc43536e7",
+    "tmp/outputs/impl_smoke/smoke_result.json": "74c6879fe4d8eed233799fe6e4f7b7987cba0957cd43dc95aabfb22cac1486a8",
+    "tmp/outputs/impl_smoke/vicreg_loss_20260927T070316_3a81c78b/vicreg_loss.json": "d4cefa97ebe8127899e17511b562aa8cfc2497e55b51c480a4debc1431f7470b",
+    "tmp/outputs/impl_smoke/vicreg_loss_20260927T070316_3fbe2c30/vicreg_loss.json": "2ce329b9e7007023a7e83d97c7e2342926094add761cf4ca485620bcc2130acd",
+    "tmp/outputs/impl_smoke/vicreg_loss_20260927T070316_690c08d6/vicreg_loss.json": "125bb37a3bb77ca2433a1714fedc097c9431cb8421d1adf77bb1340bd6cae8db",
+    "tmp/outputs/impl_smoke/vicreg_loss_20260927T070316_a57dee53/vicreg_loss.json": "775bfd12651a7ba7ee64c43fdfa58dc52fc5835736259601574f47ce71904764",
+    "tmp/outputs/impl_smoke/vicreg_loss_20260927T070316_e155b605/vicreg_loss.json": "775bfd12651a7ba7ee64c43fdfa58dc52fc5835736259601574f47ce71904764"
+  },
+  "limitations": [
+    "world_size=1 only; multi-process all-gather not exercised",
+    "forward-only (no gradients)",
+    "float32 cross-machine last-bit differences possible (BLAS reduction order)",
+    "text inputs must be header-less numeric"
+  ]
+}

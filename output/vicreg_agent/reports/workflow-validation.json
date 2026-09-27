@@ -2,7 +2,7 @@
   "validator": "paper2agent-workflow",
   "schema_version": 1,
   "success": true,
-  "through": "execution",
+  "through": "extraction",
   "errors": [],
   "passed_assignments": [
     {
@@ -14,6 +14,11 @@
       "role": "executor",
       "task": "vicreg_loss",
       "run_id": "exec-vicreg-loss-attempt-1"
+    },
+    {
+      "role": "implementer",
+      "task": "main_vicreg",
+      "run_id": "impl-main-vicreg-attempt-1"
     },
     {
       "role": "scanner",
@@ -31,6 +36,10 @@
     {
       "role": "executor",
       "task": "vicreg_loss"
+    },
+    {
+      "role": "implementer",
+      "task": "main_vicreg"
     },
     {
       "role": "scanner",
