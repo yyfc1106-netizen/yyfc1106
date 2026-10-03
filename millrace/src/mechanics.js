@@ -48,17 +48,24 @@ export function outflow(ctl) {
 /** Stone fineness 0 (coarse) .. 1 (fine) from gap in mm. */
 export const fineness = (gapMm) => clamp(1 - (gapMm - 0.1) / 1.4, 0, 1);
 
+/** Grain only reaches the stones once the runner is up to speed (the damsel shakes the shoe in proportion to speed). */
+export const feedFactor = (w) => {
+  const x = clamp((Math.abs(w) - 0.25 * P.wRef) / (0.45 * P.wRef), 0, 1);
+  return x * x * (3 - 2 * x);
+};
+
 /** Load torque of one stone pair at stone speed w (rad/s). */
 export function stoneLoad(w, ctl) {
   const fine = fineness(ctl.gap);
   const E = (40 + 90 * Math.pow(fine, 1.4)) * 1e3; // J/kg
+  const ff = feedFactor(w);
   const mdot = ctl.feed * P.mMax; // kg/s offered
-  const grind = ((E * mdot) / P.wRef) * th(w, 1.5);
+  const grind = ((E * mdot * ff) / P.wRef) * th(w, 1.5);
   const idle = (10 + 0.6 * Math.abs(w)) * th(w, 0.3);
   const touching = clamp((0.3 - ctl.gap) / 0.2, 0, 1);
-  const starved = 1 - Math.min(1, ctl.feed / 0.25);
+  const starved = 1 - Math.min(1, (ctl.feed * ff) / 0.25);
   const rub = 160 * touching * starved * th(w, 0.5);
-  return { total: grind + idle + rub, grind, idle, rub, mdot: (mdot * Math.abs(w)) / P.wRef, E };
+  return { total: grind + idle + rub, grind, idle, rub, mdot: (mdot * ff * Math.abs(w)) / P.wRef, E };
 }
 
 /**

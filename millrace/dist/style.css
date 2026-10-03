@@ -49,12 +49,14 @@ table.stages{width:100%;border-collapse:collapse}
 .stages th{font-size:10px;color:var(--mut);text-align:left;text-transform:uppercase;font-weight:500}
 .stages td{padding:4px 0;border-top:1px solid var(--line)}.stages tr.x td{color:var(--mut);font-size:10px}
 .train{display:grid;grid-template-columns:auto 1fr;gap:2px 12px}.train span:nth-child(odd){color:var(--mut)}
+#hover{position:fixed;z-index:6;pointer-events:none;display:none;max-width:230px;padding:5px 8px;background:var(--panel);border:1px solid var(--acc);font-size:11px;line-height:1.35}
+#hover b{display:block;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
 @media(max-width:820px){
   #panel{top:auto;height:46vh;bottom:0;right:0;left:0;width:auto;border-top:1px solid var(--line);background:var(--bg);padding:8px 12px}
   #panel.closed{height:40px;overflow:hidden}
   #sheetBtn{display:block;width:100%;padding:8px;text-align:left;border-bottom:1px solid var(--line);margin-bottom:8px}
   #pattern,#viewctl,#status{display:none}#warn{bottom:calc(46vh + 8px);max-width:90%}
-  #title{top:56px}#top{gap:8px;padding:10px 12px}
+  #top{gap:4px 14px;padding:10px 14px}#logo{margin-right:0;width:100%}#title{top:104px;left:16px}#title h1{font-size:30px}#title p{display:none}#hover{display:none!important}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 #loading{position:fixed;inset:0;z-index:20;background:var(--bg);display:grid;place-items:center;text-align:center;font-family:Orbitron,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}

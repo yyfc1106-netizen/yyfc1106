@@ -14,7 +14,7 @@ const P = M.P;
 /* ---------------- state ---------------- */
 const mill = M.create();
 let curveKey = '', curveData = [];
-const ui = { timeScale: 1, explode: 0, explodeT: 0, wire: false, labels: false, sacks: 0 };
+const ui = { cutaway: false, timeScale: 1, explode: 0, explodeT: 0, wire: false, labels: false, sacks: 0 };
 
 /* ---------------- scene ---------------- */
 const canvas = $('gl');
@@ -26,7 +26,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 200);
 const target = new THREE.Vector3(1.2, 3.2, 0);
 const orbit = { az: 0.9, el: 0.42, dist: 27 };
-const home = { ...orbit };
+const home = { ...orbit }; let userMoved = false;
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x556070, 1.1));
 const sun = new THREE.DirectionalLight(0xffffff, 2.2);
@@ -170,6 +170,30 @@ const foamMat = new THREE.ShaderMaterial({
   fragmentShader: 'varying float vA; void main(){ float r = length(gl_PointCoord*2.-1.); if (r > 1.) discard; gl_FragColor = vec4(vec3(0.95,0.98,1.0), vA * (1.-r*r)); }',
 });
 const foam = new THREE.Points(foamGeo, foamMat); foam.frustumCulled = false; foam.renderOrder = 3; scene.add(foam);
+
+/* flour dust around the running stones */
+const DN = 400, dPos = new Float32Array(DN * 3), dVel = new Float32Array(DN * 3), dLife = new Float32Array(DN);
+let dN = 0;
+const dustGeo = new THREE.BufferGeometry(); dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3).setUsage(THREE.DynamicDrawUsage)); dustGeo.setDrawRange(0, 0);
+const dustPts = new THREE.Points(dustGeo, new THREE.PointsMaterial({ map: dotTex, alphaTest: 0.02, color: 0xf3e9d2, size: 0.16, transparent: true, opacity: 0.45, depthWrite: false }));
+dustPts.frustumCulled = false; scene.add(dustPts);
+let dustAcc = 0;
+function stepDust(dt, o) {
+  dustAcc += dt * o.throughput / 120 * 28;
+  while (dustAcc >= 1 && dN < DN) {
+    dustAcc -= 1; const s = Math.random() < 0.5 ? -1 : 1; if (!mill.stones[s < 0 ? 0 : 1].engaged) continue;
+    const a = Math.random() * 6.283, r = 0.78 + Math.random() * 0.1, i = dN++ * 3;
+    dPos[i] = 2.5 + Math.cos(a) * r; dPos[i + 1] = 4.85 + Math.random() * 0.1; dPos[i + 2] = s * 1.45 + Math.sin(a) * r;
+    dVel[i] = Math.cos(a) * 0.25 + (Math.random() - 0.5) * 0.1; dVel[i + 1] = 0.12 + Math.random() * 0.15; dVel[i + 2] = Math.sin(a) * 0.25 + (Math.random() - 0.5) * 0.1; dLife[i / 3] = 1 + Math.random() * 1.2;
+  }
+  dustAcc = Math.min(dustAcc, 3);
+  for (let n = 0; n < dN; ) {
+    const i = n * 3; dLife[n] -= dt;
+    if (dLife[n] <= 0) { const l = --dN * 3; for (let k = 0; k < 3; k++) { dPos[i + k] = dPos[l + k]; dVel[i + k] = dVel[l + k]; } dLife[n] = dLife[dN]; continue; }
+    dPos[i] += dVel[i] * dt; dPos[i + 1] += dVel[i + 1] * dt; dPos[i + 2] += dVel[i + 2] * dt; n++;
+  }
+  dustGeo.setDrawRange(0, dN); dustGeo.attributes.position.needsUpdate = true;
+}
 const TAIL_Y = 0.34;
 function spawnFoam(x, y, z, vx, vy, vz, life, type, size) {
   if (fN >= FN) return; const i = fN++, a = i * 3;
@@ -206,6 +230,50 @@ function stepFoam(dt, Q) {
   foamGeo.setDrawRange(0, fN); foamGeo.attributes.position.needsUpdate = foamGeo.attributes.aAlpha.needsUpdate = foamGeo.attributes.aSize.needsUpdate = true;
 }
 
+
+/* ---------------- hover names and click-to-focus ---------------- */
+const INFO = {
+  'Foundation': 'Stone-lined wheel pit and tail race.',
+  'Flume & gate': 'Oak flume and sluice gate: the gate opening sets the flow.',
+  'Overshot wheel': '4.8 m wheel with 36 buckets. Water enters at the top and its weight turns the wheel.',
+  'Gear train': 'Pit wheel, wallower, great spur wheel and stone nuts: 18 : 1 speed-up.',
+  'Millstones': '1.2 m runner and bed stones. Lift the stone nut out of gear to stop a pair.',
+  'Hopper & sack': 'Grain hopper feeds the stones; flour falls into the sack (50 kg).',
+};
+const raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), pickMeshes = [];
+groups.forEach((g) => g.traverse((o) => { if (o.isMesh) { o.userData.group = g; pickMeshes.push(o); } }));
+let hoverAt = null, hoverGroup = null;
+function pick(x, y) {
+  ndc.set((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1); raycaster.setFromCamera(ndc, camera);
+  const hit = raycaster.intersectObjects(pickMeshes, false).find((h) => h.object.visible && h.object.userData.group);
+  return hit ? hit.object.userData.group : null;
+}
+function updateHover() {
+  const tag = $('hover');
+  if (!hoverAt || drag) { tag.style.display = 'none'; canvas.style.cursor = ''; return; }
+  const g = pick(hoverAt.x, hoverAt.y); hoverGroup = g;
+  canvas.style.cursor = g ? 'pointer' : '';
+  if (!g) { tag.style.display = 'none'; return; }
+  tag.innerHTML = `<b>${g.userData.name}</b>${INFO[g.userData.name] || ''}`;
+  tag.style.display = 'block'; tag.style.left = Math.min(innerWidth - 250, hoverAt.x + 14) + 'px'; tag.style.top = hoverAt.y + 14 + 'px';
+}
+function clickAt(x, y) {
+  const g = pick(x, y);
+  if (!g) { if (focused) unfocus(); return; }
+  focused = g;
+  const box = new THREE.Box3().setFromObject(g), c = box.getCenter(new THREE.Vector3()), sz = box.getSize(new THREE.Vector3());
+  goTo({ az: orbit.az, el: orbit.el, dist: clamp(Math.max(sz.x, sz.y, sz.z) * 1.9 + 3, 7, 30), t: c });
+}
+function unfocus() { if (!focused) return; focused = null; goTo({ az: orbit.az, el: orbit.el, dist: home.dist, t: homeTarget.clone() }); }
+function stepCamera(real) {
+  if (!goal) return;
+  const k = reduced ? 1 : 1 - Math.exp(-7 * Math.min(real, 0.25)); let d = 0;
+  orbit.az += (goal.az - orbit.az) * k; orbit.el += (goal.el - orbit.el) * k; orbit.dist += (goal.dist - orbit.dist) * k;
+  target.lerp(goal.t, k);
+  d = Math.abs(goal.az - orbit.az) + Math.abs(goal.el - orbit.el) + Math.abs(goal.dist - orbit.dist) + target.distanceTo(goal.t);
+  if (d < 0.01) goal = null;
+}
+
 /* ---------------- simulation backend (worker, or main-thread fallback) ---------------- */
 const net = { worker: null, local: null, ready: false, stamp: 0 };
 const fluidDots = []; // Fig. 1: (wheel rpm, fluid torque) samples
@@ -220,8 +288,8 @@ function ingest(snap) {
     const m = Math.min(snap.n, NP); let o = 0;
     for (let i = 0; i < m; i++) {
       const hx = snap.pos[i * 3] / 0.9 + 0.5, y = snap.pos[i * 3 + 1], z = snap.pos[i * 3 + 2];
-      if (snap.nn[i] >= DENSE) for (let k = 0; k < KCOPY; k++) { fluidPos[o++] = ((k + hx) / KCOPY - 0.5) * SLAB; fluidPos[o++] = y; fluidPos[o++] = z; }
-      else { fluidPos[o++] = snap.pos[i * 3] * 1.2; fluidPos[o++] = y; fluidPos[o++] = z; } // spray: a single droplet
+      if (snap.nn[i] >= DENSE) for (let k = 0; k < KCOPY; k++) { const px = ((k + hx) / KCOPY - 0.5) * SLAB; if (ui.cutaway && px < 0) continue; fluidPos[o++] = px; fluidPos[o++] = y; fluidPos[o++] = z; }
+      else if (!ui.cutaway || snap.pos[i * 3] >= 0) { fluidPos[o++] = snap.pos[i * 3] * 1.2; fluidPos[o++] = y; fluidPos[o++] = z; } // spray: a single droplet
     }
     fluidCount = o / 3; fluidGeo.setDrawRange(0, fluidCount); fluidGeo.attributes.position.needsUpdate = true;
   }
@@ -265,21 +333,33 @@ function placeCamera() {
   camera.position.set(target.x + dist * Math.cos(el) * Math.sin(az), target.y + dist * Math.sin(el), target.z + dist * Math.cos(el) * Math.cos(az));
   camera.lookAt(target);
 }
-let drag = null;
-canvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; canvas.setPointerCapture(e.pointerId); });
+/* smooth camera moves: section view, click-to-focus, reset */
+let goal = null, focused = null;
+const homeTarget = target.clone();
+function goTo(g) { goal = g; }
+let drag = null, downAt = null;
+canvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; downAt = { x: e.clientX, y: e.clientY }; goal = null; userMoved = true; canvas.setPointerCapture(e.pointerId); });
 canvas.addEventListener('pointermove', (e) => {
   if (!drag) return;
   orbit.az -= (e.clientX - drag.x) * 0.006; orbit.el = clamp(orbit.el + (e.clientY - drag.y) * 0.005, 0.05, 1.45);
   drag = { x: e.clientX, y: e.clientY };
 });
-canvas.addEventListener('pointerup', () => (drag = null));
-canvas.addEventListener('wheel', (e) => { e.preventDefault(); orbit.dist = clamp(orbit.dist * Math.exp(e.deltaY * 0.001), 6, 40); }, { passive: false });
-$('reset').onclick = () => Object.assign(orbit, home);
+canvas.addEventListener('pointerup', (e) => {
+  const click = downAt && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 5; drag = null; downAt = null;
+  if (click) clickAt(e.clientX, e.clientY);
+});
+canvas.addEventListener('pointermove', (e) => { hoverAt = { x: e.clientX, y: e.clientY }; });
+canvas.addEventListener('pointerleave', () => { hoverAt = null; $('hover').style.display = 'none'; });
+addEventListener('keydown', (e) => { if (e.key === 'Escape') unfocus(); });
+canvas.addEventListener('wheel', (e) => { e.preventDefault(); goal = null; userMoved = true; orbit.dist = clamp(orbit.dist * Math.exp(e.deltaY * 0.001), 6, 40); }, { passive: false });
+$('reset').onclick = () => { focused = null; userMoved = false; goTo({ az: home.az, el: home.el, dist: home.dist, t: homeTarget.clone() }); };
 
 function resize() {
-  const w = innerWidth, h = innerHeight;
+  const w = innerWidth, h = innerHeight, narrow = w <= 820;
   renderer.setSize(w, h, false); camera.aspect = w / h;
-  camera.setViewOffset(w, h, innerWidth > 820 ? 230 : 0, 0, w, h); // shift the model left of the panel
+  camera.setViewOffset(w, h, narrow ? 0 : 230, narrow ? Math.round(h * 0.2) : 0, w, h); // keep the model clear of the panel
+  home.dist = narrow ? Math.min(60, 27 / Math.min(1, w / h) * 0.75) : 27;
+  if (!userMoved && !goal) orbit.dist = home.dist;
   camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
@@ -308,10 +388,17 @@ document.querySelectorAll('#speed button').forEach((b) => (b.onclick = () => {
 document.querySelectorAll('#views button').forEach((b) => (b.onclick = () => {
   const k = b.dataset.view; ui[k] = !ui[k]; b.setAttribute('aria-pressed', ui[k]);
   if (k === 'explode') ui.explodeT = ui.explode ? 1 : 0;
+  if (k === 'cutaway') setCutaway(ui.cutaway);
   if (k === 'wire') allMats.forEach((m) => (m.wireframe = ui.wire));
   if (k === 'labels') $('labels').style.display = ui.labels ? '' : 'none';
 }));
 $('labels').style.display = 'none';
+const cutPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0); // keeps x >= 0; the camera swings round to look at the cut face
+function setCutaway(on) {
+  renderer.clippingPlanes = on ? [cutPlane] : [];
+  for (const m of [mats.stone, mats.earth, mats.grass, mats.water]) { m.side = on ? THREE.DoubleSide : THREE.FrontSide; m.needsUpdate = true; }
+  goTo(on ? { az: -1.25, el: 0.3, dist: Math.min(orbit.dist, 24), t: target.clone() } : { az: home.az, el: home.el, dist: orbit.dist, t: target.clone() });
+}
 groups.forEach((g) => { const s = document.createElement('span'); s.textContent = g.userData.name; g.userData.el = s; $('labels').appendChild(s); });
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
@@ -367,12 +454,13 @@ function drawSankey(o) {
   const scale = pin > 0 ? (h - 20) / pin : 0, x0 = 70, x1 = w - 110;
   c.fillStyle = css('--acc'); c.fillRect(x0 - 20, 10, 20, pin * scale);
   c.fillStyle = css('--ink'); c.fillText(`water ${f(pin)} kW`, 4, h - 4);
-  let y = 10;
+  let y = 10, lastLy = -99;
   segs.forEach(([name, v, col]) => {
     const hh = v * scale; if (hh < 0.5) return;
     c.globalAlpha = 0.28; c.fillStyle = css(col); c.beginPath(); c.moveTo(x0, 10 + (y - 10)); c.lineTo(x1, y); c.lineTo(x1, y + hh); c.lineTo(x0, y - 10 + 10 + hh); c.closePath(); c.fill();
     c.globalAlpha = 1; c.fillRect(x1, y, 14, hh); c.fillStyle = css('--ink');
-    c.fillText(`${name} ${f(v, 2)}`, x1 + 20, y + Math.max(8, hh / 2 + 3)); y += hh + 2;
+    const ly = Math.max(y + Math.max(8, hh / 2 + 3), lastLy + 11); lastLy = ly;
+    c.fillText(`${name} ${f(v, 2)}`, x1 + 20, ly); y += hh + 2;
   });
 }
 
@@ -418,11 +506,13 @@ const clock = new THREE.Clock();
 let acc = 0;
 function frame() {
   requestAnimationFrame(frame);
-  const dt = Math.min(clock.getDelta(), 0.05) * ui.timeScale;
+  const real = Math.min(clock.getDelta(), 0.25), dt = Math.min(real, 0.05) * ui.timeScale;
   if (net.local && net.ready) { net.local.advance(dt); ingest(net.local.snapshot()); }
   if (!net.ready) { placeCamera(); renderer.render(scene, camera); return; }
   if (surfaceDirty !== false) { if (!ssf) water.update(pPos, surfaceDirty); surfaceDirty = false; }
-  if (dt > 0) stepFoam(dt, mill.out.Q || 0);
+  if (dt > 0) { stepFoam(dt, mill.out.Q || 0); stepDust(dt, mill.out); }
+  stepCamera(real);
+  if (hoverAt) updateHover();
   const o = mill.out;
   const ahead = net.local ? 0 : clamp(((performance.now() - net.stamp) / 1000) * ui.timeScale, 0, 0.05); // smooth between worker snapshots
   const th = mill.theta + mill.omega * ahead;
@@ -464,4 +554,4 @@ function frame() {
 }
 startBackend();
 frame();
-window.__mill = mill; window.__orbit = orbit; window.__ssf = ssf; window.__r = renderer; window.__fc = () => fluidCount; // handy for experimenting from the console
+window.__mill = mill; window.__orbit = orbit; window.__ssf = ssf; window.__r = renderer; window.__fc = () => fluidCount; window.__dust = () => dN; window.__sacks = () => fullSacks.children.length; window.__screen = (name) => { const g = groups.find((x) => x.userData.name === name); const v = g.userData.labelAt.clone().add(g.position).sub(g.userData.base).project(camera); return { x: ((v.x + 1) / 2) * innerWidth, y: ((1 - v.y) / 2) * innerHeight }; }; window.__cut = () => renderer.clippingPlanes.length; window.__cam = camera; window.__goal = () => goal && { dist: goal.dist }; window.__focused = () => focused && focused.userData.name; window.__ui = ui; window.__net = net; // handy for experimenting from the console

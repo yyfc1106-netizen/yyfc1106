@@ -11,10 +11,12 @@
 <div id="loading"><div>Filling the buckets<i><b id="loadBar"></b></i><small>Starting</small></div></div>
 <canvas id="gl" tabindex="0" aria-label="3D model of an overshot gristmill. Drag to orbit, scroll to zoom."></canvas>
 <div id="labels" aria-hidden="true"></div>
+<div class="tag" id="hover" aria-hidden="true"></div>
 
 <header id="top">
   <div id="logo">MILLRACE<sup>lite</sup></div>
   <nav id="views">
+    <button data-view="cutaway" aria-pressed="false">Section</button>
     <button data-view="explode" aria-pressed="false">Explode</button>
     <button data-view="wire" aria-pressed="false">Wireframe</button>
     <button data-view="labels" aria-pressed="false">Names</button>
