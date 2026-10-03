@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as M from './mechanics.js';
 import { Sim } from './sim.js';
+import { WaterSurface } from './surface.js';
 
 const $ = (id) => document.getElementById(id);
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -139,8 +140,10 @@ const NP = 1600;
 const pPos = new Float32Array(NP * 3); // filled from the simulation snapshot
 const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3)); pGeo.setDrawRange(0, 0);
 const dotTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d'); const gr = g.createRadialGradient(16, 16, 2, 16, 16, 15); gr.addColorStop(0, '#fff'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return new THREE.CanvasTexture(c); })();
-const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ map: dotTex, alphaTest: 0.05, color: 0x3fd0e8, size: 0.34, transparent: true, opacity: 0.95, depthWrite: false }));
+const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ map: dotTex, alphaTest: 0.05, color: 0x3fd0e8, size: 0.2, transparent: true, opacity: 0.9, depthWrite: false }));
 pts.frustumCulled = false; scene.add(pts);
+const water = new WaterSurface(scene);
+let surfaceDirty = false;
 
 /* ---------------- simulation backend (worker, or main-thread fallback) ---------------- */
 const net = { worker: null, local: null, ready: false, stamp: 0 };
@@ -150,7 +153,7 @@ function ingest(snap) {
   Object.assign(mill, { theta: snap.theta, omega: snap.omega, time: snap.time, tauWater: snap.tauWater, out: snap.out, stones: snap.stones });
   pPos.set(snap.pos.subarray(0, Math.min(snap.pos.length, NP * 3)));
   pGeo.setDrawRange(0, Math.min(snap.n, NP)); pGeo.attributes.position.needsUpdate = true;
-  net.stamp = performance.now();
+  net.stamp = performance.now(); surfaceDirty = snap.n;
   if (snap.time - lastDot > 0.25) {
     lastDot = snap.time; fluidDots.push({ t: snap.time, rpm: snap.out.wheelRpm, tau: snap.fluidTau / 1e3 });
     while (fluidDots.length && fluidDots[0].t < snap.time - 20) fluidDots.shift();
@@ -352,6 +355,7 @@ function frame() {
   const dt = Math.min(clock.getDelta(), 0.05) * ui.timeScale;
   if (net.local && net.ready) { net.local.advance(dt); ingest(net.local.snapshot()); }
   if (!net.ready) { placeCamera(); renderer.render(scene, camera); return; }
+  if (surfaceDirty !== false) { water.update(pPos, surfaceDirty); surfaceDirty = false; }
   const o = mill.out;
   const ahead = net.local ? 0 : clamp(((performance.now() - net.stamp) / 1000) * ui.timeScale, 0, 0.05); // smooth between worker snapshots
   const th = mill.theta + mill.omega * ahead;
@@ -391,4 +395,4 @@ function frame() {
 }
 startBackend();
 frame();
-window.__mill = mill; // handy for experimenting from the console
+window.__mill = mill; window.__orbit = orbit; // handy for experimenting from the console
