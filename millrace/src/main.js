@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as M from './mechanics.js';
+import { Sim } from './sim.js';
 
 const $ = (id) => document.getElementById(id);
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -74,12 +75,16 @@ for (let i = 0; i < 8; i++) for (const s of [-1, 1]) {
   const a = (i / 8) * Math.PI * 2;
   const sp = mesh(spokeGeo, mats.oak, wheel, [s * (W / 2), Math.cos(a) * (R / 2), Math.sin(a) * (R / 2)]); sp.rotation.x = -a;
 }
-const bucketGeo = new THREE.BoxGeometry(W, 0.55, 0.06);
+const RIN = R - 0.5, LEAN = 0.8; // must match fluid.js
+const boardAt = (a, r) => { const t = (r - RIN) / (R - RIN), ang = a - LEAN * t; return [Math.cos(ang) * r, Math.sin(ang) * r]; };
 for (let i = 0; i < P.NB; i++) {
-  const a = (i / P.NB) * Math.PI * 2;
-  const b = mesh(bucketGeo, mats.pale, wheel, [0, Math.cos(a) * (R - 0.2), Math.sin(a) * (R - 0.2)]);
-  b.rotation.x = -a - 0.5; // slanted bucket floor
+  const a = (i / P.NB) * Math.PI * 2, [y0, z0] = boardAt(a, RIN), [y1, z1] = boardAt(a, R);
+  const len = Math.hypot(y1 - y0, z1 - z0);
+  const b = mesh(new THREE.BoxGeometry(W, 0.03, len), mats.pale, wheel, [0, (y0 + y1) / 2, (z0 + z1) / 2]);
+  b.rotation.x = Math.atan2(-(y1 - y0), z1 - z0);
 }
+for (const sx of [-1, 1]) { const sh = mesh(new THREE.TorusGeometry(RIN, 0.04, 6, 64), mats.oak, wheel, [sx * (W / 2), 0, 0]); sh.rotation.y = Math.PI / 2; }
+const shroud = mesh(new THREE.CylinderGeometry(RIN, RIN, W, 48, 1, true), mats.oak, wheel); shroud.rotation.z = Math.PI / 2; shroud.material = mats.oak.clone(); shroud.material.side = THREE.DoubleSide;
 const shaft = mesh(new THREE.CylinderGeometry(0.16, 0.16, 3.8, 14), mats.iron, wheel); shaft.rotation.z = Math.PI / 2; shaft.position.x = 0.8;
 
 const gGear = group('Gear train', [1.8, 1.0, 0], [2.3, 4.0, 0]);
@@ -130,49 +135,59 @@ const groups = scene.children.filter((o) => o.userData && o.userData.name);
 groups.forEach((g) => (g.userData.base = g.position.clone()));
 
 /* --- water particles --- */
-const NP = 2400;
-const pPos = new Float32Array(NP * 3), pVel = new Float32Array(NP * 3), pAng = new Float32Array(NP), pRad = new Float32Array(NP), pMode = new Uint8Array(NP); // 0 dead 1 air 2 riding
-const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3)); pGeo.setDrawRange(0, NP);
-for (let i = 0; i < NP; i++) pPos[i * 3 + 1] = -100;
-const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x66e0ee, size: 0.14, transparent: true, opacity: 0.9, depthWrite: false }));
+const NP = 1600;
+const pPos = new Float32Array(NP * 3); // filled from the simulation snapshot
+const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3)); pGeo.setDrawRange(0, 0);
+const dotTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d'); const gr = g.createRadialGradient(16, 16, 2, 16, 16, 15); gr.addColorStop(0, '#fff'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return new THREE.CanvasTexture(c); })();
+const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ map: dotTex, alphaTest: 0.05, color: 0x3fd0e8, size: 0.34, transparent: true, opacity: 0.95, depthWrite: false }));
 pts.frustumCulled = false; scene.add(pts);
-let emitAcc = 0, cursor = 0;
-const LITRES = 0.4; // each particle stands for this many litres
-function emit(n, v) {
-  for (let k = 0; k < n && k < NP; k++) {
-    const i = cursor; cursor = (cursor + 1) % NP;
-    pMode[i] = 1;
-    pPos.set([(Math.random() - 0.5) * 1.3, 5.1 + Math.random() * 0.2, -0.9 + Math.random() * 0.1], i * 3);
-    pVel.set([0, 0, v], i * 3);
+
+/* ---------------- simulation backend (worker, or main-thread fallback) ---------------- */
+const net = { worker: null, local: null, ready: false, stamp: 0 };
+const fluidDots = []; // Fig. 1: (wheel rpm, fluid torque) samples
+let lastDot = -1;
+function ingest(snap) {
+  Object.assign(mill, { theta: snap.theta, omega: snap.omega, time: snap.time, tauWater: snap.tauWater, out: snap.out, stones: snap.stones });
+  pPos.set(snap.pos.subarray(0, Math.min(snap.pos.length, NP * 3)));
+  pGeo.setDrawRange(0, Math.min(snap.n, NP)); pGeo.attributes.position.needsUpdate = true;
+  net.stamp = performance.now();
+  if (snap.time - lastDot > 0.25) {
+    lastDot = snap.time; fluidDots.push({ t: snap.time, rpm: snap.out.wheelRpm, tau: snap.fluidTau / 1e3 });
+    while (fluidDots.length && fluidDots[0].t < snap.time - 20) fluidDots.shift();
   }
 }
-function stepParticles(dt, o) {
-  const omega = mill.omega;
-  emitAcc += (o.Q * 1000 / LITRES) * dt;
-  const n = Math.floor(emitAcc); emitAcc -= n; emit(n, o.vJet);
-  for (let i = 0; i < NP; i++) {
-    const m = pMode[i]; if (!m) continue;
-    const j = i * 3;
-    if (m === 1) {
-      pVel[j + 1] -= 9.81 * dt;
-      pPos[j] += pVel[j] * dt; pPos[j + 1] += pVel[j + 1] * dt; pPos[j + 2] += pVel[j + 2] * dt;
-      const dy = pPos[j + 1] - WC.y, dz = pPos[j + 2];
-      const r = Math.hypot(dy, dz);
-      if (r < R - 0.1 && r > R - 0.6 && dy > -0.5 && pVel[j + 2] * dz + pVel[j + 1] * dy < 1e3 && pPos[j + 2] > -0.5) { // lands in a bucket
-        pMode[i] = 2; pAng[i] = Math.atan2(dz, dy); pRad[i] = R - 0.25 - Math.random() * 0.25;
-      } else if (pPos[j + 1] < 0.5) { pMode[i] = 0; pPos[j + 1] = -100; }
-    } else {
-      pAng[i] += omega * dt;
-      pPos[j] = (Math.random() - 0.5) * 0.002 + (pPos[j] || 0) * 0.99;
-      pPos[j + 1] = WC.y + Math.cos(pAng[i]) * pRad[i];
-      pPos[j + 2] = Math.sin(pAng[i]) * pRad[i];
-      if (pAng[i] > 2.4) { // spilled out at the bottom
-        pMode[i] = 1; const u = omega * pRad[i];
-        pVel[j] = 0; pVel[j + 1] = -Math.sin(pAng[i]) * u; pVel[j + 2] = Math.cos(pAng[i]) * u;
-      }
-    }
-  }
-  pGeo.attributes.position.needsUpdate = true;
+function send(msg) { if (net.worker) net.worker.postMessage(msg); else if (net.local) { if (msg.type === 'ctl') net.local.setCtl(msg.ctl); else if (msg.type === 'engage') net.local.engage(msg.i, msg.on); } }
+const loadBar = $('loadBar');
+function ready() { net.ready = true; $('loading').style.display = 'none'; }
+function startLocal() {
+  if (net.worker) { try { net.worker.terminate(); } catch {} net.worker = null; }
+  const sim = new Sim(); sim.setCtl(mill.ctl); net.local = sim;
+  let i = 0; const N = 120 * 20; // shorter warm-up on the main thread
+  sim.coupled = false;
+  const chunk = () => {
+    const t0 = performance.now();
+    while (i < N && performance.now() - t0 < 30) { if (i === Math.round(N * 0.6)) sim.coupled = true; sim.step(); i++; }
+    loadBar.style.width = (i / N) * 100 + '%';
+    if (i < N) setTimeout(chunk, 0); else { sim.mill.time = 0; ingest(sim.snapshot()); ready(); }
+  };
+  chunk();
+}
+function startBackend() {
+  if (/[?&]local/.test(location.search) || typeof Worker === 'undefined') return startLocal();
+  let alive = false;
+  try {
+    const w = new Worker(new URL('./physics.worker.js', import.meta.url), { type: 'module' });
+    net.worker = w;
+    const bail = setTimeout(() => { if (!alive) startLocal(); }, 6000);
+    w.onerror = () => { clearTimeout(bail); if (!net.ready) startLocal(); };
+    w.onmessage = (e) => {
+      const d = e.data;
+      if (d.type === 'progress') { alive = true; loadBar.style.width = d.p * 100 + '%'; }
+      else if (d.type === 'ready') { alive = true; clearTimeout(bail); ready(); }
+      else if (d.type === 'state') ingest(d.s);
+    };
+    w.postMessage({ type: 'init', ctl: { ...mill.ctl } });
+  } catch { startLocal(); }
 }
 
 /* ---------------- camera & input ---------------- */
@@ -210,16 +225,16 @@ const sliders = {
 for (const k in sliders) {
   const el = $(k);
   el.value = mill.ctl[k] * 100;
-  const upd = () => { mill.ctl[k] = el.value / 100; $(k + 'Out').innerHTML = sliders[k].out(mill.ctl[k]); curveKey = ''; };
+  const upd = () => { mill.ctl[k] = el.value / 100; $(k + 'Out').innerHTML = sliders[k].out(mill.ctl[k]); curveKey = ''; send({ type: 'ctl', ctl: { [k]: mill.ctl[k] } }); };
   el.addEventListener('input', upd); upd();
 }
-$('brake').onclick = () => { mill.ctl.brake = !mill.ctl.brake; $('brake').setAttribute('aria-pressed', mill.ctl.brake); $('brakeS').textContent = mill.ctl.brake ? 'On' : 'Off'; };
+$('brake').onclick = () => { mill.ctl.brake = !mill.ctl.brake; send({ type: 'ctl', ctl: { brake: mill.ctl.brake } }); $('brake').setAttribute('aria-pressed', mill.ctl.brake); $('brakeS').textContent = mill.ctl.brake ? 'On' : 'Off'; };
 for (const i of [0, 1]) $('pair' + i).onclick = () => {
-  const on = !mill.stones[i].engaged; M.engage(mill, i, on);
+  const on = !mill.stones[i].engaged; send({ type: 'engage', i, on }); mill.stones[i].engaged = on;
   $('pair' + i).setAttribute('aria-pressed', on); $('pair' + i + 's').textContent = on ? 'In gear' : 'Out of gear'; curveKey = '';
 };
 document.querySelectorAll('#speed button').forEach((b) => (b.onclick = () => {
-  ui.timeScale = +b.dataset.s; document.querySelectorAll('#speed button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  ui.timeScale = +b.dataset.s; send({ type: 'scale', s: ui.timeScale }); document.querySelectorAll('#speed button').forEach((x) => x.setAttribute('aria-pressed', x === b));
 }));
 document.querySelectorAll('#views button').forEach((b) => (b.onclick = () => {
   const k = b.dataset.view; ui[k] = !ui[k]; b.setAttribute('aria-pressed', ui[k]);
@@ -260,6 +275,7 @@ function drawOperating(o) {
   curveData.forEach((p, i) => (i ? c.lineTo(X(p.rpm), Y(p.water)) : c.moveTo(X(p.rpm), Y(p.water)))); c.stroke();
   c.setLineDash([]); c.strokeStyle = css('--ink'); c.beginPath();
   curveData.forEach((p, i) => (i ? c.lineTo(X(p.rpm), Y(p.load)) : c.moveTo(X(p.rpm), Y(p.load)))); c.stroke();
+  c.fillStyle = css('--ink'); c.globalAlpha = 0.45; fluidDots.forEach((d) => { c.beginPath(); c.arc(X(d.rpm), Y(d.tau), 2, 0, 7); c.fill(); }); c.globalAlpha = 1;
   c.fillStyle = css('--warn'); c.beginPath(); c.arc(X(o.wheelRpm), Y(o.tau / 1e3), 4, 0, 7); c.fill();
 }
 const hist = []; let histT = 0;
@@ -334,12 +350,13 @@ let acc = 0;
 function frame() {
   requestAnimationFrame(frame);
   const dt = Math.min(clock.getDelta(), 0.05) * ui.timeScale;
-  acc += dt; const h = 1 / 120;
-  while (acc >= h) { M.step(mill, h); acc -= h; }
+  if (net.local && net.ready) { net.local.advance(dt); ingest(net.local.snapshot()); }
+  if (!net.ready) { placeCamera(); renderer.render(scene, camera); return; }
   const o = mill.out;
-  if (dt > 0) stepParticles(dt, o);
-  wheel.rotation.x = mill.theta; pitWheel.rotation.x = mill.theta;
-  const pi = mill.theta * P.r1; upright.rotation.y = pi;
+  const ahead = net.local ? 0 : clamp(((performance.now() - net.stamp) / 1000) * ui.timeScale, 0, 0.05); // smooth between worker snapshots
+  const th = mill.theta + mill.omega * ahead;
+  wheel.rotation.x = th; pitWheel.rotation.x = th;
+  const pi = th * P.r1; upright.rotation.y = pi;
   nuts.forEach((n, i) => (n.rotation.y = -mill.stones[i].theta + 0)); // nut spindle follows stone speed
   runners.forEach((r, i) => (r.rotation.y = mill.stones[i].theta));
   nuts.forEach((n, i) => (n.position.y += ((mill.stones[i].engaged ? 3.7 : 3.35) - n.position.y) * 0.15));
@@ -367,13 +384,11 @@ function frame() {
   });
   histT += dt; if (histT > 0.5) { histT = 0; hist.push(o.engaged ? o.stoneRpm : 0); if (hist.length > 120) hist.shift(); }
   const now = performance.now();
-  if (now - lastText > 120) {
+  if (net.ready && now - lastText > 120) {
     lastText = now; readouts(); drawOperating(o); drawStrip(o); drawSankey(o);
   }
   placeCamera(); renderer.render(scene, camera);
 }
-for (let i = 0; i < 120 * 40; i++) M.step(mill, 1 / 120); // warm start close to steady state
-mill.time = 0;
-for (let i = 0; i < 120; i++) hist.push(mill.out.stoneRpm);
+startBackend();
 frame();
 window.__mill = mill; // handy for experimenting from the console

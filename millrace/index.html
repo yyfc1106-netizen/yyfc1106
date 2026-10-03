@@ -9,6 +9,7 @@
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
+<div id="loading"><div>Filling the buckets<i><b id="loadBar"></b></i><small>Warming up the fluid solver</small></div></div>
 <canvas id="gl" tabindex="0" aria-label="3D model of an overshot gristmill. Drag to orbit, scroll to zoom."></canvas>
 <div id="labels" aria-hidden="true"></div>
 
@@ -57,7 +58,7 @@
     </div>
     <p class="note" id="rimNote"></p>
     <figure><canvas id="opCv" height="200" style="height:200px"></canvas>
-      <figcaption><b>Fig. 1</b> Torque vs wheel speed. Dashed: bucket model. Solid: load of the stones. Dot: where the mill is running now.</figcaption></figure>
+      <figcaption><b>Fig. 1</b> Torque vs wheel speed. Dashed: bucket model. Solid: load of the stones. Grey dots: fluid simulation, last 20 s. Orange: now. The mill settles where they cross.</figcaption></figure>
     <div class="row"><button class="sw" id="brake" aria-pressed="false"><span>Brake</span><small id="brakeS">Off</small></button></div>
   </section>
 

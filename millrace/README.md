@@ -6,6 +6,10 @@ Run: `cd millrace && python3 -m http.server 8000` and open http://localhost:8000
 Test the mechanics: `node src/mechanics.test.mjs`.
 
 - `src/mechanics.js`: pure lumped model: sluice flow, bucket-model wheel torque, 18:1 gear train, millstone load, meal fineness and temperature, warnings.
-- `src/main.js`: three.js scene (procedural geometry), ballistic water particles that ride the wheel, five-card panel, canvas charts (torque curves, runner-speed strip, energy balance).
+- `src/fluid.js`: 2D Position-Based Fluids in the wheel's cross-section (poly6/spiky kernels, spatial hash). The 36 slanted buckets are moving boundaries; the corrections they apply to the water are summed into a reaction torque on the wheel.
+- `src/sim.js` + `src/physics.worker.js`: couple fluid torque -> mechanics -> wheel angle -> fluid, in a Web Worker (falls back to the main thread after 6 s or with `?local`). The first 60% of the 40 s warm-up uses the analytic bucket torque while the buckets fill.
+- `src/main.js`: three.js scene (procedural geometry), renders the worker's particles, five-card panel, canvas charts (torque curves, runner-speed strip, energy balance).
 
-Not yet implemented: the position-based-fluids solver in a Web Worker (particle water here is ballistic and only visual), section view, click-to-focus, procedural textures.
+Tests: `node src/fluid.test.mjs` (mass conservation, settles near 6.8 rpm with ~350 kg held in the wheel).
+
+Not yet implemented: section view, click-to-focus, procedural textures, dust and grain particles. The fluid is 2D (a slab model), so splashes across the wheel width are not simulated.

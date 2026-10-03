@@ -102,7 +102,9 @@ export function engage(s, i, on) {
 export function step(s, dt) {
   const c = s.ctl;
   const w = s.omega;
-  const { tau, held } = waterTorque(w, c);
+  // an external (fluid-simulation) torque replaces the analytic bucket model when present
+  const wt = s.extTau != null ? { tau: s.extTau, held: s.extHeld || 0 } : waterTorque(w, c);
+  const { tau, held } = wt;
   const bearing = 300 * th(w, 0.02) + 1500 * w;
   const brake = c.brake ? 4e4 * th(w, 0.005) : 0;
   const eta = P.etaBevel * P.etaSpur;

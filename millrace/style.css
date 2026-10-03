@@ -57,3 +57,7 @@ table.stages{width:100%;border-collapse:collapse}
   #title{top:56px}#top{gap:8px;padding:10px 12px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+#loading{position:fixed;inset:0;z-index:20;background:var(--bg);display:grid;place-items:center;text-align:center;font-family:Orbitron,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+#loading i{display:block;width:240px;height:3px;background:var(--line);margin:14px auto 8px}
+#loading i b{display:block;height:100%;width:0;background:var(--acc)}
+#loading small{font:10px "IBM Plex Mono",monospace;color:var(--mut);letter-spacing:0;text-transform:none}
