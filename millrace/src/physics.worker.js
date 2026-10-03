@@ -17,7 +17,7 @@ onmessage = (e) => {
   const d = e.data;
   if (d.type === 'init') {
     sim.setCtl(d.ctl);
-    sim.warm(40, (p) => postMessage({ type: 'progress', p }));
+    sim.prime();
     postMessage({ type: 'ready' });
     last = performance.now();
     setInterval(tick, 16);

@@ -2,7 +2,9 @@
 
 A minimal re-creation of an interactive overshot-gristmill simulator (3D model + live physics panel).
 
-Run: `cd millrace && python3 -m http.server 8000` and open http://localhost:8000 (three.js is vendored, no build step).
+Run (dev, no build): `cd millrace && python3 -m http.server 8000` and open http://localhost:8000 (three.js is vendored).
+Run (fast, bundled ~565 KB / 151 KB gzip): `npm install && npm run build`, then serve `dist/`.
+Startup is instant: the mechanics are solved analytically, the page opens at once, and the water fills the buckets live; the wheel torque cross-fades from the analytic bucket model to the fluid between 6 s and 10 s of simulated time.
 Test the mechanics: `node src/mechanics.test.mjs`.
 
 - `src/mechanics.js`: pure lumped model: sluice flow, bucket-model wheel torque, 18:1 gear train, millstone load, meal fineness and temperature, warnings.

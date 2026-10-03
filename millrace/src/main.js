@@ -233,18 +233,13 @@ function ingest(snap) {
 function send(msg) { if (net.worker) net.worker.postMessage(msg); else if (net.local) { if (msg.type === 'ctl') net.local.setCtl(msg.ctl); else if (msg.type === 'engage') net.local.engage(msg.i, msg.on); } }
 const loadBar = $('loadBar');
 function ready() { net.ready = true; $('loading').style.display = 'none'; }
+function setStatus(t) { const e = document.querySelector('#loading small'); if (e) e.textContent = t; }
+addEventListener('error', (e) => setStatus('error: ' + e.message));
+addEventListener('unhandledrejection', (e) => setStatus('error: ' + (e.reason && e.reason.message || e.reason)));
 function startLocal() {
   if (net.worker) { try { net.worker.terminate(); } catch {} net.worker = null; }
-  const sim = new Sim(); sim.setCtl(mill.ctl); net.local = sim;
-  let i = 0; const N = 120 * 20; // shorter warm-up on the main thread
-  sim.coupled = false;
-  const chunk = () => {
-    const t0 = performance.now();
-    while (i < N && performance.now() - t0 < 30) { if (i === Math.round(N * 0.6)) sim.coupled = true; sim.step(); i++; }
-    loadBar.style.width = (i / N) * 100 + '%';
-    if (i < N) setTimeout(chunk, 0); else { sim.mill.time = 0; ingest(sim.snapshot()); ready(); }
-  };
-  chunk();
+  const sim = new Sim(); sim.setCtl(mill.ctl); sim.prime(); net.local = sim;
+  net.mode = 'main thread'; ingest(sim.snapshot()); ready();
 }
 function startBackend() {
   if (/[?&]local/.test(location.search) || typeof Worker === 'undefined') return startLocal();
@@ -252,12 +247,12 @@ function startBackend() {
   try {
     const w = new Worker(new URL('./physics.worker.js', import.meta.url), { type: 'module' });
     net.worker = w;
-    const bail = setTimeout(() => { if (!alive) startLocal(); }, 6000);
-    w.onerror = () => { clearTimeout(bail); if (!net.ready) startLocal(); };
+    const bail = setTimeout(() => { if (!alive) { setStatus('worker did not answer, running on the main thread'); startLocal(); } }, 2500);
+    w.onerror = (e) => { clearTimeout(bail); setStatus('worker failed: ' + (e.message || 'blocked')); if (!net.ready) startLocal(); };
     w.onmessage = (e) => {
       const d = e.data;
       if (d.type === 'progress') { alive = true; loadBar.style.width = d.p * 100 + '%'; }
-      else if (d.type === 'ready') { alive = true; clearTimeout(bail); ready(); }
+      else if (d.type === 'ready') { alive = true; clearTimeout(bail); net.mode = 'worker'; ready(); }
       else if (d.type === 'state') ingest(d.s);
     };
     w.postMessage({ type: 'init', ctl: { ...mill.ctl } });

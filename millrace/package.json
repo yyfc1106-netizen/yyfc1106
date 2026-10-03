@@ -1,0 +1,7 @@
+{
+  "name": "millrace-lite",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "node build.mjs", "test": "node src/mechanics.test.mjs && node src/fluid.test.mjs && node --import ./src/three-loader.mjs src/surface.test.mjs" },
+  "devDependencies": { "esbuild": "^0.28.2" }
+}
