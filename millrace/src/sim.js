@@ -37,11 +37,11 @@ export class Sim {
     return k;
   }
   snapshot() {
-    const m = this.mill, f = this.fluid, n = f.n, pos = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) { pos[i * 3] = F.hashX(f.id[i]); pos[i * 3 + 1] = f.x[i * 2]; pos[i * 3 + 2] = f.x[i * 2 + 1]; }
+    const m = this.mill, f = this.fluid, n = f.n, pos = new Float32Array(n * 3), vel = new Float32Array(n * 2), nn = new Uint8Array(f.nn.subarray(0, n));
+    for (let i = 0; i < n; i++) { pos[i * 3] = F.hashX(f.id[i]); pos[i * 3 + 1] = f.x[i * 2]; pos[i * 3 + 2] = f.x[i * 2 + 1]; vel[i * 2] = f.v[i * 2]; vel[i * 2 + 1] = f.v[i * 2 + 1]; }
     return {
       theta: m.theta, omega: m.omega, time: m.time, tauWater: m.tauWater,
-      out: { ...m.out }, stones: m.stones.map((s) => ({ ...s })), n, pos,
+      out: { ...m.out }, stones: m.stones.map((s) => ({ ...s })), n, pos, vel, nn,
       fluidTau: f.tauSmooth, held: f.held, emitted: f.emitted, drained: f.drained,
     };
   }

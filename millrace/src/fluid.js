@@ -22,7 +22,7 @@ const PITCH = (Math.PI * 2) / P.NB;
 const BT = 0.03; // board thickness
 export const GATE_Z = -0.88;
 export const FLOOR_Y = 5.05;
-const KILL_Y = 0.35;
+const KILL_Y = 0.32;
 
 // 2D kernels
 const cPoly = 4 / (Math.PI * Math.pow(KR, 8));

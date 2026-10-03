@@ -10,7 +10,7 @@ function tick() {
   last = now;
   if (scale > 0) sim.advance(dt * scale);
   const s = sim.snapshot();
-  postMessage({ type: 'state', s }, [s.pos.buffer]);
+  postMessage({ type: 'state', s }, [s.pos.buffer, s.vel.buffer, s.nn.buffer]);
 }
 
 onmessage = (e) => {

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as M from './mechanics.js';
 import { Sim } from './sim.js';
 import { WaterSurface } from './surface.js';
+import { ScreenSpaceFluid } from './ssf.js';
 
 const $ = (id) => document.getElementById(id);
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -20,6 +21,7 @@ const canvas = $('gl');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
+const ssf = /[?&]nossf/.test(location.search) ? null : ScreenSpaceFluid.create(renderer); // glassy water; null -> mesh fallback
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 200);
 const target = new THREE.Vector3(1.2, 3.2, 0);
@@ -52,10 +54,11 @@ const group = (name, offset, labelAt) => { const g = new THREE.Group(); g.userDa
 
 const WC = new THREE.Vector3(0, 2.6, 0); // wheel centre
 const gBase = group('Foundation', [0, -1.2, 0], [0, 0.4, 0]);
-mesh(new THREE.BoxGeometry(6, 1.8, 14), mats.stone, gBase, [1.3, -0.5, 0]);
-mesh(new THREE.BoxGeometry(1.4, 2.2, 14), mats.stone, gBase, [-1.6, 0.6, 0]); // low wall
+mesh(new THREE.BoxGeometry(3.1, 1.8, 14), mats.stone, gBase, [2.75, -0.5, 0]); // right block
+mesh(new THREE.BoxGeometry(2.4, 1.8, 14), mats.stone, gBase, [0, -0.78, 0]); // tail-race floor, top at y = 0.12
+mesh(new THREE.BoxGeometry(1.1, 2.2, 14), mats.stone, gBase, [-1.75, 0.6, 0]); // low left wall
 mesh(new THREE.BoxGeometry(14, 0.3, 14), mats.grass, gBase, [1.3, -1.5, 0]);
-const pit = mesh(new THREE.BoxGeometry(3.4, 0.2, 14), mats.water, gBase, [0.0, 0.25, 4.4]); // tailrace
+const pit = mesh(new THREE.BoxGeometry(2.4, 0.2, 14), mats.water, gBase, [0.0, 0.2, 4.4]); // tail-race water, top at y = 0.3
 pit.castShadow = false;
 
 const gFlume = group('Flume & gate', [0, 2.0, -1.5], [0, 5.8, -2.8]);
@@ -144,6 +147,64 @@ const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ map: dotTex, alpha
 pts.frustumCulled = false; scene.add(pts);
 const water = new WaterSurface(scene);
 let surfaceDirty = false;
+if (ssf) { pts.visible = false; water.mesh.visible = false; }
+
+/* sphere centres for the screen-space renderer: the 2D slab is replicated across the wheel width */
+const KCOPY = 6, SLAB = 1.15, DENSE = 5; // particles with >= DENSE neighbours are water body, the rest spray
+const fluidGeo = new THREE.BufferGeometry(), fluidPos = new Float32Array(NP * KCOPY * 3);
+fluidGeo.setAttribute('position', new THREE.BufferAttribute(fluidPos, 3).setUsage(THREE.DynamicDrawUsage)); fluidGeo.setDrawRange(0, 0);
+const fluidPts = new THREE.Points(fluidGeo, new THREE.PointsMaterial({ size: 0.05, color: 0x3fd0e8 }));
+fluidPts.frustumCulled = false; fluidPts.visible = !!ssf; scene.add(fluidPts);
+let fluidCount = 0;
+
+/* spray droplets and tail-race foam, spawned from fast / falling fluid particles */
+const FN = 2500, fPos = new Float32Array(FN * 3), fVel = new Float32Array(FN * 3), fLife = new Float32Array(FN), fMax = new Float32Array(FN), fType = new Uint8Array(FN), fAlpha = new Float32Array(FN), fSize = new Float32Array(FN);
+let fN = 0;
+const foamGeo = new THREE.BufferGeometry();
+foamGeo.setAttribute('position', new THREE.BufferAttribute(fPos, 3).setUsage(THREE.DynamicDrawUsage));
+foamGeo.setAttribute('aAlpha', new THREE.BufferAttribute(fAlpha, 1).setUsage(THREE.DynamicDrawUsage));
+foamGeo.setAttribute('aSize', new THREE.BufferAttribute(fSize, 1).setUsage(THREE.DynamicDrawUsage)); foamGeo.setDrawRange(0, 0);
+const foamMat = new THREE.ShaderMaterial({
+  uniforms: { uScale: { value: 1 } }, transparent: true, depthWrite: false,
+  vertexShader: 'attribute float aAlpha, aSize; uniform float uScale; varying float vA; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.); vA = aAlpha; gl_Position = projectionMatrix * mv; gl_PointSize = clamp(aSize * uScale / max(0.05, -mv.z), 1.0, 64.0); }',
+  fragmentShader: 'varying float vA; void main(){ float r = length(gl_PointCoord*2.-1.); if (r > 1.) discard; gl_FragColor = vec4(vec3(0.95,0.98,1.0), vA * (1.-r*r)); }',
+});
+const foam = new THREE.Points(foamGeo, foamMat); foam.frustumCulled = false; foam.renderOrder = 3; scene.add(foam);
+const TAIL_Y = 0.34;
+function spawnFoam(x, y, z, vx, vy, vz, life, type, size) {
+  if (fN >= FN) return; const i = fN++, a = i * 3;
+  fPos[a] = x; fPos[a + 1] = y; fPos[a + 2] = z; fVel[a] = vx; fVel[a + 1] = vy; fVel[a + 2] = vz; fLife[i] = fMax[i] = life; fType[i] = type; fSize[i] = size;
+}
+function spawnFromSnapshot(snap, dt) {
+  if (dt <= 0) return; const { pos, vel, n } = snap, rnd = Math.random;
+  for (let i = 0; i < n; i++) {
+    const x = pos[i * 3], y = pos[i * 3 + 1], z = pos[i * 3 + 2], vy = vel[i * 2], vz = vel[i * 2 + 1], sp = Math.hypot(vy, vz);
+    if (y < 1.0 && vy < -1.0) { // plunging into the tail race
+      if (rnd() < dt * -vy * 1.0) spawnFoam(x + (rnd() - 0.5) * 0.3, TAIL_Y, z + (rnd() - 0.5) * 0.2, 0, 0, 0, 2.5 + rnd() * 2.5, 1, 0.24);
+      if (rnd() < dt * -vy * 2.0) spawnFoam(x, TAIL_Y + 0.05, z, (rnd() - 0.5) * 1.4, 0.6 + rnd() * 1.6, vz * 0.3 + (rnd() - 0.5) * 1.2, 0.5 + rnd() * 0.5, 0, 0.05);
+    } else if (sp > 2.3 && rnd() < dt * (sp - 2.3) * 1.4) {
+      spawnFoam(x + (rnd() - 0.5) * 0.4, y, z + (rnd() - 0.5) * 0.04, (rnd() - 0.5) * 0.5, vy * 0.9 + (rnd() - 0.3) * 0.5, vz * 0.9 + (rnd() - 0.5) * 0.5, 0.35 + rnd() * 0.5, 0, 0.045);
+    }
+  }
+}
+function stepFoam(dt, Q) {
+  for (let i = 0; i < fN; ) {
+    const a = i * 3;
+    if (fType[i] === 0) { // droplet
+      fVel[a + 1] -= 9.81 * dt; const k = Math.exp(-0.9 * dt); fVel[a] *= k; fVel[a + 1] *= k; fVel[a + 2] *= k;
+      fPos[a] += fVel[a] * dt; fPos[a + 1] += fVel[a + 1] * dt; fPos[a + 2] += fVel[a + 2] * dt;
+      if (fPos[a + 1] < TAIL_Y) { fType[i] = 1; fPos[a + 1] = TAIL_Y; fLife[i] = fMax[i] = 1.5 + Math.random() * 2; fSize[i] = 0.22; }
+    } else { // foam drifting down the tail race
+      fPos[a + 2] += (0.35 + Q * 2.5 + Math.sin(fPos[a] * 7 + performance.now() * 0.0013) * 0.08) * dt;
+      fPos[a] = Math.max(-1.05, Math.min(1.05, fPos[a] + Math.sin(fPos[a + 2] * 5 + performance.now() * 0.0017) * 0.05 * dt));
+    }
+    fLife[i] -= dt;
+    if (fLife[i] <= 0 || fPos[a + 2] > 9) { const l = --fN, b = l * 3; for (let k = 0; k < 3; k++) { fPos[a + k] = fPos[b + k]; fVel[a + k] = fVel[b + k]; } fLife[i] = fLife[l]; fMax[i] = fMax[l]; fType[i] = fType[l]; fSize[i] = fSize[l]; continue; }
+    const u = fLife[i] / fMax[i]; fAlpha[i] = (fType[i] === 1 ? 0.55 : 0.9) * Math.min(1, u * 3) * (fType[i] === 1 ? Math.min(1, (1 - u) * 6 + 0.2) : 1);
+    i++;
+  }
+  foamGeo.setDrawRange(0, fN); foamGeo.attributes.position.needsUpdate = foamGeo.attributes.aAlpha.needsUpdate = foamGeo.attributes.aSize.needsUpdate = true;
+}
 
 /* ---------------- simulation backend (worker, or main-thread fallback) ---------------- */
 const net = { worker: null, local: null, ready: false, stamp: 0 };
@@ -153,7 +214,17 @@ function ingest(snap) {
   Object.assign(mill, { theta: snap.theta, omega: snap.omega, time: snap.time, tauWater: snap.tauWater, out: snap.out, stones: snap.stones });
   pPos.set(snap.pos.subarray(0, Math.min(snap.pos.length, NP * 3)));
   pGeo.setDrawRange(0, Math.min(snap.n, NP)); pGeo.attributes.position.needsUpdate = true;
-  net.stamp = performance.now(); surfaceDirty = snap.n;
+  const nowMs = performance.now(); spawnFromSnapshot(snap, net.stamp ? Math.min((nowMs - net.stamp) / 1000, 0.05) * ui.timeScale : 0);
+  net.stamp = nowMs; surfaceDirty = snap.n;
+  if (ssf) {
+    const m = Math.min(snap.n, NP); let o = 0;
+    for (let i = 0; i < m; i++) {
+      const hx = snap.pos[i * 3] / 0.9 + 0.5, y = snap.pos[i * 3 + 1], z = snap.pos[i * 3 + 2];
+      if (snap.nn[i] >= DENSE) for (let k = 0; k < KCOPY; k++) { fluidPos[o++] = ((k + hx) / KCOPY - 0.5) * SLAB; fluidPos[o++] = y; fluidPos[o++] = z; }
+      else { fluidPos[o++] = snap.pos[i * 3] * 1.2; fluidPos[o++] = y; fluidPos[o++] = z; } // spray: a single droplet
+    }
+    fluidCount = o / 3; fluidGeo.setDrawRange(0, fluidCount); fluidGeo.attributes.position.needsUpdate = true;
+  }
   if (snap.time - lastDot > 0.25) {
     lastDot = snap.time; fluidDots.push({ t: snap.time, rpm: snap.out.wheelRpm, tau: snap.fluidTau / 1e3 });
     while (fluidDots.length && fluidDots[0].t < snap.time - 20) fluidDots.shift();
@@ -250,7 +321,7 @@ groups.forEach((g) => { const s = document.createElement('span'); s.textContent 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
   document.querySelectorAll('[data-theme-set]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.themeSet === t));
-  scene.background = new THREE.Color(css('--bg'));
+  scene.background = new THREE.Color(css('--bg')); if (ssf) ssf.setSky(css('--bg'));
 }
 document.querySelectorAll('[data-theme-set]').forEach((b) => (b.onclick = () => setTheme(b.dataset.themeSet)));
 setTheme(matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -355,7 +426,8 @@ function frame() {
   const dt = Math.min(clock.getDelta(), 0.05) * ui.timeScale;
   if (net.local && net.ready) { net.local.advance(dt); ingest(net.local.snapshot()); }
   if (!net.ready) { placeCamera(); renderer.render(scene, camera); return; }
-  if (surfaceDirty !== false) { water.update(pPos, surfaceDirty); surfaceDirty = false; }
+  if (surfaceDirty !== false) { if (!ssf) water.update(pPos, surfaceDirty); surfaceDirty = false; }
+  if (dt > 0) stepFoam(dt, mill.out.Q || 0);
   const o = mill.out;
   const ahead = net.local ? 0 : clamp(((performance.now() - net.stamp) / 1000) * ui.timeScale, 0, 0.05); // smooth between worker snapshots
   const th = mill.theta + mill.omega * ahead;
@@ -391,8 +463,10 @@ function frame() {
   if (net.ready && now - lastText > 120) {
     lastText = now; readouts(); drawOperating(o); drawStrip(o); drawSankey(o);
   }
-  placeCamera(); renderer.render(scene, camera);
+  placeCamera();
+  foamMat.uniforms.uScale.value = renderer.domElement.height * 0.5 * camera.projectionMatrix.elements[5];
+  if (ssf) ssf.render(scene, camera, fluidPts, fluidCount); else renderer.render(scene, camera);
 }
 startBackend();
 frame();
-window.__mill = mill; window.__orbit = orbit; // handy for experimenting from the console
+window.__mill = mill; window.__orbit = orbit; window.__ssf = ssf; window.__r = renderer; window.__fc = () => fluidCount; // handy for experimenting from the console
