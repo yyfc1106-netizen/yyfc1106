@@ -1,0 +1,21 @@
+import * as M from './mechanics.js';
+import assert from 'node:assert/strict';
+const run = (mut, secs = 120) => {
+  const s = M.create(); mut?.(s);
+  for (let i = 0; i < secs * 120; i++) M.step(s, 1 / 120);
+  return s;
+};
+const d = run();
+console.log('default', d.out.wheelRpm.toFixed(2), d.out.stoneRpm.toFixed(0), d.out.throughput.toFixed(0), (d.out.eff * 100).toFixed(0) + '%', d.out.mealTemp.toFixed(0), M.warning(d));
+assert(d.out.wheelRpm > 4 && d.out.wheelRpm < 9, 'wheel rpm plausible');
+assert(Math.abs(d.out.Q - 0.163) < 0.01, 'Q ~163 L/s');
+assert(run((s) => (s.ctl.gate = 0)).out.wheelRpm < 0.1, 'shut gate stops wheel');
+assert(run((s) => (s.ctl.brake = true)).out.wheelRpm < 0.1, 'brake stops wheel');
+const free = run((s) => { s.stones[0].engaged = false; });
+console.log('no load', free.out.wheelRpm.toFixed(1), M.warning(free));
+assert(free.out.wheelRpm > 11, 'runaway without load');
+const two = run((s) => M.engage(s, 1, true));
+assert(two.out.wheelRpm < d.out.wheelRpm, 'second pair slows wheel');
+const tight = run((s) => { s.ctl.gap = 0.15; s.ctl.feed = 0.02; });
+console.log('tight', M.warning(tight));
+console.log('ok');

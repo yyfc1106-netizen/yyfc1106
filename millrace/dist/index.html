@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Millrace Lite: overshot gristmill</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loading"><div>Filling the buckets<i><b id="loadBar"></b></i><small>Starting</small></div></div>
+<canvas id="gl" tabindex="0" aria-label="3D model of an overshot gristmill. Drag to orbit, scroll to zoom."></canvas>
+<div id="labels" aria-hidden="true"></div>
+<div class="tag" id="hover" aria-hidden="true"></div>
+
+<header id="top">
+  <div id="logo">MILLRACE<sup>lite</sup></div>
+  <nav id="views">
+    <button data-view="cutaway" aria-pressed="false">Section</button>
+    <button data-view="explode" aria-pressed="false">Explode</button>
+    <button data-view="wire" aria-pressed="false">Wireframe</button>
+    <button data-view="labels" aria-pressed="false">Names</button>
+  </nav>
+  <div class="dual" id="speed"><button data-s="0">Pause</button><i>//</i><button data-s="0.25">¼×</button><i>//</i><button data-s="1" aria-pressed="true">1×</button></div>
+  <div class="dual" id="themes"><button data-theme-set="light">Light</button><i>//</i><button data-theme-set="dark" aria-pressed="true">Dark</button></div>
+</header>
+
+<section id="title"><h1>OVERSHOT<br>GRISTMILL</h1><p>Water turns the wheel. The wheel turns the stones. <span id="clock">t = 0.0 s</span></p></section>
+<div id="status">Wheel <b id="lWheel"></b><br>Stones <b id="lStone"></b><br>Flour <b id="lFlour"></b></div>
+<div id="warn" role="status" aria-live="polite"></div>
+
+<section id="pattern"><h3>Runner speed pattern</h3><canvas id="stripCv" height="110"></canvas><p>Dashed band: 110 to 130 rpm</p></section>
+<div id="viewctl">
+  <span class="hint">Drag to turn · right-drag or two fingers to pan · scroll or pinch to zoom</span>
+  <button class="btn" id="reset" title="Back to the default view (R)">Reset view</button>
+  <div id="turn" role="slider" tabindex="0" aria-label="Turn the model" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0"><b id="needle"></b><span id="turnDeg">0°</span></div>
+</div>
+
+<aside id="panel" aria-label="Measurements and controls">
+  <button id="sheetBtn" aria-expanded="true">Measurements and controls</button>
+
+  <section class="card">
+    <h2><span class="no">01</span>Water supply<small>sluice gate</small></h2>
+    <div class="param"><div class="lab"><label for="gate">Gate opening</label> <var>a</var><output id="gateOut"></output></div>
+      <input type="range" id="gate" min="0" max="100" step="1"><p class="why">Sets how much water flows. More flow fills the buckets fuller.</p></div>
+    <div class="param"><div class="lab"><label for="head">Head over the gate</label> <var>h</var><output id="headOut"></output></div>
+      <input type="range" id="head" min="20" max="100" step="1"><p class="why">Depth of water behind the gate. It sets the jet speed, and so where it lands.</p></div>
+    <div class="meas">
+      <div class="hi"><span>Flow Q</span><b id="wQ"></b></div><div><span>Jet speed v</span><b id="wV"></b></div><div class="hi"><span>Lands at</span><b id="wL"></b></div>
+    </div>
+    <div class="eqs">
+      <div class="eq"><span class="f">v = Cv√(2gh)</span><span class="r" id="eqV"></span><span class="s" id="eqVs"></span></div>
+      <div class="eq"><span class="f">Q = Cd·b·a·√(2gh)</span><span class="r" id="eqQ"></span><span class="s" id="eqQs"></span></div>
+      <div class="eq"><span class="f">Pin = ρgQH</span><span class="r" id="eqP"></span><span class="s" id="eqPs"></span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">02</span>Overshot wheel<small>4.8 m, 36 buckets</small></h2>
+    <div class="meas">
+      <div class="hi"><span>Speed nw</span><b id="mN"></b></div><div><span>Rim speed</span><b id="mR"></b></div><div class="hi"><span>Torque τw</span><b id="mT"></b></div>
+      <div><span>Shaft power</span><b id="mP"></b></div><div class="hi"><span>Efficiency η</span><b id="mE"></b></div><div><span>Water held</span><b id="mM"></b></div>
+    </div>
+    <p class="note" id="rimNote"></p>
+    <figure><canvas id="opCv" height="200" style="height:200px"></canvas>
+      <figcaption><b>Fig. 1</b> Torque vs wheel speed. Dashed: bucket model. Solid: load of the stones. Grey dots: fluid simulation, last 20 s. Orange: now. The mill settles where they cross.</figcaption></figure>
+    <div class="row"><button class="sw" id="brake" aria-pressed="false"><span>Brake</span><small id="brakeS">Off</small></button></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">03</span>Gear train<small>i = 18</small></h2>
+    <table class="stages"><thead><tr><th>Shaft</th><th>Teeth</th><th>Speed</th><th>Torque</th></tr></thead><tbody>
+      <tr><td>Wheel shaft</td><td>96</td><td id="g1n"></td><td id="g1t"></td></tr>
+      <tr class="x"><td colspan="4">speed × 3, torque ÷ 3, less 7% in the bevel pair</td></tr>
+      <tr><td>Upright</td><td>32, 120</td><td id="g2n"></td><td id="g2t"></td></tr>
+      <tr class="x"><td colspan="4">speed × 6, torque ÷ 6, less 5% in the spur pair</td></tr>
+      <tr><td>Stone spindle</td><td>20</td><td id="g3n"></td><td id="g3t"></td></tr></tbody></table>
+    <p class="note">Gears trade torque for speed. About <span id="gL"></span> is lost to friction on the way.</p>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">04</span>Millstones<small>1.2 m French burr</small></h2>
+    <p class="note">Each pair in gear adds its load to the wheel. Lift a stone nut out of gear to stop that pair.</p>
+    <div class="row">
+      <button class="sw" id="pair0" aria-pressed="true"><span>Near pair</span><small id="pair0s">In gear</small></button>
+      <button class="sw" id="pair1" aria-pressed="false"><span>Far pair</span><small id="pair1s">Out of gear</small></button>
+    </div>
+    <div class="param"><div class="lab"><label for="feed">Grain feed</label> <var>ṁ</var><output id="feedOut"></output></div>
+      <input type="range" id="feed" min="0" max="100" step="1"><p class="why">More grain means more flour, and more load on the wheel.</p></div>
+    <div class="param"><div class="lab"><label for="gap">Stone gap</label> <var>δ</var><output id="gapOut"></output></div>
+      <input type="range" id="gap" min="10" max="150" step="1"><p class="why">Closer stones grind finer, but each kilo takes more energy and the meal runs hotter.</p></div>
+    <div class="meas">
+      <div class="hi"><span>Runner ns</span><b id="sN"></b></div><div><span>Throughput</span><b id="sM"></b></div><div><span>Grinding</span><b id="sP"></b></div>
+      <div><span>Energy per kg</span><b id="sE"></b></div><div class="hi"><span>Meal d50</span><b id="sD"></b></div><div class="hi"><span>Meal temp</span><b id="sT"></b></div>
+    </div>
+    <div class="train"><span>Product</span><span id="sProd"></span><span>Sacks of 50 kg</span><span id="sSacks"></span></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">05</span>Energy balance<small>kW, to scale</small></h2>
+    <figure><canvas id="sankeyCv" height="170" style="height:170px"></canvas>
+      <figcaption><b>Fig. 2</b> Power from the falling water to the grinding, with the losses at the wheel and in the gears.</figcaption></figure>
+  </section>
+</aside>
+<script type="module" src="main.js"></script>
+</body>
+</html>
