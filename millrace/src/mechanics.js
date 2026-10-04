@@ -25,7 +25,7 @@ const th = (x, m) => Math.tanh(x / m);
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 
 export function defaults() {
-  return { gate: 0.55, head: 0.6, feed: 0.48, gap: 0.6, brake: false };
+  return { gate: 0.62, head: 0.6, feed: 0.48, gap: 0.6, brake: false };
 }
 
 export function create() {

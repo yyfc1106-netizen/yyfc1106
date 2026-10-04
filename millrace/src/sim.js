@@ -31,10 +31,10 @@ export class Sim {
   }
   /** Test helper: run the whole thing (fluid included) for a while. */
   warm(seconds) { this.prime(10); for (let i = 0, n = Math.round(seconds / DT); i < n; i++) this.step(); this.mill.time = 0; }
-  advance(span) {
+  advance(span, maxSteps = 12) {
     this.acc += span; let k = 0;
-    while (this.acc >= DT && k < 12) { this.step(); this.acc -= DT; k++; }
-    if (k === 12) this.acc = 0;
+    while (this.acc >= DT && k < maxSteps) { this.step(); this.acc -= DT; k++; }
+    if (k === maxSteps) this.acc = 0;
     return k;
   }
   snapshot() {

@@ -30,7 +30,11 @@
 <div id="warn" role="status" aria-live="polite"></div>
 
 <section id="pattern"><h3>Runner speed pattern</h3><canvas id="stripCv" height="110"></canvas><p>Dashed band: 110 to 130 rpm</p></section>
-<div id="viewctl"><button class="btn" id="reset">Reset view</button></div>
+<div id="viewctl">
+  <span class="hint">Drag to turn · right-drag or two fingers to pan · scroll or pinch to zoom</span>
+  <button class="btn" id="reset" title="Back to the default view (R)">Reset view</button>
+  <div id="turn" role="slider" tabindex="0" aria-label="Turn the model" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0"><b id="needle"></b><span id="turnDeg">0°</span></div>
+</div>
 
 <aside id="panel" aria-label="Measurements and controls">
   <button id="sheetBtn" aria-expanded="true">Measurements and controls</button>

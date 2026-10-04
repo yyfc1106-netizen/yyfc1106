@@ -6,9 +6,9 @@ let scale = 1, last = 0;
 
 function tick() {
   const now = performance.now();
-  const dt = Math.min((now - last) / 1000, 0.05);
+  const dt = Math.min((now - last) / 1000, 0.3); // catch up after a busy main thread, but never spiral
   last = now;
-  if (scale > 0) sim.advance(dt * scale);
+  if (scale > 0) sim.advance(dt * scale, 40);
   const s = sim.snapshot();
   postMessage({ type: 'state', s }, [s.pos.buffer, s.vel.buffer, s.nn.buffer]);
 }

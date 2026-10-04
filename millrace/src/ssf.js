@@ -65,8 +65,8 @@ const BLUR_FRAG = /* glsl */ `
   }`;
 
 const COMP_FRAG = /* glsl */ `
-  uniform sampler2D tColor, tFluid, tThick;
-  uniform mat4 uProjInv, uViewInv; uniform vec2 uRes; uniform vec3 uSky, uLight, uDeep, uAbsorb; uniform float uHas;
+  uniform sampler2D tColor, tFluid, tThick, tSceneDepth;
+  uniform mat4 uProjInv, uViewInv; uniform vec2 uRes; uniform vec3 uSky, uLight, uDeep, uAbsorb; uniform float uHas; uniform vec3 uBg;
   varying vec2 vUv;
   vec3 viewPos(vec2 uv, float d) { vec4 p = uProjInv * vec4(uv * 2.0 - 1.0, -1.0, 1.0); p.xyz /= p.w; return p.xyz * (d / -p.z); }
   float fl(vec2 uv, float fallback) { float d = texture2D(tFluid, uv).r; return d > 0.0 ? d : fallback; }
@@ -99,6 +99,8 @@ const COMP_FRAG = /* glsl */ `
       col = mix(scene, col, smoothstep(0.0, 0.25, t));
     }
     gl_FragColor = vec4(col, 1.0);
+    #include <tonemapping_fragment>
+    if (texture2D(tSceneDepth, vUv).x > 0.99999) gl_FragColor.rgb = uBg; // keep the page background exactly as the UI colour
     #include <colorspace_fragment>
   }`;
 
@@ -144,7 +146,7 @@ export class ScreenSpaceFluid {
     });
     this.compMat = new THREE.ShaderMaterial({
       uniforms: {
-        tColor: { value: this.sceneRT.texture }, tFluid: { value: null }, tThick: { value: this.thickRT.texture },
+        tColor: { value: this.sceneRT.texture }, tSceneDepth: { value: this.sceneRT.depthTexture }, uBg: { value: new THREE.Color(0xe9ecfb) }, tFluid: { value: null }, tThick: { value: this.thickRT.texture },
         uProjInv: { value: new THREE.Matrix4() }, uViewInv: { value: new THREE.Matrix4() }, uRes: { value: this.size },
         uSky: { value: new THREE.Color(0.8, 0.85, 0.95) }, uLight: { value: new THREE.Vector3(0.4, 0.8, 0.45) },
         uDeep: { value: new THREE.Color(0.05, 0.62, 0.72) }, uAbsorb: { value: new THREE.Vector3(2.0, 0.55, 0.32) }, uHas: { value: 0 },
@@ -155,7 +157,7 @@ export class ScreenSpaceFluid {
     this.clear = new THREE.Color(0, 0, 0);
   }
 
-  setSky(c) { this.compMat.uniforms.uSky.value.set(c); }
+  setSky(c) { this.compMat.uniforms.uSky.value.set(c); this.compMat.uniforms.uBg.value.set(c); }
 
   _resize(w, h) {
     if (this.size.x === w && this.size.y === h) return;

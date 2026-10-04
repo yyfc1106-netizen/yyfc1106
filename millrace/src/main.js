@@ -3,6 +3,7 @@ import * as M from './mechanics.js';
 import { Sim } from './sim.js';
 import { WaterSurface } from './surface.js';
 import { ScreenSpaceFluid } from './ssf.js';
+import { buildScene, LAYOUT } from './scene.js';
 
 const $ = (id) => document.getElementById(id);
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -19,124 +20,22 @@ const ui = { cutaway: false, timeScale: 1, explode: 0, explodeT: 0, wire: false,
 /* ---------------- scene ---------------- */
 const canvas = $('gl');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
+renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth <= 820 ? 1.5 : 2));
+renderer.shadowMap.enabled = !/[?&]lowfx/.test(location.search); // ?lowfx: no shadows (used by the tests)
 const ssf = /[?&]nossf/.test(location.search) ? null : ScreenSpaceFluid.create(renderer); // glassy water; null -> mesh fallback
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 200);
-const target = new THREE.Vector3(1.2, 3.2, 0);
-const orbit = { az: 0.9, el: 0.42, dist: 27 };
+const camera = new THREE.PerspectiveCamera(38, 1, 0.5, 140);
+const target = new THREE.Vector3(0.9, 2.2, 0.2);
+const orbit = { az: -0.62, el: 0.5, dist: 28 };
 const home = { ...orbit }; let userMoved = false;
 
-scene.add(new THREE.HemisphereLight(0xffffff, 0x556070, 1.1));
-const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-sun.position.set(8, 14, 6); sun.castShadow = true;
-Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
-sun.shadow.mapSize.set(1024, 1024);
-scene.add(sun);
-
-const mats = {
-  oak: new THREE.MeshStandardMaterial({ color: 0xc58b4f, roughness: 0.8 }),
-  pale: new THREE.MeshStandardMaterial({ color: 0xe0b97c, roughness: 0.85 }),
-  stone: new THREE.MeshStandardMaterial({ color: 0x9a9a92, roughness: 0.95 }),
-  iron: new THREE.MeshStandardMaterial({ color: 0x4a4f5c, roughness: 0.5, metalness: 0.6 }),
-  grass: new THREE.MeshStandardMaterial({ color: 0x6d8b4a, roughness: 1 }),
-  earth: new THREE.MeshStandardMaterial({ color: 0x8a6a46, roughness: 1 }),
-  water: new THREE.MeshStandardMaterial({ color: 0x2aa6b8, roughness: 0.2, transparent: true, opacity: 0.75 }),
-  burlap: new THREE.MeshStandardMaterial({ color: 0xc9b184, roughness: 1 }),
-  flour: new THREE.MeshStandardMaterial({ color: 0xf6f1e6, roughness: 1 }),
-};
-const allMats = Object.values(mats);
-const mesh = (geo, mat, parent, pos = [0, 0, 0]) => {
-  const m = new THREE.Mesh(geo, mat); m.position.set(...pos); m.castShadow = m.receiveShadow = true; parent.add(m); return m;
-};
-const group = (name, offset, labelAt) => { const g = new THREE.Group(); g.userData = { name, offset: new THREE.Vector3(...offset), labelAt: new THREE.Vector3(...labelAt) }; scene.add(g); return g; };
-
-const WC = new THREE.Vector3(0, 2.6, 0); // wheel centre
-const gBase = group('Foundation', [0, -1.2, 0], [0, 0.4, 0]);
-mesh(new THREE.BoxGeometry(3.1, 1.8, 14), mats.stone, gBase, [2.75, -0.5, 0]); // right block
-mesh(new THREE.BoxGeometry(2.4, 1.8, 14), mats.stone, gBase, [0, -0.78, 0]); // tail-race floor, top at y = 0.12
-mesh(new THREE.BoxGeometry(1.1, 2.2, 14), mats.stone, gBase, [-1.75, 0.6, 0]); // low left wall
-mesh(new THREE.BoxGeometry(14, 0.3, 14), mats.grass, gBase, [1.3, -1.5, 0]);
-const pit = mesh(new THREE.BoxGeometry(2.4, 0.2, 14), mats.water, gBase, [0.0, 0.2, 4.4]); // tail-race water, top at y = 0.3
-pit.castShadow = false;
-
-const gFlume = group('Flume & gate', [0, 2.0, -1.5], [0, 5.8, -2.8]);
-mesh(new THREE.BoxGeometry(2, 0.2, 4.5), mats.oak, gFlume, [0, 4.95, -3.1]);
-for (const s of [-1, 1]) mesh(new THREE.BoxGeometry(0.15, 0.6, 4.5), mats.oak, gFlume, [s * 0.95, 5.3, -3.1]);
-const flumeWater = mesh(new THREE.BoxGeometry(1.7, 0.4, 4.2), mats.water, gFlume, [0, 5.15, -3.1]); flumeWater.castShadow = false;
-const gate = mesh(new THREE.BoxGeometry(1.8, 1.0, 0.1), mats.iron, gFlume, [0, 5.6, -0.95]);
-
-const gWheel = group('Overshot wheel', [0, 0.6, 0], [0, 5.3, 0]);
-const wheel = new THREE.Group(); wheel.position.copy(WC); gWheel.add(wheel);
-const W = 1.3, R = P.R;
-for (const s of [-1, 1]) {
-  const ring = mesh(new THREE.TorusGeometry(R, 0.07, 8, 64), mats.oak, wheel, [s * (W / 2), 0, 0]); ring.rotation.y = Math.PI / 2;
-  const ring2 = mesh(new THREE.TorusGeometry(R - 0.5, 0.05, 8, 48), mats.oak, wheel, [s * (W / 2), 0, 0]); ring2.rotation.y = Math.PI / 2;
-}
-const spokeGeo = new THREE.BoxGeometry(0.1, R - 0.1, 0.1);
-for (let i = 0; i < 8; i++) for (const s of [-1, 1]) {
-  const a = (i / 8) * Math.PI * 2;
-  const sp = mesh(spokeGeo, mats.oak, wheel, [s * (W / 2), Math.cos(a) * (R / 2), Math.sin(a) * (R / 2)]); sp.rotation.x = -a;
-}
-const RIN = R - 0.5, LEAN = 0.8; // must match fluid.js
-const boardAt = (a, r) => { const t = (r - RIN) / (R - RIN), ang = a - LEAN * t; return [Math.cos(ang) * r, Math.sin(ang) * r]; };
-for (let i = 0; i < P.NB; i++) {
-  const a = (i / P.NB) * Math.PI * 2, [y0, z0] = boardAt(a, RIN), [y1, z1] = boardAt(a, R);
-  const len = Math.hypot(y1 - y0, z1 - z0);
-  const b = mesh(new THREE.BoxGeometry(W, 0.03, len), mats.pale, wheel, [0, (y0 + y1) / 2, (z0 + z1) / 2]);
-  b.rotation.x = Math.atan2(-(y1 - y0), z1 - z0);
-}
-for (const sx of [-1, 1]) { const sh = mesh(new THREE.TorusGeometry(RIN, 0.04, 6, 64), mats.oak, wheel, [sx * (W / 2), 0, 0]); sh.rotation.y = Math.PI / 2; }
-const shroud = mesh(new THREE.CylinderGeometry(RIN, RIN, W, 48, 1, true), mats.oak, wheel); shroud.rotation.z = Math.PI / 2; shroud.material = mats.oak.clone(); shroud.material.side = THREE.DoubleSide;
-const shaft = mesh(new THREE.CylinderGeometry(0.16, 0.16, 3.8, 14), mats.iron, wheel); shaft.rotation.z = Math.PI / 2; shaft.position.x = 0.8;
-
-const gGear = group('Gear train', [1.8, 1.0, 0], [2.3, 4.0, 0]);
-const pitWheel = new THREE.Group(); pitWheel.position.set(1.3, WC.y, 0); gGear.add(pitWheel);
-function gear(parent, r, teeth, h, axis) {
-  const g = new THREE.Group(); parent.add(g);
-  const disc = mesh(new THREE.CylinderGeometry(r, r, h, 36), mats.oak, g); disc.rotation.z = axis === 'x' ? Math.PI / 2 : 0;
-  const tg = new THREE.BoxGeometry(r * 0.22, h, r * 0.2);
-  for (let i = 0; i < teeth; i++) {
-    const a = (i / teeth) * Math.PI * 2;
-    const t = mesh(tg, mats.iron, g);
-    if (axis === 'x') { t.position.set(0, Math.cos(a) * r, Math.sin(a) * r); t.rotation.x = -a; t.scale.set(1, 1, 1); t.geometry = new THREE.BoxGeometry(h, r * 0.2, r * 0.22); }
-    else { t.position.set(Math.cos(a) * r, 0, Math.sin(a) * r); t.rotation.y = -a; }
-  }
-  return g;
-}
-gear(pitWheel, 1.0, 24, 0.22, 'x');
-const upright = new THREE.Group(); upright.position.set(2.5, 0, 0); gGear.add(upright);
-mesh(new THREE.CylinderGeometry(0.14, 0.14, 4.3, 12), mats.iron, upright, [0, 3.4, 0]);
-const wallower = gear(upright, 0.4, 12, 0.3, 'y'); wallower.position.y = WC.y;
-const spur = gear(upright, 1.15, 28, 0.2, 'y'); spur.position.y = 3.7;
-const nuts = [];
-for (const s of [-1, 1]) {
-  const nut = new THREE.Group(); nut.position.set(2.5, 3.7, s * 1.45); gGear.add(nut);
-  gear(nut, 0.3, 10, 0.2, 'y');
-  mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.2, 8), mats.iron, nut, [0, 0.6, 0]);
-  nuts.push(nut);
-}
-
-const gStone = group('Millstones', [1.0, 2.6, 0], [2.5, 5.3, 0]);
-const runners = [];
-for (const s of [-1, 1]) {
-  const base = mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.25, 36), mats.stone, gStone, [2.5, 4.55, s * 1.45]);
-  const run = new THREE.Group(); run.position.set(2.5, 4.85, s * 1.45); gStone.add(run);
-  mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.3, 36), new THREE.MeshStandardMaterial({ color: 0xb4a894, roughness: 1 }), run);
-  for (let i = 0; i < 6; i++) { const m = mesh(new THREE.BoxGeometry(1.5, 0.04, 0.05), mats.iron, run, [0, 0.16, 0]); m.rotation.y = (i / 6) * Math.PI; }
-  runners.push(run);
-}
-const gHop = group('Hopper & sack', [0, 1.8, 0], [3.0, 7.2, 0]);
-const hopper = mesh(new THREE.CylinderGeometry(0.9, 0.35, 0.8, 4, 1, true), mats.oak, gHop, [2.5, 6.5, 0]); hopper.rotation.y = Math.PI / 4; hopper.material = mats.oak.clone(); hopper.material.side = THREE.DoubleSide;
-const grain = mesh(new THREE.CylinderGeometry(0.8, 0.3, 0.7, 4), new THREE.MeshStandardMaterial({ color: 0xd9b24a }), gHop, [2.5, 6.5, 0]); grain.rotation.y = Math.PI / 4;
-const sack = mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.9, 20), mats.burlap, gHop, [3.9, -0.45 + 0.45, 3.2]);
-const sackTop = mesh(new THREE.CylinderGeometry(0.27, 0.27, 0.04, 20), mats.flour, gHop, [3.9, 0.1, 3.2]);
-const fullSacks = new THREE.Group(); gHop.add(fullSacks);
-const stream = mesh(new THREE.CylinderGeometry(0.04, 0.04, 1, 8), mats.flour, gHop, [3.3, 3, 2.2]); stream.castShadow = false;
-
-const groups = scene.children.filter((o) => o.userData && o.userData.name);
+performance.mark('script-start');
+const S = buildScene(scene, renderer, P);
+performance.mark('scene-built');
+const { mats, groups, wheel, pitWheel, upright, wallowerRot, spurRot, nuts, runners, levers, gate, gateRod, gateWheel, head, hoppers, spoutOut, sacks, fullSacks } = S;
+const WC = LAYOUT.WC, R = LAYOUT.R, FLOOR = LAYOUT.FLOOR, DECK = LAYOUT.DECK;
 groups.forEach((g) => (g.userData.base = g.position.clone()));
+const streams = spoutOut.map((_, k) => { const m = k === 0 ? S.stream : S.stream.clone(); m.visible = false; S.gSpout.add(m); return m; });
 
 /* --- water particles --- */
 const NP = 1600;
@@ -183,7 +82,7 @@ function stepDust(dt, o) {
   while (dustAcc >= 1 && dN < DN) {
     dustAcc -= 1; const s = Math.random() < 0.5 ? -1 : 1; if (!mill.stones[s < 0 ? 0 : 1].engaged) continue;
     const a = Math.random() * 6.283, r = 0.78 + Math.random() * 0.1, i = dN++ * 3;
-    dPos[i] = 2.5 + Math.cos(a) * r; dPos[i + 1] = 4.85 + Math.random() * 0.1; dPos[i + 2] = s * 1.45 + Math.sin(a) * r;
+    dPos[i] = 2.5 + Math.cos(a) * r; dPos[i + 1] = DECK + 0.65 + Math.random() * 0.1; dPos[i + 2] = s * 1.45 + Math.sin(a) * r;
     dVel[i] = Math.cos(a) * 0.25 + (Math.random() - 0.5) * 0.1; dVel[i + 1] = 0.12 + Math.random() * 0.15; dVel[i + 2] = Math.sin(a) * 0.25 + (Math.random() - 0.5) * 0.1; dLife[i / 3] = 1 + Math.random() * 1.2;
   }
   dustAcc = Math.min(dustAcc, 3);
@@ -232,14 +131,6 @@ function stepFoam(dt, Q) {
 
 
 /* ---------------- hover names and click-to-focus ---------------- */
-const INFO = {
-  'Foundation': 'Stone-lined wheel pit and tail race.',
-  'Flume & gate': 'Oak flume and sluice gate: the gate opening sets the flow.',
-  'Overshot wheel': '4.8 m wheel with 36 buckets. Water enters at the top and its weight turns the wheel.',
-  'Gear train': 'Pit wheel, wallower, great spur wheel and stone nuts: 18 : 1 speed-up.',
-  'Millstones': '1.2 m runner and bed stones. Lift the stone nut out of gear to stop a pair.',
-  'Hopper & sack': 'Grain hopper feeds the stones; flour falls into the sack (50 kg).',
-};
 const raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), pickMeshes = [];
 groups.forEach((g) => g.traverse((o) => { if (o.isMesh) { o.userData.group = g; pickMeshes.push(o); } }));
 let hoverAt = null, hoverGroup = null;
@@ -254,7 +145,7 @@ function updateHover() {
   const g = pick(hoverAt.x, hoverAt.y); hoverGroup = g;
   canvas.style.cursor = g ? 'pointer' : '';
   if (!g) { tag.style.display = 'none'; return; }
-  tag.innerHTML = `<b>${g.userData.name}</b>${INFO[g.userData.name] || ''}`;
+  tag.innerHTML = `<b>${g.userData.name}</b>${g.userData.info || ''}`;
   tag.style.display = 'block'; tag.style.left = Math.min(innerWidth - 250, hoverAt.x + 14) + 'px'; tag.style.top = hoverAt.y + 14 + 'px';
 }
 function clickAt(x, y) {
@@ -300,7 +191,7 @@ function ingest(snap) {
 }
 function send(msg) { if (net.worker) net.worker.postMessage(msg); else if (net.local) { if (msg.type === 'ctl') net.local.setCtl(msg.ctl); else if (msg.type === 'engage') net.local.engage(msg.i, msg.on); } }
 const loadBar = $('loadBar');
-function ready() { net.ready = true; $('loading').style.display = 'none'; }
+function ready() { performance.mark('ready'); net.ready = true; $('loading').style.display = 'none'; }
 function setStatus(t) { const e = document.querySelector('#loading small'); if (e) e.textContent = t; }
 addEventListener('error', (e) => setStatus('error: ' + e.message));
 addEventListener('unhandledrejection', (e) => setStatus('error: ' + (e.reason && e.reason.message || e.reason)));
@@ -337,22 +228,77 @@ function placeCamera() {
 let goal = null, focused = null;
 const homeTarget = target.clone();
 function goTo(g) { goal = g; }
-let drag = null, downAt = null;
-canvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; downAt = { x: e.clientX, y: e.clientY }; goal = null; userMoved = true; canvas.setPointerCapture(e.pointerId); });
+/* free camera: turntable rotate, pan, zoom (mouse, wheel, touch pinch, keyboard) with a little inertia */
+const MIN_EL = -0.3, MAX_EL = 1.5, MIN_DIST = 4, MAX_DIST = 60;
+const pointers = new Map(); let drag = null, downAt = null, gesture = null, spin = { az: 0, el: 0 };
+const panBounds = { x: 16, ymin: -3, ymax: 12, z: 16 };
+function pan(dx, dy) { // move the target in the screen plane
+  const k = orbit.dist * 0.0014, right = new THREE.Vector3(), up = new THREE.Vector3();
+  camera.matrixWorld.extractBasis(right, up, new THREE.Vector3());
+  target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+  target.x = clamp(target.x, -panBounds.x, panBounds.x); target.y = clamp(target.y, panBounds.ymin, panBounds.ymax); target.z = clamp(target.z, -panBounds.z, panBounds.z);
+}
+function rotate(dx, dy) { orbit.az -= dx * 0.006; orbit.el = clamp(orbit.el + dy * 0.005, MIN_EL, MAX_EL); spin = { az: -dx * 0.006, el: dy * 0.005 }; }
+const zoomBy = (f) => { orbit.dist = clamp(orbit.dist * f, MIN_DIST, MAX_DIST); };
+const touchInfo = () => { const [a, b] = [...pointers.values()]; return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 }; };
+function cancelGoal() { goal = null; userMoved = true; }
+canvas.addEventListener('pointerdown', (e) => {
+  try { canvas.setPointerCapture(e.pointerId); } catch {} canvas.focus({ preventScroll: true }); cancelGoal(); spin = { az: 0, el: 0 };
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, button: e.button, mod: e.shiftKey || e.ctrlKey || e.metaKey });
+  downAt = pointers.size === 1 ? { x: e.clientX, y: e.clientY } : null;
+  if (pointers.size === 2) gesture = touchInfo();
+});
 canvas.addEventListener('pointermove', (e) => {
-  if (!drag) return;
-  orbit.az -= (e.clientX - drag.x) * 0.006; orbit.el = clamp(orbit.el + (e.clientY - drag.y) * 0.005, 0.05, 1.45);
-  drag = { x: e.clientX, y: e.clientY };
+  hoverAt = { x: e.clientX, y: e.clientY };
+  const p = pointers.get(e.pointerId); if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  if (pointers.size >= 2) { // pinch to zoom, two fingers to pan
+    p.x = e.clientX; p.y = e.clientY; const t = touchInfo();
+    if (gesture && gesture.d > 0) zoomBy(gesture.d / Math.max(t.d, 1));
+    if (gesture) pan(t.mx - gesture.mx, t.my - gesture.my);
+    gesture = t; return;
+  }
+  p.x = e.clientX; p.y = e.clientY;
+  if (p.button === 2 || p.button === 1 || p.mod) pan(dx, dy); else rotate(dx, dy);
 });
-canvas.addEventListener('pointerup', (e) => {
-  const click = downAt && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 5; drag = null; downAt = null;
-  if (click) clickAt(e.clientX, e.clientY);
-});
-canvas.addEventListener('pointermove', (e) => { hoverAt = { x: e.clientX, y: e.clientY }; });
+const endPointer = (e) => {
+  const p = pointers.get(e.pointerId); pointers.delete(e.pointerId); gesture = null;
+  const click = downAt && p && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 5 && p.button === 0 && !p.mod;
+  if (pointers.size === 0) downAt = null;
+  if (click && e.type === 'pointerup') clickAt(e.clientX, e.clientY);
+};
+canvas.addEventListener('pointerup', endPointer); canvas.addEventListener('pointercancel', endPointer);
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 canvas.addEventListener('pointerleave', () => { hoverAt = null; $('hover').style.display = 'none'; });
-addEventListener('keydown', (e) => { if (e.key === 'Escape') unfocus(); });
-canvas.addEventListener('wheel', (e) => { e.preventDefault(); goal = null; userMoved = true; orbit.dist = clamp(orbit.dist * Math.exp(e.deltaY * 0.001), 6, 40); }, { passive: false });
-$('reset').onclick = () => { focused = null; userMoved = false; goTo({ az: home.az, el: home.el, dist: home.dist, t: homeTarget.clone() }); };
+canvas.addEventListener('wheel', (e) => { e.preventDefault(); cancelGoal(); zoomBy(Math.exp(e.deltaY * (e.ctrlKey ? 0.01 : 0.0012))); }, { passive: false });
+canvas.addEventListener('dblclick', () => { if (!pick(hoverAt ? hoverAt.x : -1, hoverAt ? hoverAt.y : -1)) resetView(); });
+function resetView() { focused = null; userMoved = false; spin = { az: 0, el: 0 }; goTo({ az: home.az, el: home.el, dist: home.dist, t: homeTarget.clone() }); }
+$('reset').onclick = resetView;
+addEventListener('keydown', (e) => {
+  if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  const k = e.key; let used = true;
+  if (k === 'Escape') { unfocus(); used = false; }
+  else if (k === 'ArrowLeft') { cancelGoal(); orbit.az += 0.12; } else if (k === 'ArrowRight') { cancelGoal(); orbit.az -= 0.12; }
+  else if (k === 'ArrowUp') { cancelGoal(); orbit.el = clamp(orbit.el + 0.08, MIN_EL, MAX_EL); } else if (k === 'ArrowDown') { cancelGoal(); orbit.el = clamp(orbit.el - 0.08, MIN_EL, MAX_EL); }
+  else if (k === '+' || k === '=') { cancelGoal(); zoomBy(0.9); } else if (k === '-' || k === '_') { cancelGoal(); zoomBy(1.1); }
+  else if (k === 'r' || k === 'R' || k === 'Home') resetView(); else used = false;
+  if (used && document.activeElement === canvas) e.preventDefault();
+});
+/* the dial: drag it to turn the model about the vertical axis */
+const dial = $('turn');
+function dialTo(e) { const r = dial.getBoundingClientRect(), a = Math.atan2(e.clientX - (r.left + r.width / 2), -(e.clientY - (r.top + r.height / 2))); cancelGoal(); orbit.az = -a; spin.az = 0; }
+dial.addEventListener('pointerdown', (e) => { try { dial.setPointerCapture(e.pointerId); } catch {} dialTo(e); });
+dial.addEventListener('pointermove', (e) => { if (e.buttons || (e.pointerType === 'touch')) { if (dial.hasPointerCapture && dial.hasPointerCapture(e.pointerId)) dialTo(e); } });
+dial.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { cancelGoal(); orbit.az += Math.PI / 12; e.preventDefault(); } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { cancelGoal(); orbit.az -= Math.PI / 12; e.preventDefault(); } });
+function updateDial() {
+  const deg = (((-orbit.az * 180) / Math.PI) % 360 + 360) % 360;
+  $('needle').style.transform = `rotate(${deg}deg)`; $('turnDeg').textContent = Math.round(deg) + '°'; dial.setAttribute('aria-valuenow', Math.round(deg));
+}
+function stepInertia(real) {
+  if (pointers.size || goal) return;
+  const k = Math.exp(-6 * real); orbit.az += spin.az * 0.0; // inertia is applied per frame below
+  if (Math.abs(spin.az) > 1e-4 || Math.abs(spin.el) > 1e-4) { orbit.az += spin.az * real * 8 * 0.3; orbit.el = clamp(orbit.el + spin.el * real * 8 * 0.3, MIN_EL, MAX_EL); spin.az *= k; spin.el *= k; }
+}
 
 function resize() {
   const w = innerWidth, h = innerHeight, narrow = w <= 820;
@@ -389,21 +335,21 @@ document.querySelectorAll('#views button').forEach((b) => (b.onclick = () => {
   const k = b.dataset.view; ui[k] = !ui[k]; b.setAttribute('aria-pressed', ui[k]);
   if (k === 'explode') ui.explodeT = ui.explode ? 1 : 0;
   if (k === 'cutaway') setCutaway(ui.cutaway);
-  if (k === 'wire') allMats.forEach((m) => (m.wireframe = ui.wire));
+  if (k === 'wire') S.allMats().forEach((m) => (m.wireframe = ui.wire));
   if (k === 'labels') $('labels').style.display = ui.labels ? '' : 'none';
 }));
 $('labels').style.display = 'none';
 const cutPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0); // keeps x >= 0; the camera swings round to look at the cut face
 function setCutaway(on) {
   renderer.clippingPlanes = on ? [cutPlane] : [];
-  for (const m of [mats.stone, mats.earth, mats.grass, mats.water]) { m.side = on ? THREE.DoubleSide : THREE.FrontSide; m.needsUpdate = true; }
+  for (const m of S.allMats()) { if (m === mats.burlap) continue; m.side = on ? THREE.DoubleSide : THREE.FrontSide; m.needsUpdate = true; }
   goTo(on ? { az: -1.25, el: 0.3, dist: Math.min(orbit.dist, 24), t: target.clone() } : { az: home.az, el: home.el, dist: orbit.dist, t: target.clone() });
 }
-groups.forEach((g) => { const s = document.createElement('span'); s.textContent = g.userData.name; g.userData.el = s; $('labels').appendChild(s); });
+groups.filter((g) => g.userData.label).forEach((g) => { const s = document.createElement('span'); s.textContent = g.userData.name; g.userData.el = s; $('labels').appendChild(s); });
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
   document.querySelectorAll('[data-theme-set]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.themeSet === t));
-  scene.background = new THREE.Color(css('--bg')); if (ssf) ssf.setSky(css('--bg'));
+  S.setTheme(css('--bg'), t === 'dark'); if (ssf) ssf.setSky(css('--bg'));
 }
 document.querySelectorAll('[data-theme-set]').forEach((b) => (b.onclick = () => setTheme(b.dataset.themeSet)));
 setTheme(matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
@@ -469,8 +415,8 @@ const set = (id, html) => { const e = $(id); if (e.innerHTML !== html) e.innerHT
 const u = (v, unit) => `${v}<small>${unit}</small>`;
 function landing(ctl, o) { // angle where the jet meets the wheel rim, degrees past top
   let t = 0.002, y = 0, z = -0.9; const dt = 0.002;
-  for (t = 0; t < 2; t += dt) { y = -4.905 * t * t; z = -0.9 + o.vJet * t; if (Math.hypot(y + 5.15 - WC.y, z) <= R - 0.05) break; }
-  return (Math.atan2(z, y + 5.15 - WC.y) * 180) / Math.PI;
+  for (t = 0; t < 2; t += dt) { y = -4.905 * t * t; z = -0.98 + o.vJet * t; if (Math.hypot(y + 5.1 - WC.y, z) <= R - 0.05) break; }
+  return (Math.atan2(z, y + 5.1 - WC.y) * 180) / Math.PI;
 }
 let lastText = 0;
 function readouts() {
@@ -503,6 +449,8 @@ function readouts() {
 
 /* ---------------- animate ---------------- */
 const clock = new THREE.Clock();
+const RENDER_GAP = /[?&]lowfx/.test(location.search) ? 900 : 0, lastRenderInit = 0; // ?lowfx also caps rendering at ~1 fps so software GL leaves CPU for the simulation
+let lastRender = lastRenderInit;
 let acc = 0;
 function frame() {
   requestAnimationFrame(frame);
@@ -511,37 +459,36 @@ function frame() {
   if (!net.ready) { placeCamera(); renderer.render(scene, camera); return; }
   if (surfaceDirty !== false) { if (!ssf) water.update(pPos, surfaceDirty); surfaceDirty = false; }
   if (dt > 0) { stepFoam(dt, mill.out.Q || 0); stepDust(dt, mill.out); }
-  stepCamera(real);
+  stepCamera(real); stepInertia(real); updateDial();
   if (hoverAt) updateHover();
   const o = mill.out;
   const ahead = net.local ? 0 : clamp(((performance.now() - net.stamp) / 1000) * ui.timeScale, 0, 0.05); // smooth between worker snapshots
   const th = mill.theta + mill.omega * ahead;
   wheel.rotation.x = th; pitWheel.rotation.x = th;
-  const pi = th * P.r1; upright.rotation.y = pi;
-  nuts.forEach((n, i) => (n.rotation.y = -mill.stones[i].theta + 0)); // nut spindle follows stone speed
+  const pi = th * P.r1; upright.rotation.y = pi; wallowerRot.rotation.y = pi; spurRot.rotation.y = pi;
+  nuts.forEach((n, i) => { n.rotation.y = -mill.stones[i].theta; n.position.y += ((mill.stones[i].engaged ? 3.7 : 3.3) - n.position.y) * 0.15; });
+  levers.forEach((l, i) => { l.rotation.z += ((mill.stones[i].engaged ? 0 : 0.12) - l.rotation.z) * 0.15; });
   runners.forEach((r, i) => (r.rotation.y = mill.stones[i].theta));
-  nuts.forEach((n, i) => (n.position.y += ((mill.stones[i].engaged ? 3.7 : 3.35) - n.position.y) * 0.15));
-  runners.forEach((r, i) => (r.position.y += ((mill.stones[i].engaged ? 4.85 : 4.85) - r.position.y) * 0.15));
-  gate.position.y = 5.1 + 0.15 + mill.ctl.gate * 0.9;
-  flumeWater.scale.y = 0.4 + mill.ctl.head * 1.2; flumeWater.position.y = 5.05 + flumeWater.scale.y * 0.2;
-  // hopper, flour sack
-  const flour = mill.stones.reduce((a, s) => a + s.flour, 0), frac = (flour / 50) % 1;
-  grain.scale.y = 0.4 + 0.6 * (1 - ((flour / 400) % 1)); grain.position.y = 6.2 + 0.35 * grain.scale.y;
-  const active = o.throughput > 5;
-  stream.visible = active; stream.scale.set(1, 1.1, 1); stream.position.set(3.7, 1.0, 3.0); stream.rotation.x = 0.0;
-  sack.scale.set(0.8 + 0.22 * Math.sqrt(frac), 0.92 + 0.08 * frac, 0.8 + 0.22 * Math.sqrt(frac));
-  sackTop.position.y = 0.05 + 0.82 * frac + 0.02 - 0.2 + 0.2; sackTop.position.y = 0.05 + 0.82 * frac;
-  while (fullSacks.children.length < Math.min(4, Math.floor(ui.sacks))) {
-    const k = fullSacks.children.length; const s = mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.9, 20), mats.burlap, fullSacks, [4.9 + (k % 2) * 0.7, 0.45, 3.2 - Math.floor(k / 2) * 0.7]);
-    s.scale.set(1, 1, 1);
-  }
+  gate.position.y = 5.6 + mill.ctl.gate * 0.8; gateRod.position.y = 6.3 + mill.ctl.gate * 0.8; gateWheel.rotation.y = mill.ctl.gate * 14;
+  head.scale.y = Math.max(0.05, Math.min(0.62, mill.ctl.head)); head.position.y = 5.05 + head.scale.y / 2;
+  // hoppers, spouts and sacks follow each stone's own flour counter
+  const flours = mill.stones.map((x) => x.flour);
+  hoppers.forEach((h, k) => { const lv = 0.3 + 0.7 * (1 - ((flours[k] / 150) % 1)); h.fill.scale.y = lv; h.fill.position.y = h.baseY + 0.22 + 0.28 * lv; });
+  sacks.forEach((sk, k) => {
+    const frac = (flours[k] / 50) % 1, w = 0.82 + 0.2 * Math.sqrt(frac);
+    sk.body.scale.set(w, 0.9 + 0.1 * frac, w); sk.top.position.y = 0.05 + 0.85 * frac; sk.top.scale.setScalar(w);
+    const topY = LAYOUT.FLOOR + 0.05 + 0.85 * frac, st = streams[k], v = spoutOut[k], len = Math.max(0.05, v.y - topY);
+    st.visible = mill.stones[k].engaged && o.throughput > 5; st.scale.set(1, len, 1); st.position.set(v.x, topY + len / 2, v.z);
+    const full = Math.floor(flours[k] / 50);
+    while ((sk.done || 0) < full) { sk.done = (sk.done || 0) + 1; const n = fullSacks.children.length; if (n < 6) { const m = new THREE.Mesh(sk.body.geometry, mats.burlap); m.castShadow = true; m.position.set(4.7 + (n % 2) * 0.62, FLOOR, -0.3 - Math.floor(n / 2) * 0.62 + 0.9 * k); m.rotation.y = n * 1.3; fullSacks.add(m); } }
+  });
   // explode / labels
   ui.explode += (ui.explodeT - ui.explode) * (reduced ? 1 : 0.1);
   const v = new THREE.Vector3();
   groups.forEach((g) => {
     g.position.copy(g.userData.base).addScaledVector(g.userData.offset, ui.explode);
     const el = g.userData.el;
-    if (ui.labels) { v.copy(g.userData.labelAt).add(g.position).sub(g.userData.base).project(camera); el.style.left = ((v.x + 1) / 2) * innerWidth + 'px'; el.style.top = ((1 - v.y) / 2) * innerHeight + 'px'; el.style.display = v.z < 1 ? '' : 'none'; }
+    if (el && ui.labels) { v.copy(g.userData.labelAt).add(g.position).sub(g.userData.base).project(camera); el.style.left = ((v.x + 1) / 2) * innerWidth + 'px'; el.style.top = ((1 - v.y) / 2) * innerHeight + 'px'; el.style.display = v.z < 1 ? '' : 'none'; }
   });
   histT += dt; if (histT > 0.5) { histT = 0; hist.push(o.engaged ? o.stoneRpm : 0); if (hist.length > 120) hist.shift(); }
   const now = performance.now();
@@ -550,8 +497,8 @@ function frame() {
   }
   placeCamera();
   foamMat.uniforms.uScale.value = renderer.domElement.height * 0.5 * camera.projectionMatrix.elements[5];
-  if (ssf) ssf.render(scene, camera, fluidPts, fluidCount); else renderer.render(scene, camera);
+  if (!RENDER_GAP || performance.now() - lastRender > RENDER_GAP) { lastRender = performance.now(); if (ssf) ssf.render(scene, camera, fluidPts, fluidCount); else renderer.render(scene, camera); }
 }
 startBackend();
 frame();
-window.__mill = mill; window.__orbit = orbit; window.__ssf = ssf; window.__r = renderer; window.__fc = () => fluidCount; window.__dust = () => dN; window.__sacks = () => fullSacks.children.length; window.__screen = (name) => { const g = groups.find((x) => x.userData.name === name); const v = g.userData.labelAt.clone().add(g.position).sub(g.userData.base).project(camera); return { x: ((v.x + 1) / 2) * innerWidth, y: ((1 - v.y) / 2) * innerHeight }; }; window.__cut = () => renderer.clippingPlanes.length; window.__cam = camera; window.__goal = () => goal && { dist: goal.dist }; window.__focused = () => focused && focused.userData.name; window.__ui = ui; window.__net = net; // handy for experimenting from the console
+window.__mill = mill; window.__orbit = orbit; window.__ssf = ssf; window.__r = renderer; window.__fc = () => fluidCount; window.__dust = () => dN; window.__sacks = () => fullSacks.children.length; window.__screen = (name) => { const g = groups.find((x) => x.userData.name === name); const v = g.userData.labelAt.clone().add(g.position).sub(g.userData.base).project(camera); return { x: ((v.x + 1) / 2) * innerWidth, y: ((1 - v.y) / 2) * innerHeight }; }; window.__cut = () => renderer.clippingPlanes.length; window.__cam = camera; window.__target = target; window.__S = S; window.__goal = () => goal && { dist: goal.dist }; window.__focused = () => focused && focused.userData.name; window.__ui = ui; window.__net = net; // handy for experimenting from the console

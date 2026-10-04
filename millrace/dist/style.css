@@ -21,10 +21,18 @@ nav button[aria-pressed=true]::before{content:"[ "}nav button[aria-pressed=true]
 #pattern h3{margin:0 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:500;color:var(--mut)}
 #pattern p{margin:4px 0 0;font-size:10px;color:var(--mut)}
 #stripCv{width:100%;height:80px;display:block}
-#viewctl{position:fixed;left:310px;bottom:20px;z-index:3}
+#gl{touch-action:none}
+#viewctl{position:fixed;right:calc(min(420px,100vw - 32px) + 40px);bottom:18px;z-index:3;display:grid;grid-template-columns:auto auto;gap:6px 14px;align-items:center;justify-items:end}
+#viewctl .hint{grid-column:1/-1;color:var(--mut);font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-align:right}
+#turn{position:relative;width:60px;height:60px;border:1px dashed var(--mut);border-radius:50%;cursor:grab;touch-action:none;outline-offset:3px}
+#turn::before{content:"";position:absolute;inset:9px;border:1px solid var(--line);border-radius:50%}
+#needle{position:absolute;left:50%;top:50%;width:1.5px;height:26px;margin-left:-.75px;margin-top:-26px;background:var(--acc);transform-origin:50% 100%}
+#turnDeg{position:absolute;left:0;right:0;bottom:-18px;text-align:center;font-size:10px;color:var(--ink)}
 .btn{background:var(--acc);color:#fff;padding:8px 14px}
 #labels{position:fixed;inset:0;pointer-events:none;z-index:2}
-#labels span{position:absolute;transform:translate(-50%,-120%);padding:1px 5px;background:var(--panel);border:1px solid var(--line);font-size:10px;text-transform:uppercase;white-space:nowrap}
+#labels span{position:absolute;transform:translate(-8px,-50%);padding-left:20px;font-size:10px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;color:var(--ink);text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 6px var(--bg)}
+#labels span::before{content:"";position:absolute;left:0;top:50%;width:15px;height:15px;margin-top:-7.5px;border:1px dashed var(--acc);border-radius:50%;background:color-mix(in srgb,var(--acc) 12%,transparent)}
+#labels span::after{content:"";position:absolute;left:6px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:var(--acc)}
 #panel{position:fixed;top:60px;right:16px;bottom:16px;width:min(420px,calc(100% - 32px));overflow:auto;z-index:4;scrollbar-width:thin}
 #sheetBtn{display:none}
 .card{background:var(--panel);border:1px solid var(--line);padding:12px 14px;margin-bottom:12px}
@@ -55,7 +63,7 @@ table.stages{width:100%;border-collapse:collapse}
   #panel{top:auto;height:46vh;bottom:0;right:0;left:0;width:auto;border-top:1px solid var(--line);background:var(--bg);padding:8px 12px}
   #panel.closed{height:40px;overflow:hidden}
   #sheetBtn{display:block;width:100%;padding:8px;text-align:left;border-bottom:1px solid var(--line);margin-bottom:8px}
-  #pattern,#viewctl,#status{display:none}#warn{bottom:calc(46vh + 8px);max-width:90%}
+  #pattern,#status,#viewctl .hint{display:none}#viewctl{right:12px;bottom:calc(46vh + 30px)}#warn{bottom:calc(46vh + 8px);max-width:58%;left:16px}
   #top{gap:4px 14px;padding:10px 14px}#logo{margin-right:0;width:100%}#title{top:104px;left:16px}#title h1{font-size:30px}#title p{display:none}#hover{display:none!important}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}

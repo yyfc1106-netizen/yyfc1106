@@ -17,10 +17,10 @@ const NBMAX = 32;
 
 export const YC = 2.6; // wheel centre height (matches the 3D scene)
 export const RIN = P.R - 0.5; // inner shroud radius
-const LEAN = 0.8; // boards lean backwards by this angle at the rim, rad
+const LEAN = globalThis.__LEAN ?? 0.9; // boards lean back by this angle at the rim // boards lean backwards by this angle at the rim, rad
 const PITCH = (Math.PI * 2) / P.NB;
 const BT = 0.03; // board thickness
-export const GATE_Z = -0.88;
+export const GATE_Z = globalThis.__GATE_Z ?? -1.0; // sluice outlet, tuned so a faster jet still lands in the buckets
 export const FLOOR_Y = 5.05;
 const KILL_Y = 0.32;
 

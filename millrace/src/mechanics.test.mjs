@@ -8,7 +8,7 @@ const run = (mut, secs = 120) => {
 const d = run();
 console.log('default', d.out.wheelRpm.toFixed(2), d.out.stoneRpm.toFixed(0), d.out.throughput.toFixed(0), (d.out.eff * 100).toFixed(0) + '%', d.out.mealTemp.toFixed(0), M.warning(d));
 assert(d.out.wheelRpm > 4 && d.out.wheelRpm < 9, 'wheel rpm plausible');
-assert(Math.abs(d.out.Q - 0.144) < 0.01, 'Q ~144 L/s');
+assert(Math.abs(d.out.Q - 0.163) < 0.01, 'Q ~163 L/s');
 assert(run((s) => (s.ctl.gate = 0)).out.wheelRpm < 0.1, 'shut gate stops wheel');
 assert(run((s) => (s.ctl.brake = true)).out.wheelRpm < 0.1, 'brake stops wheel');
 const free = run((s) => { s.stones[0].engaged = false; });
